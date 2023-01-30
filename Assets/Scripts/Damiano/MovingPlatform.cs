@@ -52,8 +52,9 @@ public class MovingPlatform : RhythmObject
         return startPosition + Vector2.right * index;
     }
 
-    void OnDrawGizmos()
+    protected override void OnDrawGizmos()
     {
+        base.OnDrawGizmos();
         Gizmos.DrawLine(GetPositionFrom(0), GetPositionFrom(span - 1));
     }
 }
