@@ -283,11 +283,33 @@
                 },
                 {
                     "name": "",
+                    "id": "9b931ce0-3ebe-4449-8e4a-4557f971c2cf",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Play Good Song",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ae904de6-4364-46bf-8b73-6e82512db1b1",
                     "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "Play Bad Song",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "672a6caa-35f0-4673-b1d9-237d1776f14c",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Play Bad Song",
                     "isComposite": false,
                     "isPartOfComposite": false

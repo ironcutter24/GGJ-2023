@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
 
     private bool IsGrounded()
     {
-        int layerMaskCombined = ( 1 << layerMask ) | ( 1 << plantLayerMask );
+        int layerMaskCombined = ( layerMask ) | ( plantLayerMask );
 
         hit = Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, /*layerMask*/layerMaskCombined);
         return hit.collider != null;
