@@ -6,6 +6,13 @@ using Utility.Patterns;
 
 public class AudioManager : Singleton<AudioManager>
 {
+    private FMOD.Studio.EventInstance FMODEventInstance;
+
+    [SerializeField]
+    FMODUnity.EventReference fmodEvent;
+
+    [Space]
+
     [SerializeField]
     int bpm = 120;
 
@@ -19,11 +26,15 @@ public class AudioManager : Singleton<AudioManager>
 
     public static event Action OnRhythmUpdate;
 
-
-    void Start()
+    private void Start()
     {
-        // Start fmod event
+        StartGameMusic();
+    }
 
+    void StartGameMusic()
+    {
+        //FMODEventInstance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
+        //FMODEventInstance.start();
         StartCoroutine(_RhythmUpdate());
     }
 

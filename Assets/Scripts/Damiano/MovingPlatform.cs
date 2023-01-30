@@ -28,6 +28,8 @@ public class MovingPlatform : RhythmObject
 
     protected override void Next()
     {
+        base.Next();
+
         if (moveDirection == MoveDirection.Left && currentIndex == 0)
             moveDirection = MoveDirection.Right;
         else
