@@ -128,7 +128,7 @@ Transform:
   m_GameObject: {fileID: 891322571676631890}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.24, y: 3.11, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5094331002231249866}
@@ -331,6 +331,54 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 4f8ebb57-72fc-4c9c-9d2b-933511c9e2f2
     m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8891598311050059419}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: StickOnFloor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c0ed729d-f4d2-483f-86aa-996382e94651
+    m_ActionName: Player/Stick[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8891598311050059419}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: PlayGoodMusic
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 00058e14-d6ce-4832-992a-3585c352180a
+    m_ActionName: Player/Play Song[/Keyboard/l,/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8891598311050059419}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: PlayBadMusic
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2209e79f-2e8d-4538-88e5-f9d1a954469d
+    m_ActionName: Player/Play Bad Song[/Keyboard/k]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -350,10 +398,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement_speed: 5
   jump_power: 5
+  music_radius: 5
   buffer_check_distance: 0.1
   layerMask:
     serializedVersion: 2
     m_Bits: 256
+  plantLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &5126702374927442517
 GameObject:
   m_ObjectHideFlags: 0
