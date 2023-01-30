@@ -18,4 +18,6 @@ public abstract class RhythmObject : MonoBehaviour
     }
 
     protected abstract void Next();
+
+    protected abstract void RevertToDefaults();
 }
