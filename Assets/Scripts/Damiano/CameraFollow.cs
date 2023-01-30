@@ -17,7 +17,7 @@ public class CameraFollow : MonoBehaviour
     Vector2 targetOffset = Vector2.zero;
     Vector2 TargetPosition => target.transform.position + new Vector3(targetOffset.x, targetOffset.y + verticalOffset, 0f);
 
-    void FixedUpdate()
+    void LateUpdate()
     {
         var target = Vector3.Lerp(transform.position, TargetPosition, lerpInterpolation * 60 * Time.deltaTime);
         target.z = transform.position.z;

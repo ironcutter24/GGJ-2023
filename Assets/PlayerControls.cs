@@ -327,7 +327,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""4db59745-d39e-458d-b15c-07711210505c"",
                     ""path"": ""<Keyboard>/p"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Stick"",
