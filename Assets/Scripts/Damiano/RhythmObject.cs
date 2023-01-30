@@ -23,4 +23,9 @@ public abstract class RhythmObject : MonoBehaviour
     }
 
     protected abstract void RevertToDefaults();
+
+    protected virtual void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, .25f);
+    }
 }
