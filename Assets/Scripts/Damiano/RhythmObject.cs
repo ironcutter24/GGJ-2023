@@ -17,7 +17,10 @@ public abstract class RhythmObject : MonoBehaviour
         AudioManager.OnRhythmUpdate -= Next;
     }
 
-    protected abstract void Next();
+    protected virtual void Next()
+    {
+        // Check for children roots
+    }
 
     protected abstract void RevertToDefaults();
 }

@@ -62,6 +62,33 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Stick"",
+                    ""type"": ""Button"",
+                    ""id"": ""c0ed729d-f4d2-483f-86aa-996382e94651"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Play Good Song"",
+                    ""type"": ""Button"",
+                    ""id"": ""00058e14-d6ce-4832-992a-3585c352180a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Play Bad Song"",
+                    ""type"": ""Button"",
+                    ""id"": ""2209e79f-2e8d-4538-88e5-f9d1a954469d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -293,6 +320,39 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4db59745-d39e-458d-b15c-07711210505c"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Stick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d24aac93-40c9-4079-bbf1-58b83d355031"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Play Good Song"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ae904de6-4364-46bf-8b73-6e82512db1b1"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Play Bad Song"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -884,6 +944,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Stick = m_Player.FindAction("Stick", throwIfNotFound: true);
+        m_Player_PlayGoodSong = m_Player.FindAction("Play Good Song", throwIfNotFound: true);
+        m_Player_PlayBadSong = m_Player.FindAction("Play Bad Song", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -959,6 +1022,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Stick;
+    private readonly InputAction m_Player_PlayGoodSong;
+    private readonly InputAction m_Player_PlayBadSong;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -967,6 +1033,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @Stick => m_Wrapper.m_Player_Stick;
+        public InputAction @PlayGoodSong => m_Wrapper.m_Player_PlayGoodSong;
+        public InputAction @PlayBadSong => m_Wrapper.m_Player_PlayBadSong;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -988,6 +1057,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Stick.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStick;
+                @Stick.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStick;
+                @Stick.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStick;
+                @PlayGoodSong.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayGoodSong;
+                @PlayGoodSong.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayGoodSong;
+                @PlayGoodSong.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayGoodSong;
+                @PlayBadSong.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayBadSong;
+                @PlayBadSong.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayBadSong;
+                @PlayBadSong.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayBadSong;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1004,6 +1082,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @Stick.started += instance.OnStick;
+                @Stick.performed += instance.OnStick;
+                @Stick.canceled += instance.OnStick;
+                @PlayGoodSong.started += instance.OnPlayGoodSong;
+                @PlayGoodSong.performed += instance.OnPlayGoodSong;
+                @PlayGoodSong.canceled += instance.OnPlayGoodSong;
+                @PlayBadSong.started += instance.OnPlayBadSong;
+                @PlayBadSong.performed += instance.OnPlayBadSong;
+                @PlayBadSong.canceled += instance.OnPlayBadSong;
             }
         }
     }
@@ -1164,6 +1251,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnStick(InputAction.CallbackContext context);
+        void OnPlayGoodSong(InputAction.CallbackContext context);
+        void OnPlayBadSong(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
