@@ -11,20 +11,27 @@ public class Anim_Roots : MonoBehaviour
     private float maxLenght = 8, durationAhead = 10, durationRetreat = 6;
     private BoxCollider2D Collider;
     private bool isAhead, isRetreat;
-    
+
     Sequence mySequence;
     void Start()
     {
         Collider = GetComponent<BoxCollider2D>();
         isAhead = false;
-        isRetreat = false;
+        if (graphics.transform.position == transform.position)
+        {
+            isRetreat = true;
+        }
+        else
+        {
+            isRetreat = false;
+        }
 
     }
 
     public void Ahead_Root()
     {
-      
-        if (!isAhead )
+
+        if (!isAhead)
         {
             isRetreat = true;
             isAhead = true;
@@ -35,7 +42,7 @@ public class Anim_Roots : MonoBehaviour
     }
     public void Retreat_Root()
     {
-      
+
         if (!isRetreat)
         {
             isRetreat = true;
@@ -64,8 +71,8 @@ public class Anim_Roots : MonoBehaviour
         Collider.size = new Vector2(x + 0.1f, Collider.size.y);
 
         graphics.transform.Rotate(new Vector3(0, 60, 0) * Time.deltaTime, Space.Self);
-        if(graphics.transform.position == transform.position)
-        isAhead = false;
+        if (graphics.transform.position == transform.position)
+            isAhead = false;
 
     }
 
