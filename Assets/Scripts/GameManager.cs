@@ -9,4 +9,12 @@ public class GameManager : Singleton<GameManager>
     {
         DontDestroyOnLoad(gameObject);
     }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
 }
