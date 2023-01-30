@@ -9,12 +9,13 @@ public class MovingPlatform : RhythmObject
     MoveDirection moveDirection = MoveDirection.Right;
 
     [SerializeField]
-    int span;
+    int steps = 4, stepSize = 1;
 
     [SerializeField]
     int currentIndex;
 
     int startIndex;
+
     Vector2 startPosition;
 
     enum MoveDirection { Left = -1, Right = 1 }
@@ -33,7 +34,7 @@ public class MovingPlatform : RhythmObject
         if (moveDirection == MoveDirection.Left && currentIndex == 0)
             moveDirection = MoveDirection.Right;
         else
-        if (moveDirection == MoveDirection.Right && currentIndex == span - 1)
+        if (moveDirection == MoveDirection.Right && currentIndex == steps - 1)
             moveDirection = MoveDirection.Left;
 
         currentIndex += (int)moveDirection;
@@ -49,12 +50,12 @@ public class MovingPlatform : RhythmObject
 
     Vector2 GetPositionFrom(int index)
     {
-        return startPosition + Vector2.right * index;
+        return startPosition + Vector2.right * index * stepSize;
     }
 
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
-        Gizmos.DrawLine(GetPositionFrom(0), GetPositionFrom(span - 1));
+        Gizmos.DrawLine(GetPositionFrom(0), GetPositionFrom(steps - 1));
     }
 }
