@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour
 {
@@ -24,9 +25,12 @@ public class Player : MonoBehaviour
     private Vector2 move_direction;
     private Rigidbody2D player_rb;
     private CapsuleCollider2D player_capsule;
-    private bool is_sticking, playngSong, sidecollision = false;
     private RaycastHit2D hit;
+    private bool is_sticking, playngSong, sidecollision = false;
     private Transform under_platform;
+
+    private float easytimer = 1;
+
 
     private void Awake()
     {
@@ -57,6 +61,16 @@ public class Player : MonoBehaviour
 
         if (!is_facing_right && move_direction.x > 0f || is_facing_right && move_direction.x < 0f)
             Flip();
+
+        if (playngSong)
+        {
+            easytimer -= Time.deltaTime;
+            if (easytimer<= 0)
+            {
+                easytimer = 1;
+                playngSong = false;
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -67,14 +81,16 @@ public class Player : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-            sidecollision = true;
+        sidecollision = true;
         if (IsGrounded())
             sidecollision = false;
     }
 
     private bool IsGrounded()
     {
-        hit = Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, layerMask);
+        int layerMaskCombined = ( 1 << layerMask ) | ( 1 << plantLayerMask );
+
+        hit = Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, /*layerMask*/layerMaskCombined);
         return hit.collider != null;
     }
 
@@ -102,6 +118,7 @@ public class Player : MonoBehaviour
     {
         if (context.started && IsGrounded())
         {
+            print("MI AGGRAPPO");
             is_sticking = true;
             player_rb.simulated = false;
             try
@@ -126,7 +143,7 @@ public class Player : MonoBehaviour
     {
         if (context.performed && !playngSong)
         {
-            CheckActivable();
+            CheckActivable(true);
             print("GOOD SONG");
             playngSong = true;
         }
@@ -136,19 +153,24 @@ public class Player : MonoBehaviour
     {
         if (context.performed && !playngSong)
         {
-            CheckActivable();
+            CheckActivable(false);
             print("BAD SONG");
             playngSong = true;
         }
     }
 
-    private void CheckActivable()
+    private void CheckActivable(bool good)
     {
         RaycastHit2D[] ActivablePlants = Physics2D.CircleCastAll(transform.position, music_radius, transform.forward, 0, plantLayerMask);
 
         foreach (RaycastHit2D ray in ActivablePlants)
         {
             print(ray.collider.gameObject.name);
+            if (good)
+                ray.collider.GetComponent<Anim_Roots>().Ahead_Root();
+            else
+                ray.collider.GetComponent<Anim_Roots>().Retreat_Root();
+
             //call Plant Event
         }
     }
