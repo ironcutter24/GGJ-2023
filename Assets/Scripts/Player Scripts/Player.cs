@@ -10,13 +10,13 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float movement_speed, jump_power = 5f;
+    private float movement_speed, jump_power, music_radius = 5f;
     [SerializeField]
     [Tooltip("Distance of the raycast to the ground for the jump")]
     private float buffer_check_distance = 0.3f;
     [SerializeField]
     [Tooltip("DO NOT TOUCH")]
-    private LayerMask layerMask;
+    private LayerMask layerMask, plantLayerMask;
 
     private PlayerControls player_controls;
     private InputAction player_move;
@@ -24,9 +24,9 @@ public class Player : MonoBehaviour
     private Rigidbody2D player_rb;
     private CapsuleCollider2D player_capsule;
     private bool is_facing_right = true;
-    private bool is_sticking = false;
+    private bool is_sticking, playngSong= false;
     private RaycastHit2D hit;
-    private GameObject under_platform;
+    private Transform under_platform;
 
     private void Awake()
     {
@@ -52,7 +52,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        player_rb.velocity = new Vector2(move_direction.x * movement_speed, player_rb.velocity.y);
         //Debug.DrawRay(new Vector3(player_capsule.bounds.center.x, player_capsule.bounds.min.y, 0), new Vector3(0, -buffer_check_distance, 0), Color.blue);
 
         if (!is_facing_right && move_direction.x > 0f || is_facing_right && move_direction.x < 0f)
@@ -61,6 +60,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        player_rb.velocity = new Vector2(move_direction.x * movement_speed, player_rb.velocity.y);
     }
 
     private bool IsGrounded()
@@ -96,8 +96,8 @@ public class Player : MonoBehaviour
         {
             is_sticking = true;
             player_rb.simulated = false;
-            print(hit.collider.transform.parent.name);
-            transform.SetParent(hit.collider.transform.parent.transform);
+            under_platform = hit.collider.gameObject.GetComponentInParent<RotatingPlatform>().transform;
+            transform.SetParent(under_platform);
             move_direction = Vector2.zero;
         }
 
@@ -106,7 +106,38 @@ public class Player : MonoBehaviour
             is_sticking = false;
             player_rb.simulated = true;
             transform.parent = null;
-            transform.rotation = Quaternion.Euler(0, is_facing_right? 0 : 180 , 0);
+            transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
+        }
+    }
+
+    public void PlayGoodMusic(InputAction.CallbackContext context)
+    {
+        if (context.performed && !playngSong)
+        {
+            CheckActivable();
+            print("GOOD SONG");
+            playngSong = true;
+        }
+    }
+
+    public void PlayBadMusic(InputAction.CallbackContext context)
+    {
+        if (context.performed && !playngSong)
+        {
+            CheckActivable();
+            print("BAD SONG");
+            playngSong = true;
+        }
+    }
+
+    private void CheckActivable()
+    {
+        RaycastHit2D[] ActivablePlants = Physics2D.CircleCastAll(transform.position, music_radius, transform.forward, 0, plantLayerMask);
+
+        foreach (RaycastHit2D ray in ActivablePlants)
+        {
+            print(ray.collider.gameObject.name);
+            //call Plant Event
         }
     }
 }
