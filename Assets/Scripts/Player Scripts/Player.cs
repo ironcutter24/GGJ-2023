@@ -17,14 +17,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Tooltip("DO NOT TOUCH")]
     private LayerMask layerMask, plantLayerMask;
+    public bool is_facing_right { get; private set; }
 
     private PlayerControls player_controls;
     private InputAction player_move;
     private Vector2 move_direction;
     private Rigidbody2D player_rb;
     private CapsuleCollider2D player_capsule;
-    private bool is_facing_right = true;
-    private bool is_sticking, playngSong= false;
+    private bool is_sticking, playngSong, sidecollision = false;
     private RaycastHit2D hit;
     private Transform under_platform;
 
@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        is_facing_right = true;
     }
 
     private void OnEnable()
@@ -60,7 +61,15 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        player_rb.velocity = new Vector2(move_direction.x * movement_speed, player_rb.velocity.y);
+        if (!sidecollision)
+            player_rb.velocity = is_sticking ? Vector2.zero : new Vector2(move_direction.x * movement_speed, player_rb.velocity.y);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+            sidecollision = true;
+        if (IsGrounded())
+            sidecollision = false;
     }
 
     private bool IsGrounded()
@@ -77,8 +86,7 @@ public class Player : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
-        if (!is_sticking)
-            move_direction = context.ReadValue<Vector2>();
+        move_direction = context.ReadValue<Vector2>();
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -96,9 +104,12 @@ public class Player : MonoBehaviour
         {
             is_sticking = true;
             player_rb.simulated = false;
-            under_platform = hit.collider.gameObject.GetComponentInParent<RotatingPlatform>().transform;
+            try
+            {
+                under_platform = hit.collider.gameObject.GetComponentInParent<RotatingPlatform>().transform;
+            }
+            catch { }
             transform.SetParent(under_platform);
-            move_direction = Vector2.zero;
         }
 
         if (context.canceled)
@@ -106,6 +117,7 @@ public class Player : MonoBehaviour
             is_sticking = false;
             player_rb.simulated = true;
             transform.parent = null;
+            player_rb.velocity = Vector2.zero;
             transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
         }
     }
