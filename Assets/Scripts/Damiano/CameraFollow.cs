@@ -15,7 +15,7 @@ public class CameraFollow : MonoBehaviour
     Vector2 offset = Vector2.zero;
 
     Vector2 targetOffset = Vector2.zero;
-    Vector2 TargetPosition => target.transform.position + new Vector3(targetOffset.x + offset.x, targetOffset.y + offset.y, 0f);
+    Vector2 TargetPosition => target.transform.position + new Vector3(targetOffset.x + offset.x * GetOffsetSignX(), targetOffset.y + offset.y, 0f);
 
     void LateUpdate()
     {
@@ -27,6 +27,6 @@ public class CameraFollow : MonoBehaviour
 
     float GetOffsetSignX()
     {
-        return true ? -1f : 1f;
+        return target.is_facing_right ? 1f : -1f;
     }
 }
