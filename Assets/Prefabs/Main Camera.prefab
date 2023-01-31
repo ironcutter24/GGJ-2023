@@ -165,4 +165,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   lerpInterpolation: 0.081
-  verticalOffset: 0
+  offset: {x: 0.5, y: 1}

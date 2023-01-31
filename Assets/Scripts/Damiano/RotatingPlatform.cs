@@ -22,6 +22,7 @@ public class RotatingPlatform : RhythmObject
 
     protected override void Next()
     {
+        base.Next();
         rb.DORotate(-90f * (int)turnDirection, .4f).SetRelative();
     }
 
