@@ -166,9 +166,21 @@ public class Player : MonoBehaviour
         {
             print(ray.collider.gameObject.name);
             if (good)
+            {
+                try
+                {
                 ray.collider.GetComponent<Anim_Roots>().Ahead_Root();
+                }
+                catch { }
+            }
             else
+            {
+                try
+                {
                 ray.collider.GetComponent<Anim_Roots>().Retreat_Root();
+                }
+                catch { }
+            }
         }
     }
 }
