@@ -29,17 +29,17 @@ public class MovingPlatform : RhythmObject
 
     protected override void Next()
     {
-        base.Next();
+        if (CanMove())
+        {
+            if (moveDirection == MoveDirection.Left && currentIndex == 0)
+                moveDirection = MoveDirection.Right;
+            else
+            if (moveDirection == MoveDirection.Right && currentIndex == steps - 1)
+                moveDirection = MoveDirection.Left;
 
-        if (moveDirection == MoveDirection.Left && currentIndex == 0)
-            moveDirection = MoveDirection.Right;
-        else
-        if (moveDirection == MoveDirection.Right && currentIndex == steps - 1)
-            moveDirection = MoveDirection.Left;
-
-        currentIndex += (int)moveDirection;
-
-        rb.DOMove(GetPositionFrom(currentIndex), .4f);
+            currentIndex += (int)moveDirection;
+            rb.DOMove(GetPositionFrom(currentIndex), .4f);
+        }
     }
 
     protected override void RevertToDefaults()

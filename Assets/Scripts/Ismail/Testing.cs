@@ -5,7 +5,7 @@ using UnityEngine;
 public class Testing : MonoBehaviour
 {
     public GameObject anim;
-    public Anim_Roots anim_anim;
+    //public Anim_Roots anim_anim;
     // Start is called before the first frame update
     void Start()
     {

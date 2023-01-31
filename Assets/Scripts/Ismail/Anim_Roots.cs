@@ -2,43 +2,54 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Anim_Roots : MonoBehaviour
 {
-    public GameObject graphics, wallColld;
+    [SerializeField]
+    private GameObject graphics;
     [SerializeField]
     private float maxLenght = 8, durationAhead = 10, durationRetreat = 6;
+    [SerializeField]
+    private bool moveAtStart;
     private BoxCollider2D Collider;
     private bool isAhead, isRetreat;
 
     Sequence mySequence;
+
+    public bool IsLockInWall { get; private set; } = false;
+
     void Start()
     {
         Collider = GetComponent<BoxCollider2D>();
-        isAhead = false;
-        if (graphics.transform.position == transform.position)
-        {
-            isRetreat = true;
-        }
-        else
-        {
-            isRetreat = false;
-        }
+        Collider.enabled = false;
 
+        isAhead = false;
+
+        CheckAtStart();
+    }
+
+    public void CheckAtStart()
+    {
+        isRetreat = graphics.transform.position == transform.position;
+
+        if (moveAtStart)
+        {
+            Ahead_Root();
+        }
     }
 
     public void Ahead_Root()
     {
-
         if (!isAhead)
         {
+            Collider.enabled = true;
             isRetreat = true;
             isAhead = true;
             mySequence = DOTween.Sequence();
-            mySequence.Append(graphics.transform.DOLocalMoveX(maxLenght, durationAhead).OnUpdate(CollUpdate));
+            mySequence.Append(graphics.transform.DOLocalMoveX(maxLenght, durationAhead)
+                .OnUpdate(CollUpdate)
+                );
         }
-
     }
     public void Retreat_Root()
     {
@@ -48,7 +59,12 @@ public class Anim_Roots : MonoBehaviour
             isRetreat = true;
             isAhead = true;
             mySequence = DOTween.Sequence();
-            mySequence.Append(graphics.transform.DOLocalMoveX(-wallColld.transform.localPosition.x, durationRetreat).OnUpdate(CollUpdateBack));
+            mySequence.Append(graphics.transform.DOLocalMoveX(-transform.localPosition.x, durationRetreat)
+                .OnUpdate(CollUpdateBack)
+                .OnComplete(() => Collider.enabled = false)
+                );
+
+            IsLockInWall = false;
         }
 
     }
@@ -57,11 +73,9 @@ public class Anim_Roots : MonoBehaviour
     {
         float x = graphics.transform.localPosition.x;
         Collider.offset = new Vector2(x * 0.5f, Collider.offset.y);
-        Collider.size = new Vector2(x - 0.02f, Collider.size.y);
+        Collider.size = new Vector2(x - 0.1f, Collider.size.y);
 
         graphics.transform.Rotate(new Vector3(0, -60, 0) * Time.deltaTime, Space.Self);
-        //isRetreat = false;
-
     }
 
     void CollUpdateBack()
@@ -78,8 +92,13 @@ public class Anim_Roots : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        mySequence.Kill();
-        isRetreat = false;
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            mySequence.Kill();
+            isRetreat = false;
+
+            IsLockInWall= true;
+        }
     }
 
 }
