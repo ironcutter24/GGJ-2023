@@ -15,6 +15,10 @@ public abstract class RhythmObject : MonoBehaviour
     protected Rigidbody2D rb;
     Anim_Roots[] childRoots;
 
+    private bool HasReachedStart => direction == -1 && currentIndex == 0;
+    private bool HasReachedEnd => direction == 1 && currentIndex == steps;
+
+
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -33,13 +37,13 @@ public abstract class RhythmObject : MonoBehaviour
 
     private void Next()
     {
-        if (!CanMove())
-            return;
+        if (CanMove())
+        {
+            if (loops)
+                UpdateCurrentIndex();
 
-        if (loops)
-            UpdateCurrentIndex();
-
-        Move();
+            Move();
+        }
     }
 
     protected abstract void Move();
@@ -48,11 +52,8 @@ public abstract class RhythmObject : MonoBehaviour
 
     protected void UpdateCurrentIndex()
     {
-        if (direction == -1 && currentIndex == 0)
-            direction = 1;
-        else
-        if (direction == 1 && currentIndex == steps)
-            direction = -1;
+        if (HasReachedStart || HasReachedEnd)
+            direction *= -1;
 
         currentIndex += direction;
     }
