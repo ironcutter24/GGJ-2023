@@ -8,54 +8,22 @@ public class MovingPlatform : RhythmObject
     [SerializeField]
     MoveDirection moveDirection = MoveDirection.Right;
 
-    [SerializeField]
-    int steps = 4, stepSize = 1;
-
-    [SerializeField]
-    int currentIndex;
-
-    int startIndex;
-
-    Vector2 startPosition;
-
     enum MoveDirection { Left = -1, Right = 1 }
 
     protected override void Start()
     {
+        direction = (int)moveDirection;
         base.Start();
-        startPosition = rb.position;
-        startIndex = currentIndex;
     }
 
-    protected override void Next()
+    protected override void Move()
     {
-        if (CanMove())
-        {
-            if (moveDirection == MoveDirection.Left && currentIndex == 0)
-                moveDirection = MoveDirection.Right;
-            else
-            if (moveDirection == MoveDirection.Right && currentIndex == steps - 1)
-                moveDirection = MoveDirection.Left;
-
-            currentIndex += (int)moveDirection;
-            rb.DOMove(GetPositionFrom(currentIndex), .4f);
-        }
+        rb.DOMove(new Vector2((int)moveDirection * stepSize, 0f), .4f).SetRelative();
     }
 
     protected override void RevertToDefaults()
     {
         currentIndex = startIndex;
-        rb.position = startPosition;
-    }
-
-    Vector2 GetPositionFrom(int index)
-    {
-        return startPosition + Vector2.right * index * stepSize;
-    }
-
-    protected override void OnDrawGizmos()
-    {
-        base.OnDrawGizmos();
-        Gizmos.DrawLine(GetPositionFrom(0), GetPositionFrom(steps - 1));
+        //rb.position = startPosition;
     }
 }

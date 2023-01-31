@@ -5899,8 +5899,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graphics: {fileID: 6840270756288085030}
   maxLenght: 8
-  durationAhead: 10
-  durationRetreat: 6
+  durationAhead: 0.8
+  durationRetreat: 0.8
   moveAtStart: 0
 --- !u!1 &3635987148698299328
 GameObject:

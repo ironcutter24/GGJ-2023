@@ -4,9 +4,16 @@ using UnityEngine;
 
 public abstract class RhythmObject : MonoBehaviour
 {
-    Anim_Roots[] childRoots;
+    [SerializeField]
+    bool loops = true;
+
+    [SerializeField]
+    protected int steps = 4, stepSize = 1;
+
+    protected int startIndex, currentIndex, direction;
 
     protected Rigidbody2D rb;
+    Anim_Roots[] childRoots;
 
     protected virtual void Start()
     {
@@ -14,14 +21,54 @@ public abstract class RhythmObject : MonoBehaviour
         childRoots = GetComponentsInChildren<Anim_Roots>();
 
         AudioManager.OnRhythmUpdate += Next;
+
+        startIndex = GetBoundIndex(direction);
+        currentIndex = startIndex;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         AudioManager.OnRhythmUpdate -= Next;
     }
 
-    protected abstract void Next();
+    private void Next()
+    {
+        if (!CanMove())
+            return;
+
+        if (loops)
+            UpdateCurrentIndex();
+
+        Move();
+    }
+
+    protected abstract void Move();
+
+    protected abstract void RevertToDefaults();
+
+    protected void UpdateCurrentIndex()
+    {
+        if (direction == -1 && currentIndex == 0)
+            direction = 1;
+        else
+        if (direction == 1 && currentIndex == steps)
+            direction = -1;
+
+        currentIndex += direction;
+    }
+
+    protected int GetBoundIndex(int direction)
+    {
+        switch (direction)
+        {
+            case 1:
+                return 0;
+            case -1:
+                return steps;
+            default:
+                throw new System.Exception("This is not a valid direction");
+        }
+    }
 
     protected bool CanMove()
     {
@@ -30,11 +77,8 @@ public abstract class RhythmObject : MonoBehaviour
             if (root.IsLockInWall)
                 return false;
         }
-
         return true;
     }
-
-    protected abstract void RevertToDefaults();
 
     protected virtual void OnDrawGizmos()
     {

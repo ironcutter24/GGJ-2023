@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52b35dbf3ed9dc043873a79b59533676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loops: 1
+  steps: 3
+  stepSize: 1
   moveDirection: 1
-  span: 4
-  currentIndex: 0
