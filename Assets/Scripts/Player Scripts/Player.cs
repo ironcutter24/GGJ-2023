@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
         if (playngSong)
         {
             easytimer -= Time.deltaTime;
-            if (easytimer<= 0)
+            if (easytimer <= 0)
             {
                 easytimer = 1;
                 playngSong = false;
@@ -86,11 +86,16 @@ public class Player : MonoBehaviour
             sidecollision = false;
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        sidecollision = false;
+    }
+
     private bool IsGrounded()
     {
         int layerMaskCombined = ( layerMask ) | ( plantLayerMask );
 
-        hit = Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, /*layerMask*/layerMaskCombined);
+        hit = Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, layerMaskCombined);
         return hit.collider != null;
     }
 
@@ -102,23 +107,24 @@ public class Player : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
-        move_direction = context.ReadValue<Vector2>();
+        move_direction.x = context.ReadValue<Vector2>().x;
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.performed && IsGrounded() && !is_sticking)
-            player_rb.velocity = new Vector2(player_rb.velocity.x, jump_power);
+            //move_direction.y = jump_power;
+            player_rb.velocity = new Vector2(move_direction.x, jump_power);
 
         if (context.canceled && player_rb.velocity.y > 0f && !is_sticking)
-            player_rb.velocity = new Vector2(player_rb.velocity.x, player_rb.velocity.y * 0.5f);
+            //move_direction.y = player_rb.velocity.y * 0.5f;
+            player_rb.velocity = new Vector2(move_direction.x, player_rb.velocity.y * 0.5f);
     }
 
     public void StickOnFloor(InputAction.CallbackContext context)
     {
         if (context.started && IsGrounded())
         {
-            print("MI AGGRAPPO");
             is_sticking = true;
             player_rb.simulated = false;
             try
