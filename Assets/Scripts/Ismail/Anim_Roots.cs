@@ -2,7 +2,6 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Anim_Roots : MonoBehaviour
 {
@@ -16,6 +15,8 @@ public class Anim_Roots : MonoBehaviour
     private bool isAhead, isRetreat;
 
     Sequence mySequence;
+
+    public bool IsLockInWall { get; private set; } = false;
 
     void Start()
     {
@@ -64,6 +65,8 @@ public class Anim_Roots : MonoBehaviour
             isAhead = true;
             mySequence = DOTween.Sequence();
             mySequence.Append(graphics.transform.DOLocalMoveX(-wallColld.transform.localPosition.x, durationRetreat).OnUpdate(CollUpdateBack));
+
+            IsLockInWall = false;
         }
 
     }
@@ -94,8 +97,10 @@ public class Anim_Roots : MonoBehaviour
         if (collision.gameObject.tag != "Player")
         {
             mySequence.Kill();
+            isRetreat = false;
+
+            IsLockInWall= true;
         }
-        isRetreat = false;
     }
 
 }

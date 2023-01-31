@@ -16,14 +16,13 @@ public class RotatingPlatform : RhythmObject
     protected override void Start()
     {
         base.Start();
-
         startRotation = rb.rotation;
     }
 
     protected override void Next()
     {
-        base.Next();
-        rb.DORotate(-90f * (int)turnDirection, .4f).SetRelative();
+        if (CanMove())
+            rb.DORotate(-90f * (int)turnDirection, .4f).SetRelative();
     }
 
     protected override void RevertToDefaults()

@@ -4,11 +4,15 @@ using UnityEngine;
 
 public abstract class RhythmObject : MonoBehaviour
 {
+    Anim_Roots[] childRoots;
+
     protected Rigidbody2D rb;
 
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        childRoots = GetComponentsInChildren<Anim_Roots>();
+
         AudioManager.OnRhythmUpdate += Next;
     }
 
@@ -17,9 +21,17 @@ public abstract class RhythmObject : MonoBehaviour
         AudioManager.OnRhythmUpdate -= Next;
     }
 
-    protected virtual void Next()
+    protected abstract void Next();
+
+    protected bool CanMove()
     {
-        // Check for children roots
+        foreach (var root in childRoots)
+        {
+            if (root.IsLockInWall)
+                return false;
+        }
+
+        return true;
     }
 
     protected abstract void RevertToDefaults();
