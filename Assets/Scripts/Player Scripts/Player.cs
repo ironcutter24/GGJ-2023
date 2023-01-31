@@ -81,13 +81,16 @@ public class Player : MonoBehaviour
         RaycastHit2D bottomRotationRay = Physics2D.Raycast(rayBottom.position, transform.right, distance, groundLayerMask);
 
         if (topRotationRay.collider != null)
-            Debug.Log("Collision ground: " + topRotationRay.collider.gameObject.layer);
+            Debug.Log("Layer: " + topRotationRay.collider.gameObject.layer + "\tObj: " + topRotationRay.collider.gameObject.name);
 
         //Debug.DrawRay(rayTop.position, transform.right * distance, Color.green, Time.deltaTime);
         //Debug.DrawRay(rayBottom.position, transform.right * distance, Color.green, Time.deltaTime);
 
         if (topRotationRay.collider == null && centerRotationRay.collider == null && bottomRotationRay.collider == null)
+        {
             player_rb.velocity = is_sticking ? Vector2.zero : new Vector2(move_direction.x * movement_speed, player_rb.velocity.y);
+            Debug.Log("Updating velocity");
+        }
     }
 
     private bool IsGrounded()

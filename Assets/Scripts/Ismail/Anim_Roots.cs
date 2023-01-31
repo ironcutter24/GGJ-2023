@@ -73,7 +73,7 @@ public class Anim_Roots : MonoBehaviour
     {
         float x = graphics.transform.localPosition.x;
         Collider.offset = new Vector2(x * 0.5f, Collider.offset.y);
-        Collider.size = new Vector2(x - 0.02f, Collider.size.y);
+        Collider.size = new Vector2(x - 0.1f, Collider.size.y);
 
         graphics.transform.Rotate(new Vector3(0, -60, 0) * Time.deltaTime, Space.Self);
     }
@@ -92,7 +92,7 @@ public class Anim_Roots : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag != "Player")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             mySequence.Kill();
             isRetreat = false;
