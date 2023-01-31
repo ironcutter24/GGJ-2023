@@ -6,17 +6,28 @@ using UnityEngine.UIElements;
 
 public class Anim_Roots : MonoBehaviour
 {
-    public GameObject graphics, wallColld;
+    [SerializeField]
+    private GameObject graphics, wallColld;
     [SerializeField]
     private float maxLenght = 8, durationAhead = 10, durationRetreat = 6;
+    [SerializeField]
+    private bool moveAtStart;
     private BoxCollider2D Collider;
     private bool isAhead, isRetreat;
 
     Sequence mySequence;
+
     void Start()
     {
         Collider = GetComponent<BoxCollider2D>();
+
         isAhead = false;
+
+        CheckAtStart();
+    }
+
+    public void CheckAtStart()
+    {
         if (graphics.transform.position == transform.position)
         {
             isRetreat = true;
@@ -26,6 +37,10 @@ public class Anim_Roots : MonoBehaviour
             isRetreat = false;
         }
 
+        if (moveAtStart)
+        {
+            Ahead_Root();
+        }
     }
 
     public void Ahead_Root()
@@ -60,8 +75,6 @@ public class Anim_Roots : MonoBehaviour
         Collider.size = new Vector2(x - 0.02f, Collider.size.y);
 
         graphics.transform.Rotate(new Vector3(0, -60, 0) * Time.deltaTime, Space.Self);
-        //isRetreat = false;
-
     }
 
     void CollUpdateBack()
@@ -78,7 +91,10 @@ public class Anim_Roots : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        mySequence.Kill();
+        if (collision.gameObject.tag != "Player")
+        {
+            mySequence.Kill();
+        }
         isRetreat = false;
     }
 
