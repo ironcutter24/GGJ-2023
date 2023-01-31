@@ -44,7 +44,7 @@ public class AudioManager : Singleton<AudioManager>
         {
             float period = bpm / (int)subdivision / 60f * step;
             yield return new WaitForSeconds(period);
-            OnRhythmUpdate();
+            OnRhythmUpdate?.Invoke();
         }
     }
 

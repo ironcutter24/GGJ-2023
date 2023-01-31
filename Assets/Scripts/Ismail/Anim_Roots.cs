@@ -43,8 +43,8 @@ public class Anim_Roots : MonoBehaviour
         if (!isAhead)
         {
             Collider.enabled = true;
-            isRetreat = true;
-            isAhead = true;
+            isRetreat = isAhead = true;
+
             mySequence = DOTween.Sequence();
             mySequence.Append(graphics.transform.DOLocalMoveX(maxLenght, durationAhead)
                 .OnUpdate(CollUpdate)
@@ -53,20 +53,17 @@ public class Anim_Roots : MonoBehaviour
     }
     public void Retreat_Root()
     {
-
         if (!isRetreat)
         {
-            isRetreat = true;
-            isAhead = true;
+            isRetreat = isAhead = true;
+            IsLockInWall = false;
+
             mySequence = DOTween.Sequence();
-            mySequence.Append(graphics.transform.DOLocalMoveX(-transform.localPosition.x, durationRetreat)
+            mySequence.Append(graphics.transform.DOLocalMoveX(0f, durationRetreat)
                 .OnUpdate(CollUpdateBack)
                 .OnComplete(() => Collider.enabled = false)
                 );
-
-            IsLockInWall = false;
         }
-
     }
 
     void CollUpdate()
