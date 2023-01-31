@@ -6,7 +6,7 @@ using UnityEngine;
 public class Anim_Roots : MonoBehaviour
 {
     [SerializeField]
-    private GameObject graphics, wallColld;
+    private GameObject graphics;
     [SerializeField]
     private float maxLenght = 8, durationAhead = 10, durationRetreat = 6;
     [SerializeField]
@@ -21,6 +21,7 @@ public class Anim_Roots : MonoBehaviour
     void Start()
     {
         Collider = GetComponent<BoxCollider2D>();
+        Collider.enabled = false;
 
         isAhead = false;
 
@@ -29,14 +30,7 @@ public class Anim_Roots : MonoBehaviour
 
     public void CheckAtStart()
     {
-        if (graphics.transform.position == transform.position)
-        {
-            isRetreat = true;
-        }
-        else
-        {
-            isRetreat = false;
-        }
+        isRetreat = graphics.transform.position == transform.position;
 
         if (moveAtStart)
         {
@@ -46,15 +40,16 @@ public class Anim_Roots : MonoBehaviour
 
     public void Ahead_Root()
     {
-
         if (!isAhead)
         {
+            Collider.enabled = true;
             isRetreat = true;
             isAhead = true;
             mySequence = DOTween.Sequence();
-            mySequence.Append(graphics.transform.DOLocalMoveX(maxLenght, durationAhead).OnUpdate(CollUpdate));
+            mySequence.Append(graphics.transform.DOLocalMoveX(maxLenght, durationAhead)
+                .OnUpdate(CollUpdate)
+                );
         }
-
     }
     public void Retreat_Root()
     {
@@ -64,7 +59,10 @@ public class Anim_Roots : MonoBehaviour
             isRetreat = true;
             isAhead = true;
             mySequence = DOTween.Sequence();
-            mySequence.Append(graphics.transform.DOLocalMoveX(-wallColld.transform.localPosition.x, durationRetreat).OnUpdate(CollUpdateBack));
+            mySequence.Append(graphics.transform.DOLocalMoveX(-transform.localPosition.x, durationRetreat)
+                .OnUpdate(CollUpdateBack)
+                .OnComplete(() => Collider.enabled = false)
+                );
 
             IsLockInWall = false;
         }

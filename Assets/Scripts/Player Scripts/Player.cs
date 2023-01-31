@@ -1,12 +1,7 @@
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour
 {
@@ -19,7 +14,7 @@ public class Player : MonoBehaviour
     private float buffer_check_distance = 0.3f;
     [SerializeField]
     [Tooltip("DO NOT TOUCH")]
-    private LayerMask layerMask, plantLayerMask;
+    private LayerMask groundLayerMask, plantLayerMask;
 
     private RaycastHit2D hit;
     private Vector2 move_direction;
@@ -32,7 +27,6 @@ public class Player : MonoBehaviour
     private CapsuleCollider2D player_capsule;
 
     private float easytimer = 1;
-    private int layerMaskCombined;
     private bool is_sticking, playngSong = false;
 
     private void Awake()
@@ -46,7 +40,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         is_facing_right = true;
-        layerMaskCombined = ( layerMask ) | ( plantLayerMask );
     }
 
     private void OnEnable()
@@ -78,18 +71,28 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    Transform rayTop, rayCenter, rayBottom;
     private void FixedUpdate()
     {
-        RaycastHit2D toprotationRay = Physics2D.Raycast(player_capsule.bounds.max, transform.forward, 1, layerMaskCombined);
-        RaycastHit2D bottomRotationRay = Physics2D.Raycast(player_capsule.bounds.min, transform.forward, 1, layerMaskCombined);
+        const float distance = .1f;
+        RaycastHit2D topRotationRay = Physics2D.Raycast(rayTop.position, transform.right, distance, groundLayerMask);
+        RaycastHit2D centerRotationRay = Physics2D.Raycast(rayCenter.position, transform.right, distance, groundLayerMask);
+        RaycastHit2D bottomRotationRay = Physics2D.Raycast(rayBottom.position, transform.right, distance, groundLayerMask);
 
-        if (toprotationRay.collider == null && bottomRotationRay.collider == null)
+        if (topRotationRay.collider != null)
+            Debug.Log("Collision ground: " + topRotationRay.collider.gameObject.layer);
+
+        //Debug.DrawRay(rayTop.position, transform.right * distance, Color.green, Time.deltaTime);
+        //Debug.DrawRay(rayBottom.position, transform.right * distance, Color.green, Time.deltaTime);
+
+        if (topRotationRay.collider == null && centerRotationRay.collider == null && bottomRotationRay.collider == null)
             player_rb.velocity = is_sticking ? Vector2.zero : new Vector2(move_direction.x * movement_speed, player_rb.velocity.y);
     }
 
     private bool IsGrounded()
     {
-        hit = Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, layerMaskCombined);
+        hit = Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, groundLayerMask);
         return hit.collider != null;
     }
 
@@ -169,7 +172,7 @@ public class Player : MonoBehaviour
             {
                 try
                 {
-                ray.collider.GetComponent<Anim_Roots>().Ahead_Root();
+                    ray.collider.GetComponentInParent<Anim_Roots>().Ahead_Root();
                 }
                 catch { }
             }
@@ -177,7 +180,7 @@ public class Player : MonoBehaviour
             {
                 try
                 {
-                ray.collider.GetComponent<Anim_Roots>().Retreat_Root();
+                    ray.collider.GetComponentInParent<Anim_Roots>().Retreat_Root();
                 }
                 catch { }
             }
