@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
     Transform rayTop, rayCenter, rayBottom;
     private void FixedUpdate()
     {
-        const float distance = .1f;
+        const float distance = .2f;
         RaycastHit2D topRotationRay = Physics2D.Raycast(rayTop.position, transform.right, distance, groundLayerMask);
         RaycastHit2D centerRotationRay = Physics2D.Raycast(rayCenter.position, transform.right, distance, groundLayerMask);
         RaycastHit2D bottomRotationRay = Physics2D.Raycast(rayBottom.position, transform.right, distance, groundLayerMask);
@@ -170,7 +170,7 @@ public class Player : MonoBehaviour
 
         foreach (RaycastHit2D ray in ActivablePlants)
         {
-            print(ray.collider.gameObject.name);
+            print("Found plant: " + ray.collider.gameObject.name);
             if (good)
             {
                 try
@@ -187,6 +187,14 @@ public class Player : MonoBehaviour
                 }
                 catch { }
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
+        {
+            // Player death
         }
     }
 }
