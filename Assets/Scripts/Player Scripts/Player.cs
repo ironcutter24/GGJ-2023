@@ -26,11 +26,11 @@ public class Player : MonoBehaviour
     private Rigidbody2D player_rb;
     private CapsuleCollider2D player_capsule;
     private RaycastHit2D hit;
-    private bool is_sticking, playngSong, sidecollision = false;
+    private bool is_sticking, playngSong = false;
     private Transform under_platform;
 
     private float easytimer = 1;
-
+    private int layerMaskCombined;
 
     private void Awake()
     {
@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         is_facing_right = true;
+        layerMaskCombined = ( layerMask ) | ( plantLayerMask );
     }
 
     private void OnEnable()
@@ -75,25 +76,15 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!sidecollision)
+        RaycastHit2D toprotationRay = Physics2D.Raycast(player_capsule.bounds.max, transform.forward, 1, layerMaskCombined);
+        RaycastHit2D bottomRotationRay = Physics2D.Raycast(player_capsule.bounds.min, transform.forward, 1, layerMaskCombined);
+
+        if (toprotationRay.collider == null && bottomRotationRay.collider == null)
             player_rb.velocity = is_sticking ? Vector2.zero : new Vector2(move_direction.x * movement_speed, player_rb.velocity.y);
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        sidecollision = true;
-        if (IsGrounded())
-            sidecollision = false;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        sidecollision = false;
     }
 
     private bool IsGrounded()
     {
-        int layerMaskCombined = ( layerMask ) | ( plantLayerMask );
 
         hit = Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, layerMaskCombined);
         return hit.collider != null;
@@ -113,11 +104,9 @@ public class Player : MonoBehaviour
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.performed && IsGrounded() && !is_sticking)
-            //move_direction.y = jump_power;
             player_rb.velocity = new Vector2(move_direction.x, jump_power);
 
         if (context.canceled && player_rb.velocity.y > 0f && !is_sticking)
-            //move_direction.y = player_rb.velocity.y * 0.5f;
             player_rb.velocity = new Vector2(move_direction.x, player_rb.velocity.y * 0.5f);
     }
 
