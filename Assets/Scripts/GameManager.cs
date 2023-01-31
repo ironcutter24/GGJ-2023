@@ -5,9 +5,20 @@ using Utility.Patterns;
 
 public class GameManager : Singleton<GameManager>
 {
+    public Vector2 lastCheckPointPos;
+    private static GameManager instance;
+
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Update()

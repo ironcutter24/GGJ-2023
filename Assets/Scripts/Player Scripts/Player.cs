@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class Player : MonoBehaviour
 
     private float easytimer = 1;
     private bool is_sticking, playngSong = false;
+    private GameManager gm;
+
 
     private void Awake()
     {
@@ -35,11 +38,13 @@ public class Player : MonoBehaviour
         player_rb = GetComponent<Rigidbody2D>();
         player_capsule = GetComponent<CapsuleCollider2D>();
         wave = GetComponentInChildren<SoundWavesVFX>();
+        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
     }
 
     void Start()
     {
         is_facing_right = true;
+        transform.position = gm.lastCheckPointPos;
     }
 
     private void OnEnable()
@@ -56,7 +61,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         //Debug.DrawRay(new Vector3(player_capsule.bounds.center.x, player_capsule.bounds.min.y, 0), new Vector3(0, -buffer_check_distance, 0), Color.blue);
-
         if (!is_facing_right && move_direction.x > 0f || is_facing_right && move_direction.x < 0f)
             Flip();
 
@@ -194,7 +198,16 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
+            Debug.Log("MORTO");
             // Player death
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
+        {
+            Debug.Log("MORTO");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

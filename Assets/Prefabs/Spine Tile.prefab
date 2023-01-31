@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 2649689320520295408}
   - component: {fileID: 5970631919462709166}
   - component: {fileID: 6651858363278049321}
-  - component: {fileID: 4810774729057093927}
   - component: {fileID: 2344160491341887704}
-  m_Layer: 0
+  - component: {fileID: 3652482734451166928}
+  m_Layer: 10
   m_Name: Spine Tile
-  m_TagString: Spine
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,18 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4810774729057093927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8361925909096424449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7235bc4f037c36648a9226f5a40191ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &2344160491341887704
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -123,3 +111,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &3652482734451166928
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8361925909096424449}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
