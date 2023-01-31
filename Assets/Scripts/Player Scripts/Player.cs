@@ -10,6 +10,8 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour
 {
+    public bool is_facing_right { get; private set; }
+
     [SerializeField]
     private float movement_speed, jump_power, music_radius = 5f;
     [SerializeField]
@@ -18,25 +20,27 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Tooltip("DO NOT TOUCH")]
     private LayerMask layerMask, plantLayerMask;
-    public bool is_facing_right { get; private set; }
 
-    private PlayerControls player_controls;
-    private InputAction player_move;
-    private Vector2 move_direction;
-    private Rigidbody2D player_rb;
-    private CapsuleCollider2D player_capsule;
     private RaycastHit2D hit;
-    private bool is_sticking, playngSong = false;
+    private Vector2 move_direction;
+
+    private SoundWavesVFX wave;
+    private Rigidbody2D player_rb;
+    private InputAction player_move;
     private Transform under_platform;
+    private PlayerControls player_controls;
+    private CapsuleCollider2D player_capsule;
 
     private float easytimer = 1;
     private int layerMaskCombined;
+    private bool is_sticking, playngSong = false;
 
     private void Awake()
     {
         player_controls = new PlayerControls();
         player_rb = GetComponent<Rigidbody2D>();
         player_capsule = GetComponent<CapsuleCollider2D>();
+        wave = GetComponentInChildren<SoundWavesVFX>();
     }
 
     void Start()
@@ -85,7 +89,6 @@ public class Player : MonoBehaviour
 
     private bool IsGrounded()
     {
-
         hit = Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, layerMaskCombined);
         return hit.collider != null;
     }
@@ -156,6 +159,7 @@ public class Player : MonoBehaviour
 
     private void CheckActivable(bool good)
     {
+        wave.Play(music_radius);
         RaycastHit2D[] ActivablePlants = Physics2D.CircleCastAll(transform.position, music_radius, transform.forward, 0, plantLayerMask);
 
         foreach (RaycastHit2D ray in ActivablePlants)
@@ -165,8 +169,6 @@ public class Player : MonoBehaviour
                 ray.collider.GetComponent<Anim_Roots>().Ahead_Root();
             else
                 ray.collider.GetComponent<Anim_Roots>().Retreat_Root();
-
-            //call Plant Event
         }
     }
 }
