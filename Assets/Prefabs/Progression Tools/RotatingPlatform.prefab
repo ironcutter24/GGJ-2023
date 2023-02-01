@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65828387c811324684b681a5e312067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loops: 0
+  isLoop: 0
   steps: 1
   stepSize: 1
   turnDirection: 1

@@ -13,6 +13,7 @@ public class AudioManager : Singleton<AudioManager>
 
     [Space]
 
+    [Header("Music settings")]
     [SerializeField]
     int bpm = 120;
 
@@ -23,6 +24,12 @@ public class AudioManager : Singleton<AudioManager>
 
     [SerializeField]
     int step = 4;
+
+    [Header("Platforms settings")]
+    [SerializeField]
+    private float lerpDuration = .4f;
+    public static float LerpDuration => _instance.lerpDuration;
+
 
     public static event Action OnRhythmUpdate;
 
@@ -45,7 +52,16 @@ public class AudioManager : Singleton<AudioManager>
             float period = bpm / (int)subdivision / 60f * step;
             yield return new WaitForSeconds(period);
             OnRhythmUpdate?.Invoke();
+            StartCoroutine(_FlagManager());
         }
+    }
+
+    public static bool IsUpdating { get; private set; } = false;
+    IEnumerator _FlagManager()
+    {
+        IsUpdating = true;
+        yield return new WaitForSeconds(LerpDuration);
+        IsUpdating = false;
     }
 
 }

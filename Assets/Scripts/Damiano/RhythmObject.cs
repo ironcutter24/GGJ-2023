@@ -5,15 +5,17 @@ using UnityEngine;
 public abstract class RhythmObject : MonoBehaviour
 {
     [SerializeField]
-    bool loops = true;
+    bool isLoop = true;
 
     [SerializeField]
     protected int steps = 4, stepSize = 1;
 
     protected int startIndex, currentIndex, direction;
 
-    protected Rigidbody2D rb;
+    List<Anim_Roots> attachedRoots;
     Anim_Roots[] childRoots;
+
+    protected Rigidbody2D rb;
 
     private bool HasReachedStart => direction == -1 && currentIndex == 0;
     private bool HasReachedEnd => direction == 1 && currentIndex == steps;
@@ -35,11 +37,21 @@ public abstract class RhythmObject : MonoBehaviour
         AudioManager.OnRhythmUpdate -= Next;
     }
 
+    public void AttachRoot(Anim_Roots root)
+    {
+        attachedRoots.Add(root);
+    }
+
+    public void DetachRoot(Anim_Roots root)
+    {
+        attachedRoots.RemoveAll(x => x == root);
+    }
+
     private void Next()
     {
         if (CanMove())
         {
-            if (loops)
+            if (isLoop)
                 UpdateCurrentIndex();
 
             Move();
@@ -78,6 +90,10 @@ public abstract class RhythmObject : MonoBehaviour
             if (root.IsLockInWall)
                 return false;
         }
+
+        if (attachedRoots.Count > 0)
+            return false;
+
         return true;
     }
 

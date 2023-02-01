@@ -18,13 +18,13 @@ public class RotatingPlatform : RhythmObject
 
     protected override void Move()
     {
-        rb.DORotate(-90f * direction * stepSize, .4f).SetRelative();
+        rb.DORotate(-90f * direction * stepSize, AudioManager.LerpDuration).SetRelative();
     }
 
     protected override void RevertToDefaults()
     {
         Debug.LogWarning("Check rotating platform reset");
-        rb.rotation = (startIndex - currentIndex) * 90;
-        currentIndex = startIndex;
+        //rb.rotation = (startIndex - currentIndex) * 90;
+        //currentIndex = startIndex;
     }
 }
