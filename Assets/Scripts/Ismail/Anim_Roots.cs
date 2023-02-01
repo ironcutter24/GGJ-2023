@@ -51,6 +51,7 @@ public class Anim_Roots : MonoBehaviour
                 .SetSpeedBased();
         }
     }
+
     public void Retreat_Root()
     {
         if (!isRetreat)

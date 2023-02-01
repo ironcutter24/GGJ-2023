@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public bool is_facing_right { get; private set; }
 
     [SerializeField]
-    private float movement_speed, jump_power, music_radius = 5f;
+    private float movement_speed, jump_power, song_radius = 5f, song_duration = .6f;
     [SerializeField]
     [Tooltip("Distance of the raycast to the ground for the jump")]
     private float buffer_check_distance = 0.3f;
@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     private CapsuleCollider2D player_capsule;
 
     private float easytimer = 1;
-    private bool is_sticking, playngSong = false;
+    private bool is_sticking, playingSong = false;
 
     private void Awake()
     {
@@ -60,13 +60,13 @@ public class Player : MonoBehaviour
         if (!is_facing_right && move_direction.x > 0f || is_facing_right && move_direction.x < 0f)
             Flip();
 
-        if (playngSong)
+        if (playingSong)
         {
             easytimer -= Time.deltaTime;
             if (easytimer <= 0)
             {
                 easytimer = 1;
-                playngSong = false;
+                playingSong = false;
             }
         }
     }
@@ -145,48 +145,41 @@ public class Player : MonoBehaviour
 
     public void PlayGoodMusic(InputAction.CallbackContext context)
     {
-        if (context.performed && !playngSong)
+        if (context.performed && !playingSong)
         {
             CheckActivable(true);
             print("GOOD SONG");
-            playngSong = true;
+            playingSong = true;
         }
     }
 
     public void PlayBadMusic(InputAction.CallbackContext context)
     {
-        if (context.performed && !playngSong)
+        if (context.performed && !playingSong)
         {
             CheckActivable(false);
             print("BAD SONG");
-            playngSong = true;
+            playingSong = true;
         }
     }
 
     private void CheckActivable(bool good)
     {
-        wave.Play(music_radius);
-        RaycastHit2D[] ActivablePlants = Physics2D.CircleCastAll(transform.position, music_radius, transform.forward, 0, plantLayerMask);
+        wave.Play(song_radius, song_duration);
+        RaycastHit2D[] ActivablePlants = Physics2D.CircleCastAll(transform.position, song_radius, transform.forward, 0, plantLayerMask);
 
         foreach (RaycastHit2D ray in ActivablePlants)
         {
-            print("Found plant: " + ray.collider.gameObject.name);
-            if (good)
+            try
             {
-                try
-                {
-                    ray.collider.GetComponentInParent<Anim_Roots>().Ahead_Root();
-                }
-                catch { }
+                print("Found plant: " + ray.collider.gameObject.name);
+                var comp = ray.collider.GetComponentInParent<Anim_Roots>();
+                if (good)
+                    comp.Ahead_Root();
+                else
+                    comp.Retreat_Root();
             }
-            else
-            {
-                try
-                {
-                    ray.collider.GetComponentInParent<Anim_Roots>().Retreat_Root();
-                }
-                catch { }
-            }
+            catch { }
         }
     }
 

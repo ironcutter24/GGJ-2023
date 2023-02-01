@@ -9,7 +9,7 @@ public class SoundWavesVFX : MonoBehaviour
     GameObject wavePrefab;
 
     [SerializeField]
-    float minScale = 1, period = 2f, timeBetweenWaves = .2f;
+    float minScale = 1;
 
     [SerializeField]
     int numberOfWaves = 6;
@@ -29,17 +29,16 @@ public class SoundWavesVFX : MonoBehaviour
     }
 
     Coroutine wavesAnimCoroutine;
-    public void Play(float range)
+    public void Play(float range, float duration)
     {
         if (wavesAnimCoroutine == null)
-        {
-            wavesAnimCoroutine = StartCoroutine(_WaveAnimation(range));
-        }
+            wavesAnimCoroutine = StartCoroutine(_WaveAnimation(range, duration));
     }
 
-    IEnumerator _WaveAnimation(float range)
+    IEnumerator _WaveAnimation(float range, float duration)
     {
         float targetScale = range * .4f;
+        float timeBetweenWaves = duration / numberOfWaves;
 
         for (int i = 0; i < numberOfWaves; i++)
         {
@@ -48,8 +47,8 @@ public class SoundWavesVFX : MonoBehaviour
             c.transform.localScale = Vector3.one * minScale;
             c.color = new Color(1f, 1f, 1f, 1f);
 
-            c.transform.DOScale(targetScale, period).SetEase(Ease.OutCubic);
-            c.DOColor(new Color(1f, 1f, 1f, 0f), period).SetEase(Ease.OutQuart);
+            c.transform.DOScale(targetScale, duration).SetEase(Ease.OutCubic);
+            c.DOColor(new Color(1f, 1f, 1f, 0f), duration).SetEase(Ease.OutQuart);
 
             yield return new WaitForSeconds(timeBetweenWaves);
         }
