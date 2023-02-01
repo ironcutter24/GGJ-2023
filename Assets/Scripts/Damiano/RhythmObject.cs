@@ -12,7 +12,7 @@ public abstract class RhythmObject : MonoBehaviour
 
     protected int startIndex, currentIndex, direction;
 
-    List<Anim_Roots> attachedRoots;
+    List<Anim_Roots> attachedRoots = new List<Anim_Roots>();
     Anim_Roots[] childRoots;
 
     protected Rigidbody2D rb;

@@ -395,7 +395,7 @@ MonoBehaviour:
   buffer_check_distance: 0.1
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 768
   plantLayerMask:
     serializedVersion: 2
     m_Bits: 512
