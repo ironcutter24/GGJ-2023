@@ -156,8 +156,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 1.25}
-  m_Size: {x: 1, y: 2.5}
+  m_Offset: {x: 0, y: 1}
+  m_Size: {x: 1, y: 2}
   m_Direction: 0
 --- !u!50 &289119906
 Rigidbody2D:
@@ -360,8 +360,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement_speed: 12
-  jump_power: 12
-  gravity_scale: 4
+  jump_power: 27
+  gravity_scale: 8
   song_radius: 5
   song_duration: 0.8
   buffer_check_distance: 0.1
@@ -804,6 +804,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9052956209529794425, guid: b37ac6589a8ec2d4d91a09eba0ffcb93,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052956209529794425, guid: b37ac6589a8ec2d4d91a09eba0ffcb93,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052956209529794425, guid: b37ac6589a8ec2d4d91a09eba0ffcb93,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052956209529794425, guid: b37ac6589a8ec2d4d91a09eba0ffcb93,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -851,6 +866,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052956209529794425, guid: b37ac6589a8ec2d4d91a09eba0ffcb93,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b37ac6589a8ec2d4d91a09eba0ffcb93, type: 3}
