@@ -1,4 +1,6 @@
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,13 +10,13 @@ public class Anim_Roots : MonoBehaviour
     [SerializeField]
     private GameObject graphics;
     [SerializeField]
-    private float maxLenght = 8, durationAhead = 10, durationRetreat = 6;
+    private float maxLenght = 8, extensionSpeed = 16, retractionSpeed = 12;
     [SerializeField]
     private bool moveAtStart;
     private BoxCollider2D Collider;
     private bool isAhead, isRetreat;
 
-    Sequence mySequence;
+    TweenerCore<Vector3, Vector3, VectorOptions> myTween;
     private RhythmObject attachedPlatform = null;
 
     public bool IsLockInWall { get; private set; } = false;
@@ -23,9 +25,6 @@ public class Anim_Roots : MonoBehaviour
     {
         Collider = GetComponent<BoxCollider2D>();
         Collider.enabled = false;
-
-        isAhead = false;
-
         CheckAtStart();
     }
 
@@ -46,10 +45,9 @@ public class Anim_Roots : MonoBehaviour
             Collider.enabled = true;
             isRetreat = isAhead = true;
 
-            mySequence = DOTween.Sequence();
-            mySequence.Append(graphics.transform.DOLocalMoveX(maxLenght, durationAhead)
+            myTween = graphics.transform.DOLocalMoveX(maxLenght, extensionSpeed)
                 .OnUpdate(CollUpdate)
-                );
+                .SetSpeedBased();
         }
     }
     public void Retreat_Root()
@@ -59,16 +57,16 @@ public class Anim_Roots : MonoBehaviour
             isRetreat = isAhead = true;
             IsLockInWall = false;
 
-            mySequence = DOTween.Sequence();
-            mySequence.Append(graphics.transform.DOLocalMoveX(0f, durationRetreat)
+            myTween = graphics.transform.DOLocalMoveX(0f, retractionSpeed)
                 .OnUpdate(CollUpdateBack)
                 .OnComplete(() => Collider.enabled = false)
-                );
+                .SetSpeedBased();
 
             //if (attachedPlatform != null)
             //{
             //    Debug.Log("Detaching root...");
             //    attachedPlatform.DetachRoot(this);
+            //    attachedPlatform = null;
             //}
         }
     }
@@ -91,17 +89,16 @@ public class Anim_Roots : MonoBehaviour
         graphics.transform.Rotate(new Vector3(0, 60, 0) * Time.deltaTime, Space.Self);
         if (graphics.transform.position == transform.position)
             isAhead = false;
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            mySequence.Kill();
+            myTween.Kill();
             isRetreat = false;
 
-            IsLockInWall= true;
+            IsLockInWall = true;
 
             //attachedPlatform = collision.gameObject.GetComponent<RhythmObject>();
             //if (attachedPlatform != null)
