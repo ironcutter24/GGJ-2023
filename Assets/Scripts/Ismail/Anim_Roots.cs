@@ -15,6 +15,7 @@ public class Anim_Roots : MonoBehaviour
     private bool isAhead, isRetreat;
 
     Sequence mySequence;
+    private RhythmObject attachedPlatform = null;
 
     public bool IsLockInWall { get; private set; } = false;
 
@@ -63,6 +64,12 @@ public class Anim_Roots : MonoBehaviour
                 .OnUpdate(CollUpdateBack)
                 .OnComplete(() => Collider.enabled = false)
                 );
+
+            //if (attachedPlatform != null)
+            //{
+            //    Debug.Log("Detaching root...");
+            //    attachedPlatform.DetachRoot(this);
+            //}
         }
     }
 
@@ -95,6 +102,13 @@ public class Anim_Roots : MonoBehaviour
             isRetreat = false;
 
             IsLockInWall= true;
+
+            //attachedPlatform = collision.gameObject.GetComponent<RhythmObject>();
+            //if (attachedPlatform != null)
+            //{
+            //    Debug.Log("Attaching root...");
+            //    attachedPlatform.AttachRoot(this);
+            //}
         }
     }
 
