@@ -22,4 +22,16 @@ public class ClippingPlane : MonoBehaviour
             }
         }
     }
+
+    void FixedUpdate()
+    {
+        foreach (var r in renderers)
+        {
+            for (int i = 0; i < r.materials.Length; i++)
+            {
+                r.materials[i].SetVector("_Point", transform.position);
+                r.materials[i].SetVector("_Normal", transform.right);
+            }
+        }
+    }
 }
