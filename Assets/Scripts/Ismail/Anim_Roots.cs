@@ -47,6 +47,7 @@ public class Anim_Roots : MonoBehaviour
 
             myTween = graphics.transform.DOLocalMoveX(maxLenght, extensionSpeed)
                 .OnUpdate(CollUpdate)
+                .OnComplete(() => isRetreat = false)
                 .SetSpeedBased();
         }
     }
