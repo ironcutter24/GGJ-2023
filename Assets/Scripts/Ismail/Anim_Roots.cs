@@ -64,12 +64,12 @@ public class Anim_Roots : MonoBehaviour
                 .OnComplete(() => Collider.enabled = false)
                 .SetSpeedBased();
 
-            //if (attachedPlatform != null)
-            //{
-            //    Debug.Log("Detaching root...");
-            //    attachedPlatform.DetachRoot(this);
-            //    attachedPlatform = null;
-            //}
+            if (attachedPlatform != null)
+            {
+                Debug.Log("Detaching root...");
+                attachedPlatform.DetachRoot(this);
+                attachedPlatform = null;
+            }
         }
     }
 
@@ -102,12 +102,12 @@ public class Anim_Roots : MonoBehaviour
 
             IsLockInWall = true;
 
-            //attachedPlatform = collision.gameObject.GetComponent<RhythmObject>();
-            //if (attachedPlatform != null)
-            //{
-            //    Debug.Log("Attaching root...");
-            //    attachedPlatform.AttachRoot(this);
-            //}
+            attachedPlatform = collision.gameObject.GetComponent<RhythmObject>();
+            if (attachedPlatform != null)
+            {
+                Debug.Log("Attaching root...");
+                attachedPlatform.AttachRoot(this);
+            }
         }
     }
 
