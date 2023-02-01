@@ -8,54 +8,48 @@ public class MovingPlatform : RhythmObject
     [SerializeField]
     MoveDirection moveDirection = MoveDirection.Right;
 
-    [SerializeField]
-    int steps = 4, stepSize = 1;
-
-    [SerializeField]
-    int currentIndex;
-
-    int startIndex;
-
-    Vector2 startPosition;
-
     enum MoveDirection { Left = -1, Right = 1 }
+
+    private Vector3 gridPosition;
+
 
     protected override void Start()
     {
+        gridPosition = transform.position;
+        direction = (int)moveDirection;
         base.Start();
-        startPosition = rb.position;
-        startIndex = currentIndex;
     }
 
-    protected override void Next()
+    protected override void Move()
     {
-        if (CanMove())
-        {
-            if (moveDirection == MoveDirection.Left && currentIndex == 0)
-                moveDirection = MoveDirection.Right;
-            else
-            if (moveDirection == MoveDirection.Right && currentIndex == steps - 1)
-                moveDirection = MoveDirection.Left;
-
-            currentIndex += (int)moveDirection;
-            rb.DOMove(GetPositionFrom(currentIndex), .4f);
-        }
+        gridPosition += new Vector3(direction * stepSize, 0f, 0f);
+        rb.DOMove(new Vector2(direction * stepSize, 0f), AudioManager.LerpDuration).SetRelative();
     }
 
     protected override void RevertToDefaults()
     {
-        currentIndex = startIndex;
-        rb.position = startPosition;
-    }
-
-    Vector2 GetPositionFrom(int index)
-    {
-        return startPosition + Vector2.right * index * stepSize;
+        //currentIndex = startIndex;
+        //rb.position = startPosition;
     }
 
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
-        Gizmos.DrawLine(GetPositionFrom(0), GetPositionFrom(steps - 1));
+
+        Vector3 a = GetCurrentPosition() - new Vector3((currentIndex - startIndex) * stepSize, 0f, 0f);
+        Vector3 b;
+
+        for (int i = 0; i < steps; i++)
+        {
+            b = a + Vector3.right * stepSize * (int)moveDirection;
+            Gizmos.color = i % 2 == 0 ? Color.blue : Color.red;
+            Gizmos.DrawLine(a, b);
+            a = b;
+        }
+
+        Vector3 GetCurrentPosition()
+        {
+            return (Application.isPlaying ? gridPosition : transform.position);
+        }
     }
 }

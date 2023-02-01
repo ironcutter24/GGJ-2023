@@ -6,27 +6,25 @@ using UnityEngine;
 public class RotatingPlatform : RhythmObject
 {
     [SerializeField]
-    float startRotation;
-
-    enum TurnDirection { Counterclockwise = -1, Clockwise = 1 }
-
-    [SerializeField]
     TurnDirection turnDirection = TurnDirection.Clockwise;
+
+    enum TurnDirection { CounterClockwise = -1, Clockwise = 1 }
 
     protected override void Start()
     {
+        direction = (int)turnDirection;
         base.Start();
-        startRotation = rb.rotation;
     }
 
-    protected override void Next()
+    protected override void Move()
     {
-        if (CanMove())
-            rb.DORotate(-90f * (int)turnDirection, .4f).SetRelative();
+        rb.DORotate(-90f * direction * stepSize, AudioManager.LerpDuration).SetRelative();
     }
 
     protected override void RevertToDefaults()
     {
-        rb.rotation = startRotation;
+        Debug.LogWarning("Check rotating platform reset");
+        //rb.rotation = (startIndex - currentIndex) * 90;
+        //currentIndex = startIndex;
     }
 }

@@ -4,9 +4,22 @@ using UnityEngine;
 
 public abstract class RhythmObject : MonoBehaviour
 {
+    [SerializeField]
+    bool isLoop = true;
+
+    [SerializeField]
+    protected int steps = 4, stepSize = 1;
+
+    protected int startIndex, currentIndex, direction;
+
+    List<Anim_Roots> attachedRoots;
     Anim_Roots[] childRoots;
 
     protected Rigidbody2D rb;
+
+    private bool HasReachedStart => direction == -1 && currentIndex == 0;
+    private bool HasReachedEnd => direction == 1 && currentIndex == steps;
+
 
     protected virtual void Start()
     {
@@ -14,14 +27,61 @@ public abstract class RhythmObject : MonoBehaviour
         childRoots = GetComponentsInChildren<Anim_Roots>();
 
         AudioManager.OnRhythmUpdate += Next;
+
+        startIndex = GetBoundIndex(direction);
+        currentIndex = startIndex;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         AudioManager.OnRhythmUpdate -= Next;
     }
 
-    protected abstract void Next();
+    public void AttachRoot(Anim_Roots root)
+    {
+        attachedRoots.Add(root);
+    }
+
+    public void DetachRoot(Anim_Roots root)
+    {
+        attachedRoots.RemoveAll(x => x == root);
+    }
+
+    private void Next()
+    {
+        if (CanMove())
+        {
+            if (isLoop)
+                UpdateCurrentIndex();
+
+            Move();
+        }
+    }
+
+    protected abstract void Move();
+
+    protected abstract void RevertToDefaults();
+
+    protected void UpdateCurrentIndex()
+    {
+        if (HasReachedStart || HasReachedEnd)
+            direction *= -1;
+
+        currentIndex += direction;
+    }
+
+    protected int GetBoundIndex(int direction)
+    {
+        switch (direction)
+        {
+            case 1:
+                return 0;
+            case -1:
+                return steps;
+            default:
+                throw new System.Exception("This is not a valid direction");
+        }
+    }
 
     protected bool CanMove()
     {
@@ -31,10 +91,11 @@ public abstract class RhythmObject : MonoBehaviour
                 return false;
         }
 
+        if (attachedRoots.Count > 0)
+            return false;
+
         return true;
     }
-
-    protected abstract void RevertToDefaults();
 
     protected virtual void OnDrawGizmos()
     {
