@@ -27,8 +27,10 @@ public class AudioManager : Singleton<AudioManager>
 
     [Header("Platforms settings")]
     [SerializeField]
-    private float lerpDuration = .4f;
-    public static float LerpDuration => _instance.lerpDuration;
+    private float platformLerpDuration = .4f, rootsForwardSpeed = 16, rootsBackwardSpeed = 12;
+    public static float PlatformLerpDuration => _instance.platformLerpDuration;
+    public static float RootsForwardSpeed => _instance.rootsForwardSpeed;
+    public static float RootsBackwardSpeed => _instance.rootsBackwardSpeed;
 
 
     public static event Action OnRhythmUpdate;
@@ -50,9 +52,23 @@ public class AudioManager : Singleton<AudioManager>
         while (true)
         {
             float period = bpm / (int)subdivision / 60f * step;
-            yield return new WaitForSeconds(period);
+            float rootLerpDuration = 12 / RootsForwardSpeed;
+
+            //if (period - platformLerpDuration - rootLerpDuration <= 0)
+            //    throw new Exception("Roots buffer window is larger than audio update period!");
+
+            yield return new WaitForSeconds(platformLerpDuration);
+
+            IsUpdating = false;
+
+            yield return new WaitForSeconds(period - platformLerpDuration - rootLerpDuration);
+
+            IsUpdating = true;
+
+            yield return new WaitForSeconds(rootLerpDuration);
+
+            // -> Updating event
             OnRhythmUpdate?.Invoke();
-            StartCoroutine(_FlagManager());
         }
     }
 
@@ -60,8 +76,7 @@ public class AudioManager : Singleton<AudioManager>
     IEnumerator _FlagManager()
     {
         IsUpdating = true;
-        yield return new WaitForSeconds(LerpDuration);
+        yield return new WaitForSeconds(platformLerpDuration);
         IsUpdating = false;
     }
-
 }

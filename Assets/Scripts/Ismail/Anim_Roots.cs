@@ -9,10 +9,13 @@ public class Anim_Roots : MonoBehaviour
 {
     [SerializeField]
     private GameObject graphics;
-    [SerializeField]
-    private float maxLenght = 8, extensionSpeed = 16, retractionSpeed = 12;
+
+    [SerializeField, Range(1, 12)]
+    private float maxLenght = 8;
+
     [SerializeField]
     private bool moveAtStart;
+
     private BoxCollider2D Collider;
     private bool isAhead, isRetreat;
 
@@ -40,16 +43,37 @@ public class Anim_Roots : MonoBehaviour
 
     public void Ahead_Root()
     {
-        if (!isAhead)
+        if (!isAhead && extendQueueCoroutine == null)
         {
-            Collider.enabled = true;
-            isRetreat = isAhead = true;
-
-            myTween = graphics.transform.DOLocalMoveX(maxLenght, extensionSpeed)
-                .OnUpdate(CollUpdate)
-                .OnComplete(() => isRetreat = false)
-                .SetSpeedBased();
+            if (AudioManager.IsUpdating)
+            {
+                Debug.Log("Root extended during update");
+                extendQueueCoroutine = StartCoroutine(_ExtendQueue());
+            }
+            else
+                Extend();
         }
+    }
+
+    Coroutine extendQueueCoroutine = null;
+    IEnumerator _ExtendQueue()
+    {
+        while (AudioManager.IsUpdating)
+            yield return null;
+
+        Extend();
+        extendQueueCoroutine = null;
+    }
+
+    void Extend()
+    {
+        Collider.enabled = true;
+        isRetreat = isAhead = true;
+
+        myTween = graphics.transform.DOLocalMoveX(maxLenght, AudioManager.RootsForwardSpeed)
+            .OnUpdate(CollUpdate)
+            .OnComplete(() => isRetreat = false)
+            .SetSpeedBased();
     }
 
     public void Retreat_Root()
@@ -59,7 +83,7 @@ public class Anim_Roots : MonoBehaviour
             isRetreat = isAhead = true;
             IsLockInWall = false;
 
-            myTween = graphics.transform.DOLocalMoveX(0f, retractionSpeed)
+            myTween = graphics.transform.DOLocalMoveX(0f, AudioManager.RootsBackwardSpeed)
                 .OnUpdate(CollUpdateBack)
                 .OnComplete(() => Collider.enabled = false)
                 .SetSpeedBased();

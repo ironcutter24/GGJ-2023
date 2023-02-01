@@ -16,7 +16,6 @@ public class Player : MonoBehaviour
     [Tooltip("DO NOT TOUCH")]
     private LayerMask groundLayerMask, plantLayerMask;
 
-    private RaycastHit2D hit;
     private Vector2 move_direction;
 
     private SoundWavesVFX wave;
@@ -66,12 +65,9 @@ public class Player : MonoBehaviour
 
     float gravity = 9.81f;
     float verticalSpeed = 0f;
-
     private void FixedUpdate()
     {
-        //MoveWithVelocity();
-
-        Debug.Log("Is grounded: " + IsGrounded());
+        //Debug.Log("Is grounded: " + IsGrounded());
 
         if (IsGrounded())
         {
@@ -90,6 +86,11 @@ public class Player : MonoBehaviour
             verticalSpeed -= gravity * gravity_scale * Time.deltaTime;
         }
 
+        if (IsTouchingRoof())
+        {
+            verticalSpeed = -1f;
+        }
+
         if (!is_sticking)
         {
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
@@ -97,33 +98,35 @@ public class Player : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    Transform rayTop, rayCenter, rayBottom;
-    void MoveWithVelocity()
-    {
-        const float distance = .2f;
-        RaycastHit2D topRotationRay = Physics2D.Raycast(rayTop.position, transform.right, distance, groundLayerMask);
-        RaycastHit2D centerRotationRay = Physics2D.Raycast(rayCenter.position, transform.right, distance, groundLayerMask);
-        RaycastHit2D bottomRotationRay = Physics2D.Raycast(rayBottom.position, transform.right, distance, groundLayerMask);
-
-        if (topRotationRay.collider != null)
-            Debug.Log("Layer: " + topRotationRay.collider.gameObject.layer + "\tObj: " + topRotationRay.collider.gameObject.name);
-
-        //Debug.DrawRay(rayTop.position, transform.right * distance, Color.green, Time.deltaTime);
-        //Debug.DrawRay(rayBottom.position, transform.right * distance, Color.green, Time.deltaTime);
-
-        if (topRotationRay.collider == null && centerRotationRay.collider == null && bottomRotationRay.collider == null)
-        {
-            player_rb.velocity = is_sticking ? Vector2.zero : new Vector2(move_direction.x * movement_speed, player_rb.velocity.y);
-            Debug.Log("Updating velocity");
-        }
-    }
+    #region Collision Checks
 
     private bool IsGrounded()
     {
-        hit = Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, groundLayerMask);
+        return RaycastDownwards().collider != null;
+    }
+
+    private bool IsGrounded(out RaycastHit2D hit)
+    {
+        hit = RaycastDownwards();
         return hit.collider != null;
     }
+
+    private bool IsTouchingRoof()
+    {
+        return RaycastUpwards().collider != null;
+    }
+
+    RaycastHit2D RaycastDownwards()
+    {
+        return Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.min.y), -transform.up, buffer_check_distance, groundLayerMask);
+    }
+
+    RaycastHit2D RaycastUpwards()
+    {
+        return Physics2D.Raycast(new Vector2(player_capsule.bounds.center.x, player_capsule.bounds.max.y), transform.up, buffer_check_distance, groundLayerMask);
+    }
+
+    #endregion
 
     private void Flip()
     {
@@ -140,23 +143,16 @@ public class Player : MonoBehaviour
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.performed)
-        {
-            //player_rb.velocity = new Vector2(move_direction.x, jump_power);
-            //verticalSpeed = jump_power;
-
             hasJump = true;
-        }
 
-        //if (context.canceled && player_rb.velocity.y > 0f && !is_sticking)
-        //{
-        //    //player_rb.velocity = new Vector2(move_direction.x, player_rb.velocity.y * 0.5f);
-        //    verticalSpeed = jump_power * .5f;
-        //}
+        if (context.canceled && verticalSpeed > 0f)
+            verticalSpeed *= .5f;
     }
 
     public void StickOnFloor(InputAction.CallbackContext context)
     {
-        if (context.started && IsGrounded())
+        RaycastHit2D hit;
+        if (context.started && IsGrounded(out hit))
         {
             is_sticking = true;
             player_rb.simulated = false;
@@ -173,7 +169,6 @@ public class Player : MonoBehaviour
             is_sticking = false;
             player_rb.simulated = true;
             transform.parent = null;
-            //player_rb.velocity = Vector2.zero;
             verticalSpeed = 0;
             transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
         }
