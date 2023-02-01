@@ -23,7 +23,7 @@ public class MovingPlatform : RhythmObject
     protected override void Move()
     {
         gridPosition += new Vector3(direction * stepSize, 0f, 0f);
-        rb.DOMove(new Vector2(direction * stepSize, 0f), AudioManager.LerpDuration).SetRelative();
+        rb.DOMove(new Vector2(direction * stepSize, 0f), AudioManager.PlatformLerpDuration).SetRelative();
     }
 
     protected override void RevertToDefaults()

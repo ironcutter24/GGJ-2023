@@ -18,7 +18,7 @@ public class RotatingPlatform : RhythmObject
 
     protected override void Move()
     {
-        rb.DORotate(-90f * direction * stepSize, AudioManager.LerpDuration).SetRelative();
+        rb.DORotate(-90f * direction * stepSize, AudioManager.PlatformLerpDuration).SetRelative();
     }
 
     protected override void RevertToDefaults()
