@@ -5,10 +5,10 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public bool is_facing_right { get; private set; }
+    public bool is_facing_right { get; private set; } = true;
 
     [SerializeField]
-    private float movement_speed, jump_power, song_radius = 5f, song_duration = .6f;
+    private float movement_speed, jump_power, gravity_scale = 1f, song_radius = 5f, song_duration = .6f;
     [SerializeField]
     [Tooltip("Distance of the raycast to the ground for the jump")]
     private float buffer_check_distance = 0.3f;
@@ -37,11 +37,6 @@ public class Player : MonoBehaviour
         wave = GetComponentInChildren<SoundWavesVFX>();
     }
 
-    void Start()
-    {
-        is_facing_right = true;
-    }
-
     private void OnEnable()
     {
         player_move = player_controls.Player.Move;
@@ -55,8 +50,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        //Debug.DrawRay(new Vector3(player_capsule.bounds.center.x, player_capsule.bounds.min.y, 0), new Vector3(0, -buffer_check_distance, 0), Color.blue);
-
         if (!is_facing_right && move_direction.x > 0f || is_facing_right && move_direction.x < 0f)
             Flip();
 
@@ -71,9 +64,42 @@ public class Player : MonoBehaviour
         }
     }
 
+    float gravity = 9.81f;
+    float verticalSpeed = 0f;
+
+    private void FixedUpdate()
+    {
+        //MoveWithVelocity();
+
+        Debug.Log("Is grounded: " + IsGrounded());
+
+        if (IsGrounded())
+        {
+            if (hasJump)
+            {
+                verticalSpeed = jump_power;
+                hasJump = false;
+            }
+            else
+            {
+                verticalSpeed = 0f;
+            }
+        }
+        else
+        {
+            verticalSpeed -= gravity * gravity_scale * Time.deltaTime;
+        }
+
+        if (!is_sticking)
+        {
+            Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
+            player_rb.MovePosition(player_rb.position + move * Time.deltaTime);
+        }
+    }
+
     [SerializeField]
     Transform rayTop, rayCenter, rayBottom;
-    private void FixedUpdate()
+    void MoveWithVelocity()
     {
         const float distance = .2f;
         RaycastHit2D topRotationRay = Physics2D.Raycast(rayTop.position, transform.right, distance, groundLayerMask);
@@ -110,13 +136,22 @@ public class Player : MonoBehaviour
         move_direction.x = context.ReadValue<Vector2>().x;
     }
 
+    bool hasJump = false;
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.performed && IsGrounded() && !is_sticking)
-            player_rb.velocity = new Vector2(move_direction.x, jump_power);
+        if (context.performed)
+        {
+            //player_rb.velocity = new Vector2(move_direction.x, jump_power);
+            //verticalSpeed = jump_power;
 
-        if (context.canceled && player_rb.velocity.y > 0f && !is_sticking)
-            player_rb.velocity = new Vector2(move_direction.x, player_rb.velocity.y * 0.5f);
+            hasJump = true;
+        }
+
+        //if (context.canceled && player_rb.velocity.y > 0f && !is_sticking)
+        //{
+        //    //player_rb.velocity = new Vector2(move_direction.x, player_rb.velocity.y * 0.5f);
+        //    verticalSpeed = jump_power * .5f;
+        //}
     }
 
     public void StickOnFloor(InputAction.CallbackContext context)
@@ -138,7 +173,8 @@ public class Player : MonoBehaviour
             is_sticking = false;
             player_rb.simulated = true;
             transform.parent = null;
-            player_rb.velocity = Vector2.zero;
+            //player_rb.velocity = Vector2.zero;
+            verticalSpeed = 0;
             transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
         }
     }
