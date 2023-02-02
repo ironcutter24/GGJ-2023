@@ -10,6 +10,9 @@ public class Anim_Roots : MonoBehaviour
     [SerializeField]
     private GameObject graphics;
 
+    [SerializeField]
+    LayerMask groundMask;
+
     [SerializeField, Range(1, 12)]
     private float maxLenght = 8;
 
@@ -67,13 +70,25 @@ public class Anim_Roots : MonoBehaviour
 
     void Extend()
     {
-        Collider.enabled = true;
-        isRetreat = isAhead = true;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * .5f, transform.right, maxLenght - 1, groundMask);
 
-        myTween = graphics.transform.DOLocalMoveX(maxLenght, AudioManager.RootsForwardSpeed)
-            .OnUpdate(CollUpdate)
-            .OnComplete(() => isRetreat = false)
-            .SetSpeedBased();
+        if(hit.collider != null)
+        {
+            Collider.enabled = true;
+            isRetreat = isAhead = true;
+
+            myTween = graphics.transform.DOLocalMoveX(maxLenght, AudioManager.RootsForwardSpeed)
+                .OnUpdate(CollUpdate)
+                .OnComplete(() => isRetreat = false)
+                .SetSpeedBased();
+        }
+        else
+        {
+            Debug.LogWarning("Root could not hit ground");
+
+            // Failed start animation
+
+        }
     }
 
     public void Retreat_Root()
