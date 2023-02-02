@@ -82,7 +82,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void OverrideMovement(Vector2 move)
+    {
+        queuedOverrideMove = move;
+    }
 
+    Vector2 queuedOverrideMove = Vector2.zero;
     private void FixedUpdate()
     {
         if (IsGrounded())
@@ -105,6 +110,8 @@ public class Player : MonoBehaviour
         {
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
             player_rb.MovePosition(player_rb.position + move * Time.deltaTime);
+            player_rb.MovePosition(player_rb.position + queuedOverrideMove);
+            queuedOverrideMove = Vector2.zero;
         }
     }
 
