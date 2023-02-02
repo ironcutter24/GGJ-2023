@@ -12,7 +12,8 @@ public class WorldTilemap : MonoBehaviour
         if (rb == null)
             rb = gameObject.AddComponent<Rigidbody2D>();
 
-        rb.isKinematic = true;
+        rb.bodyType = RigidbodyType2D.Static;
+        //rb.isKinematic = true;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
         var composite = GetComponent<CompositeCollider2D>();

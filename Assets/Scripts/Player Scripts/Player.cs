@@ -81,15 +81,20 @@ public class Player : MonoBehaviour
         }
     }
 
-    Vector2 oldPosition = Vector2.zero;
-    Vector2 oldMove = Vector2.zero;
+    Vector3 oldPlatformPos;
+    Vector2 oldPosition, oldMove;
     bool shouldKickUpwards = false;
     private void FixedUpdate()
     {
         var delta = player_rb.position - oldPosition;
         shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f);
 
-        Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
+        //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
+
+        Debug.LogWarning("HasPlatform: " + movingPlatform != null);
+
+        if (movingPlatform != null)
+            oldPlatformPos = movingPlatform.transform.position;
 
         if (IsGrounded())
         {
@@ -99,7 +104,9 @@ public class Player : MonoBehaviour
                 hasJump = false;
             }
             else
+            {
                 verticalSpeed = 0f;
+            }
         }
         else
         {
@@ -117,10 +124,15 @@ public class Player : MonoBehaviour
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
             oldPosition = player_rb.position;
             oldMove = move_direction;
-            player_rb.MovePosition(player_rb.position + move * Time.deltaTime + (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero));
+
+            var platformFollowMove = movingPlatform != null ? (Vector2)(movingPlatform.transform.position - oldPlatformPos) : Vector2.zero;
+            var kickBugFixMove = (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero);
+            player_rb.MovePosition(player_rb.position + move * Time.deltaTime + platformFollowMove + kickBugFixMove);
         }
         else
+        {
             oldMove = Vector2.zero;
+        }
     }
 
     #region Collision Checks
@@ -255,11 +267,34 @@ public class Player : MonoBehaviour
         transform.position = GameManager.Instance.lastCheckPointPos;
     }
 
+    MovingPlatform movingPlatform = null;
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
             Death();
+        }
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
+        {
+            RaycastHit2D hit;
+            if (IsGrounded(out hit))
+            {
+                var comp = hit.collider.gameObject.GetComponent<MovingPlatform>();
+                if (comp != null)
+                {
+                    movingPlatform = comp;
+                    oldPlatformPos = movingPlatform.transform.position;
+                }
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
+        {
+            movingPlatform = null;
         }
     }
 

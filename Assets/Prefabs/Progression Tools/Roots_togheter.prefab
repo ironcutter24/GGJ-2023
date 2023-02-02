@@ -78,7 +78,7 @@ MonoBehaviour:
   graphics: {fileID: 6840270756288085030}
   groundMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 384
   maxLenght: 8
   moveAtStart: 0
 --- !u!114 &96415202249282265
