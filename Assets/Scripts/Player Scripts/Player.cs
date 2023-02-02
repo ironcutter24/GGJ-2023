@@ -40,9 +40,6 @@ public class Player : MonoBehaviour
     private string animSticking = "IsSticking";
     private string animStartSticking = "StartStiking";
 
-    GameManager gm;
-
-
     private void Awake()
     {
         player_controls = new PlayerControls();
@@ -50,14 +47,13 @@ public class Player : MonoBehaviour
         player_capsule = GetComponent<CapsuleCollider2D>();
         wave = GetComponentInChildren<SoundWavesVFX>();
         playerAnimator = GetComponentInChildren<Animator>();
-        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
     }
 
     private void OnEnable()
     {
         player_move = player_controls.Player.Move;
         player_move.Enable();
-        gm.lastCheckPointPos = transform.position;
+        GameManager.Instance.lastCheckPointPos = transform.position;
     }
 
     private void OnDisable()

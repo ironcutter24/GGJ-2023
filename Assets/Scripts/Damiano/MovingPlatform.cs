@@ -12,6 +12,7 @@ public class MovingPlatform : RhythmObject
 
     private Vector3 gridPosition;
 
+    Player attachedPlayer;
 
     protected override void Start()
     {
@@ -20,10 +21,25 @@ public class MovingPlatform : RhythmObject
         base.Start();
     }
 
+    public void AttachPlayer(Player target)
+    {
+        attachedPlayer = target;
+    }
+
+    public void DetachPlayer(Player target)
+    {
+        if (attachedPlayer == target)
+            attachedPlayer = null;
+    }
+
     protected override void Move()
     {
         gridPosition += new Vector3(direction * stepSize, 0f, 0f);
+
         rb.DOMove(new Vector2(direction * stepSize, 0f), AudioManager.PlatformLerpDuration).SetRelative();
+
+        //if (attachedPlayer != null)
+        //    attachedPlayer.MoveOverride();
     }
 
     protected override void RevertToDefaults()
