@@ -8,8 +8,6 @@ public class Player : MonoBehaviour
     public bool is_facing_right { get; private set; } = true;
 
     [SerializeField]
-    Transform rayTop, rayCenter, rayBottom;
-    [SerializeField]
     private float movement_speed, jump_power, gravity_scale = 1f, song_radius = 5f, song_duration = .6f;
     [SerializeField]
     [Tooltip("Distance of the raycast to the ground for the jump")]
@@ -23,18 +21,12 @@ public class Player : MonoBehaviour
     private SoundWavesVFX wave;
     private Rigidbody2D player_rb;
     private InputAction player_move;
-    private Animator playerAnimation;
     private Transform under_platform;
     private PlayerControls player_controls;
     private CapsuleCollider2D player_capsule;
 
-    private float easyTimer = 1;
-    private float gravity = 9.81f;
-    private float verticalSpeed = 0f;
+    private float easytimer = 1;
     private bool is_sticking, playingSong = false;
-    private string animRunning = "Running";
-    private string animRotating = "Rotating";
-    private string animRotatingDirection = "DirectionRotating";
 
     private void Awake()
     {
@@ -42,10 +34,6 @@ public class Player : MonoBehaviour
         player_rb = GetComponent<Rigidbody2D>();
         player_capsule = GetComponent<CapsuleCollider2D>();
         wave = GetComponentInChildren<SoundWavesVFX>();
-        playerAnimation = GetComponent<Animator>();
-    }
-    private void Start()
-    {
     }
 
     private void OnEnable()
@@ -59,50 +47,27 @@ public class Player : MonoBehaviour
         player_move.Disable();
     }
 
-    private void Ciao()
-    {
-        playerAnimation.SetBool(animRotating, false);
-        //transform.Rotate(new Vector3(0, 180, 0));
-    }
-
     void Update()
     {
         if (!is_facing_right && move_direction.x > 0f || is_facing_right && move_direction.x < 0f)
-        {
             Flip();
-        }
-        
-
-        if (move_direction.x != 0)
-            playerAnimation.SetBool(animRunning, true);
-        else
-            playerAnimation.SetBool(animRunning, false);
 
         if (playingSong)
         {
-            easyTimer -= Time.deltaTime;
-            if (easyTimer <= 0)
+            easytimer -= Time.deltaTime;
+            if (easytimer <= 0)
             {
-                easyTimer = 1;
+                easytimer = 1;
                 playingSong = false;
             }
         }
     }
 
-<<<<<<< Updated upstream
     float gravity = 9.81f;
     float verticalSpeed = 0f;
     private void FixedUpdate()
     {
         //Debug.Log("Is grounded: " + IsGrounded());
-=======
-
-
-    private void FixedUpdate()
-    {
-        //MoveWithVelocity();
-        Debug.Log("Is grounded: " + IsGrounded());
->>>>>>> Stashed changes
 
         if (IsGrounded())
         {
@@ -121,30 +86,21 @@ public class Player : MonoBehaviour
             verticalSpeed -= gravity * gravity_scale * Time.deltaTime;
         }
 
-<<<<<<< Updated upstream
         if (IsTouchingRoof())
         {
             verticalSpeed = -1f;
         }
 
         if (!is_sticking)
-=======
-        if (!is_sticking && !playerAnimation.GetBool(animRotating))
->>>>>>> Stashed changes
         {
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
             player_rb.MovePosition(player_rb.position + move * Time.deltaTime);
         }
     }
 
-<<<<<<< Updated upstream
     #region Collision Checks
 
     private bool IsGrounded()
-=======
-
-    void MoveWithVelocity()
->>>>>>> Stashed changes
     {
         return RaycastDownwards().collider != null;
     }
@@ -175,8 +131,7 @@ public class Player : MonoBehaviour
     private void Flip()
     {
         is_facing_right = !is_facing_right;
-        playerAnimation.SetBool(animRotatingDirection, is_facing_right);
-        playerAnimation.SetBool(animRotating, true);
+        transform.Rotate(new Vector3(0, 180, 0));
     }
 
     public void Move(InputAction.CallbackContext context)
