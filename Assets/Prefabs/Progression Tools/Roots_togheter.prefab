@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3635987149344335734}
   - component: {fileID: 3635987149344335733}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: TriggerCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
