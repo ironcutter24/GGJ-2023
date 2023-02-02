@@ -20,13 +20,21 @@ public class Player : MonoBehaviour
 
     private SoundWavesVFX wave;
     private Rigidbody2D player_rb;
+    private Animator playerAnimator;
     private InputAction player_move;
     private Transform under_platform;
     private PlayerControls player_controls;
     private CapsuleCollider2D player_capsule;
 
+    bool hasJump = false;
+    float gravity = 9.81f;
+    float verticalSpeed = 0f;
     private float easytimer = 1;
     private bool is_sticking, playingSong = false;
+    private string animMoveSpeed = "MoveSpeed";
+    private string animRotation = "Rotation";
+    private string animRotationDirection = "RotationDirection";
+
 
     private void Awake()
     {
@@ -34,6 +42,7 @@ public class Player : MonoBehaviour
         player_rb = GetComponent<Rigidbody2D>();
         player_capsule = GetComponent<CapsuleCollider2D>();
         wave = GetComponentInChildren<SoundWavesVFX>();
+        playerAnimator = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -63,12 +72,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    float gravity = 9.81f;
-    float verticalSpeed = 0f;
+
     private void FixedUpdate()
     {
-        //Debug.Log("Is grounded: " + IsGrounded());
-
         if (IsGrounded())
         {
             if (hasJump)
@@ -77,19 +83,13 @@ public class Player : MonoBehaviour
                 hasJump = false;
             }
             else
-            {
                 verticalSpeed = 0f;
-            }
         }
         else
-        {
             verticalSpeed -= gravity * gravity_scale * Time.deltaTime;
-        }
 
         if (IsTouchingRoof())
-        {
             verticalSpeed = -1f;
-        }
 
         if (!is_sticking)
         {
@@ -131,15 +131,24 @@ public class Player : MonoBehaviour
     private void Flip()
     {
         is_facing_right = !is_facing_right;
-        transform.Rotate(new Vector3(0, 180, 0));
+
+        playerAnimator.SetBool(animRotation, true);
+        playerAnimator.SetBool(animRotationDirection, is_facing_right);
+        transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0),playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+    }
+
+    private void StopFlip()
+    {
+        playerAnimator.SetBool(animRotation, false);
+        //transform.Rotate(new Vector3(0, 180, 0));
     }
 
     public void Move(InputAction.CallbackContext context)
     {
         move_direction.x = context.ReadValue<Vector2>().x;
+        playerAnimator.SetInteger(animMoveSpeed, Mathf.Abs((int)move_direction.x));
     }
 
-    bool hasJump = false;
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.performed)
