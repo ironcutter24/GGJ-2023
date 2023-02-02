@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6651858363278049321}
   - component: {fileID: 2344160491341887704}
   - component: {fileID: 3652482734451166928}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Spine Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
