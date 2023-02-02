@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f54f1b32adb88047bd131e1334e8e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastCheckPointPos: {x: -6.49, y: 3.95}
 --- !u!114 &6132178102024525977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,3 +67,6 @@ MonoBehaviour:
   bpm: 120
   subdivision: 4
   step: 4
+  platformLerpDuration: 0.25
+  rootsForwardSpeed: 30
+  rootsBackwardSpeed: 14

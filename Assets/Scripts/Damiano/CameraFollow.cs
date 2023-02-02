@@ -17,6 +17,12 @@ public class CameraFollow : MonoBehaviour
     Vector2 targetOffset = Vector2.zero;
     Vector2 TargetPosition => target.transform.position + new Vector3(targetOffset.x + offset.x * GetOffsetSignX(), targetOffset.y + offset.y, 0f);
 
+    void Start()
+    {
+        if(target == null)
+            target = GameObject.Find("Player").GetComponent<Player>();
+    }
+
     void LateUpdate()
     {
         var newPosition = Vector3.Lerp(transform.position, TargetPosition, lerpInterpolation * 60 * Time.deltaTime);
