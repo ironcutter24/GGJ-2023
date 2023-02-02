@@ -169,7 +169,7 @@ public class Player : MonoBehaviour
         if (context.started && IsGrounded(out hit))
         {
             is_sticking = true;
-            //player_rb.simulated = false;
+            player_rb.simulated = false;
             try
             {
                 under_platform = hit.collider.gameObject.GetComponentInParent<RotatingPlatform>().transform;
@@ -183,11 +183,11 @@ public class Player : MonoBehaviour
         if (context.canceled)
         {
             is_sticking = false;
-            //player_rb.simulated = true;
+            player_rb.simulated = true;
             transform.parent = null;
             verticalSpeed = 0;
             playerAnimator.SetBool(animSticking, is_sticking);
-            //transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
+            transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
             player_rb.MoveRotation(0);
         }
     }
