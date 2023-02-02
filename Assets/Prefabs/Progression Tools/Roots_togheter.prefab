@@ -78,7 +78,7 @@ MonoBehaviour:
   graphics: {fileID: 6840270756288085030}
   groundMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 384
   maxLenght: 8
   moveAtStart: 0
 --- !u!114 &96415202249282265
@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3635987149344335734}
   - component: {fileID: 3635987149344335733}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: TriggerCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

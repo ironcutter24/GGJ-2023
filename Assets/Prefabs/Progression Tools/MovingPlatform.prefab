@@ -244,10 +244,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4364807736351795743}
-  - component: {fileID: 9086953985304174567}
   - component: {fileID: 4364807736351795736}
   - component: {fileID: 4364807736351795737}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: MovingPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,132 +269,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!66 &9086953985304174567
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4364807736351795738}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths:
-    - - X: 20000000
-        Y: 9999995
-      - X: 10000000
-        Y: 9999995
-      - X: 10000000
-        Y: -4
-      - X: 20000000
-        Y: -4
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths:
-    - - X: 10000000
-        Y: 9999995
-      - X: 0
-        Y: 9999995
-      - X: 0
-        Y: -4
-      - X: 10000000
-        Y: -4
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths:
-    - - X: 0
-        Y: 9999995
-      - X: -10000000
-        Y: 9999995
-      - X: -10000000
-        Y: -4
-      - X: 0
-        Y: -4
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths:
-    - - X: -10000000
-        Y: 9999995
-      - X: -20000000
-        Y: 9999995
-      - X: -20000000
-        Y: -4
-      - X: -10000000
-        Y: -4
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths:
-    - - X: 8227898
-        Y: -5695106
-      - X: -7770881
-        Y: 6304486
-      - X: -8227898
-        Y: 5695106
-      - X: 7770881
-        Y: -6304486
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths:
-    - - X: 29525316
-        Y: -5307663
-      - X: -29488328
-        Y: 5509374
-      - X: -29525316
-        Y: 5307663
-      - X: 29488328
-        Y: -5509374
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  - m_Collider: {fileID: 0}
-    m_ColliderPaths: []
-  m_CompositePaths:
-    m_Paths:
-    - - {x: 0.7770648, y: -0.630431}
-      - {x: 0.8227664, y: -0.56949294}
-      - {x: 0.1025679, y: -0.029225001}
-      - {x: 2.948838, y: -0.5509085}
-      - {x: 2.9525027, y: -0.5307611}
-      - {x: 0.065605104, y: -0.0015980001}
-      - {x: 0.0635889, y: -0.0000004}
-      - {x: 2, y: 0.0000289}
-      - {x: 1.9999708, y: 0.9999995}
-      - {x: -2, y: 0.9999702}
-      - {x: -2.000036, y: 0.3770256}
-      - {x: -2.948838, y: 0.5509085}
-      - {x: -2.9525027, y: 0.5307611}
-      - {x: -2, y: 0.3561463}
-      - {x: -1.9999708, y: -0.0000004}
-      - {x: -0.0634671, y: -0.0000055}
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
 --- !u!50 &4364807736351795736
 Rigidbody2D:
   serializedVersion: 4
@@ -411,12 +284,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 6
 --- !u!114 &4364807736351795737
 MonoBehaviour:
   m_ObjectHideFlags: 0

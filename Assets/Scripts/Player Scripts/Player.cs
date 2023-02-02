@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     private string animRotation = "Rotation";
     private string animRotationDirection = "RotationDirection";
     private string animSticking = "IsSticking";
-    private string animStartSticking = "StartStiking";
+    //private string animStartSticking = "StartStiking";
 
     private void Awake()
     {
@@ -70,7 +70,6 @@ public class Player : MonoBehaviour
         if (playerAnimator.GetBool(animRotation))
             transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0), 1);
 
-
         if (playingSong)
         {
             easytimer -= Time.deltaTime;
@@ -82,14 +81,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void OverrideMovement(Vector2 move)
-    {
-        queuedOverrideMove = move;
-    }
-
-    Vector2 queuedOverrideMove = Vector2.zero;
+    Vector3 oldPlatformPos;
+    Vector2 oldPosition, oldMove;
+    bool shouldKickUpwards = false;
     private void FixedUpdate()
     {
+        var delta = player_rb.position - oldPosition;
+        shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f);
+
+        //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
+
+        Debug.LogWarning("HasPlatform: " + movingPlatform != null);
+
+        if (movingPlatform != null)
+            oldPlatformPos = movingPlatform.transform.position;
+
         if (IsGrounded())
         {
             if (hasJump)
@@ -98,10 +104,17 @@ public class Player : MonoBehaviour
                 hasJump = false;
             }
             else
+            {
                 verticalSpeed = 0f;
+            }
         }
         else
+        {
             verticalSpeed -= gravity * gravity_scale * Time.deltaTime;
+
+            if (shouldKickUpwards)
+                verticalSpeed = 0f;
+        }
 
         if (IsTouchingRoof())
             verticalSpeed = -1f;
@@ -109,9 +122,16 @@ public class Player : MonoBehaviour
         if (!is_sticking)
         {
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
-            player_rb.MovePosition(player_rb.position + move * Time.deltaTime);
-            player_rb.MovePosition(player_rb.position + queuedOverrideMove);
-            queuedOverrideMove = Vector2.zero;
+            oldPosition = player_rb.position;
+            oldMove = move_direction;
+
+            var platformFollowMove = movingPlatform != null ? (Vector2)(movingPlatform.transform.position - oldPlatformPos) : Vector2.zero;
+            var kickBugFixMove = (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero);
+            player_rb.MovePosition(player_rb.position + move * Time.deltaTime + platformFollowMove + kickBugFixMove);
+        }
+        else
+        {
+            oldMove = Vector2.zero;
         }
     }
 
@@ -145,18 +165,20 @@ public class Player : MonoBehaviour
 
     #endregion
 
+    #region Abilities
+
+    public void Move(InputAction.CallbackContext context)
+    {
+        move_direction.x = context.ReadValue<Vector2>().x;
+        playerAnimator.SetInteger(animMoveSpeed, Mathf.Abs((int)move_direction.x));
+    }
+
     private void Flip()
     {
         is_facing_right = !is_facing_right;
 
         playerAnimator.SetBool(animRotation, true);
         playerAnimator.SetBool(animRotationDirection, is_facing_right);
-    }
-
-    public void Move(InputAction.CallbackContext context)
-    {
-        move_direction.x = context.ReadValue<Vector2>().x;
-        playerAnimator.SetInteger(animMoveSpeed, Mathf.Abs((int)move_direction.x));
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -238,19 +260,49 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    #endregion
+
+    void Death()
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
-        {
-            // Player death
-        }
+        transform.position = GameManager.Instance.lastCheckPointPos;
     }
+
+    MovingPlatform movingPlatform = null;
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
-        transform.position = GameManager.Instance.lastCheckPointPos;
+            Death();
+        }
 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
+        {
+            RaycastHit2D hit;
+            if (IsGrounded(out hit))
+            {
+                var comp = hit.collider.gameObject.GetComponent<MovingPlatform>();
+                if (comp != null)
+                {
+                    movingPlatform = comp;
+                    oldPlatformPos = movingPlatform.transform.position;
+                }
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
+        {
+            movingPlatform = null;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
+        {
+            Death();
         }
     }
 }

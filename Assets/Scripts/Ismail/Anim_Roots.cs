@@ -4,6 +4,7 @@ using DG.Tweening.Plugins.Options;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Anim_Roots : MonoBehaviour
 {
@@ -134,7 +135,7 @@ public class Anim_Roots : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        if (groundMask == (groundMask | (1 << collision.gameObject.layer)))
         {
             myTween.Kill();
             isRetreat = false;

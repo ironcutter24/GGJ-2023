@@ -36,10 +36,14 @@ public class MovingPlatform : RhythmObject
     {
         gridPosition += new Vector3(direction * stepSize, 0f, 0f);
 
-        rb.DOMove(new Vector2(direction * stepSize, 0f), AudioManager.PlatformLerpDuration).SetRelative();
+        rb.DOMove(new Vector2(direction * stepSize, 0f), AudioManager.PlatformLerpDuration).SetRelative()
+            .OnUpdate(MovePlayer);
 
-        //if (attachedPlayer != null)
-        //    attachedPlayer.MoveOverride();
+        void MovePlayer()
+        {
+            //if (attachedPlayer != null)
+            //    attachedPlayer.MoveAdditive(new Vector2(direction * stepSize, 0f));
+        }
     }
 
     protected override void RevertToDefaults()
