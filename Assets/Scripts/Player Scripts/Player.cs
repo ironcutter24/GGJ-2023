@@ -53,7 +53,6 @@ public class Player : MonoBehaviour
     {
         player_move = player_controls.Player.Move;
         player_move.Enable();
-        GameManager.Instance.lastCheckPointPos = transform.position;
     }
 
     private void OnDisable()
@@ -243,7 +242,8 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        transform.position = GameManager.Instance.lastCheckPointPos;
+
         }
     }
 }
