@@ -81,8 +81,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    Vector2 oldPosition = Vector2.zero;
+    Vector2 oldMove = Vector2.zero;
+    bool shouldKickUpwards = false;
     private void FixedUpdate()
     {
+        var delta = player_rb.position - oldPosition;
+        shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f);
+
+        Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
+
         if (IsGrounded())
         {
             if (hasJump)
@@ -94,7 +102,12 @@ public class Player : MonoBehaviour
                 verticalSpeed = 0f;
         }
         else
+        {
             verticalSpeed -= gravity * gravity_scale * Time.deltaTime;
+
+            if (shouldKickUpwards)
+                verticalSpeed = 0f;
+        }
 
         if (IsTouchingRoof())
             verticalSpeed = -1f;
@@ -102,8 +115,12 @@ public class Player : MonoBehaviour
         if (!is_sticking)
         {
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
-            player_rb.MovePosition(player_rb.position + move * Time.deltaTime);
+            oldPosition = player_rb.position;
+            oldMove = move_direction;
+            player_rb.MovePosition(player_rb.position + move * Time.deltaTime + (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero));
         }
+        else
+            oldMove = Vector2.zero;
     }
 
     #region Collision Checks
