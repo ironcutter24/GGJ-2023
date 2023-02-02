@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -34,6 +36,8 @@ public class Player : MonoBehaviour
     private string animMoveSpeed = "MoveSpeed";
     private string animRotation = "Rotation";
     private string animRotationDirection = "RotationDirection";
+    private string animSticking = "IsSticking";
+    private string animStartSticking = "StartStiking";
 
 
     private void Awake()
@@ -42,7 +46,7 @@ public class Player : MonoBehaviour
         player_rb = GetComponent<Rigidbody2D>();
         player_capsule = GetComponent<CapsuleCollider2D>();
         wave = GetComponentInChildren<SoundWavesVFX>();
-        playerAnimator = GetComponent<Animator>();
+        playerAnimator = GetComponentInChildren<Animator>();
     }
 
     private void OnEnable()
@@ -59,7 +63,13 @@ public class Player : MonoBehaviour
     void Update()
     {
         if (!is_facing_right && move_direction.x > 0f || is_facing_right && move_direction.x < 0f)
+        {
             Flip();
+        }
+
+        if (playerAnimator.GetBool(animRotation))
+            transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0), 1);
+
 
         if (playingSong)
         {
@@ -134,13 +144,6 @@ public class Player : MonoBehaviour
 
         playerAnimator.SetBool(animRotation, true);
         playerAnimator.SetBool(animRotationDirection, is_facing_right);
-        transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0),playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-    }
-
-    private void StopFlip()
-    {
-        playerAnimator.SetBool(animRotation, false);
-        //transform.Rotate(new Vector3(0, 180, 0));
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -161,25 +164,30 @@ public class Player : MonoBehaviour
     public void StickOnFloor(InputAction.CallbackContext context)
     {
         RaycastHit2D hit;
+
         if (context.started && IsGrounded(out hit))
         {
             is_sticking = true;
-            player_rb.simulated = false;
+            //player_rb.simulated = false;
             try
             {
                 under_platform = hit.collider.gameObject.GetComponentInParent<RotatingPlatform>().transform;
             }
             catch { }
             transform.SetParent(under_platform);
+            playerAnimator.SetBool(animSticking, is_sticking);
         }
+
 
         if (context.canceled)
         {
             is_sticking = false;
-            player_rb.simulated = true;
+            //player_rb.simulated = true;
             transform.parent = null;
             verticalSpeed = 0;
-            transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
+            playerAnimator.SetBool(animSticking, is_sticking);
+            //transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
+            player_rb.MoveRotation(0);
         }
     }
 

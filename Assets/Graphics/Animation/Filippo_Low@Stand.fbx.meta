@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1cb6c30cb94e7be46ab7b9e5f3a89aa9
+guid: 83c0aeb698e88d043a52e3903066e6ae
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -19,12 +19,12 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
       copied configuration does not match position in animation file:\n\t'mixamorig:LeftUpLeg'
-      : position error = 261.480347 mm\n\t'mixamorig:LeftLeg' : position error =
-      321.364838 mm\n\t'mixamorig:LeftFoot' : position error = 316.669281 mm\n\t'mixamorig:LeftToeBase'
-      : position error = 234.122849 mm\n\t'mixamorig:RightUpLeg' : position error
-      = 261.419250 mm\n\t'mixamorig:RightLeg' : position error = 320.939850 mm\n\t'mixamorig:RightFoot'
-      : position error = 317.688812 mm\n\t'mixamorig:RightToeBase' : position error
-      = 230.111130 mm\n"
+      : position error = 261.222351 mm\n\t'mixamorig:LeftLeg' : position error =
+      321.891479 mm\n\t'mixamorig:LeftFoot' : position error = 317.295868 mm\n\t'mixamorig:LeftToeBase'
+      : position error = 234.123840 mm\n\t'mixamorig:RightUpLeg' : position error
+      = 261.158722 mm\n\t'mixamorig:RightLeg' : position error = 321.473480 mm\n\t'mixamorig:RightFoot'
+      : position error = 318.306396 mm\n\t'mixamorig:RightToeBase' : position error
+      = 230.081177 mm\n"
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -40,14 +40,14 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Running Turn 180
+      name: Stand
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 93
       wrapMode: 0
       orientationOffsetY: 0
-      level: -0.8
+      level: -0.24
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
@@ -57,9 +57,9 @@ ModelImporter:
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
-      heightFromFeet: 0
+      keepOriginalPositionY: 0
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
