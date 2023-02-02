@@ -277,6 +277,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.031
       objectReference: {fileID: 0}
+    - target: {fileID: 8525905284894419949, guid: b37ac6589a8ec2d4d91a09eba0ffcb93,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 17196d4bde0950742bea2c00c31fe94c, type: 2}
     - target: {fileID: 9052956209529794424, guid: b37ac6589a8ec2d4d91a09eba0ffcb93,
         type: 3}
       propertyPath: m_Name
@@ -378,7 +383,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 13748e67e9fd7d14da4e3d20ca4bdd0c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 

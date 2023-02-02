@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
     private string animRotation = "Rotation";
     private string animRotationDirection = "RotationDirection";
     private string animSticking = "IsSticking";
+    private string animJumpStart = "JumpStart";
+
     //private string animStartSticking = "StartStiking";
 
     private void Awake()
@@ -67,8 +69,8 @@ public class Player : MonoBehaviour
             Flip();
         }
 
-        if (playerAnimator.GetBool(animRotation))
-            transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0), 1);
+        //if (playerAnimator.GetBool(animRotation))
+        //    transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0), 1);
 
         if (playingSong)
         {
@@ -87,7 +89,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         var delta = player_rb.position - oldPosition;
-        shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f);
+        shouldKickUpwards = ( delta.x == 0f && oldMove.x != 0f );
 
         //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
 
@@ -104,9 +106,8 @@ public class Player : MonoBehaviour
                 hasJump = false;
             }
             else
-            {
                 verticalSpeed = 0f;
-            }
+            playerAnimator.SetBool(animJumpStart, false);
         }
         else
         {
@@ -119,14 +120,14 @@ public class Player : MonoBehaviour
         if (IsTouchingRoof())
             verticalSpeed = -1f;
 
-        if (!is_sticking)
+        if (!is_sticking && !playerAnimator.GetBool(animRotation))
         {
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
             oldPosition = player_rb.position;
             oldMove = move_direction;
 
-            var platformFollowMove = movingPlatform != null ? (Vector2)(movingPlatform.transform.position - oldPlatformPos) : Vector2.zero;
-            var kickBugFixMove = (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero);
+            var platformFollowMove = movingPlatform != null ? (Vector2)( movingPlatform.transform.position - oldPlatformPos ) : Vector2.zero;
+            var kickBugFixMove = ( shouldKickUpwards ? Vector2.up * .1f : Vector2.zero );
             player_rb.MovePosition(player_rb.position + move * Time.deltaTime + platformFollowMove + kickBugFixMove);
         }
         else
@@ -183,6 +184,9 @@ public class Player : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
+        if (IsGrounded())
+            playerAnimator.SetBool(animJumpStart, true);
+
         if (context.performed)
             hasJump = true;
 
