@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -39,6 +40,8 @@ public class Player : MonoBehaviour
     private string animSticking = "IsSticking";
     private string animStartSticking = "StartStiking";
 
+    GameManager gm;
+
 
     private void Awake()
     {
@@ -47,12 +50,14 @@ public class Player : MonoBehaviour
         player_capsule = GetComponent<CapsuleCollider2D>();
         wave = GetComponentInChildren<SoundWavesVFX>();
         playerAnimator = GetComponentInChildren<Animator>();
+        gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
     }
 
     private void OnEnable()
     {
         player_move = player_controls.Player.Move;
         player_move.Enable();
+        gm.lastCheckPointPos = transform.position;
     }
 
     private void OnDisable()
@@ -236,6 +241,13 @@ public class Player : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
             // Player death
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
