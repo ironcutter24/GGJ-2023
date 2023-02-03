@@ -1,7 +1,9 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utility.Patterns;
+using static UnityEngine.UI.Image;
 
 public class Player : Singleton<Player>
 {
@@ -17,8 +19,11 @@ public class Player : Singleton<Player>
     private LayerMask groundLayerMask, plantLayerMask;
 
     [SerializeField]
-    GameObject graphics;
+    List<Transform> rayOrigins = new List<Transform>();
 
+    [Header("Graphics")]
+    [SerializeField]
+    GameObject graphics;
     [SerializeField]
     float turnDuration = .2f;
 
@@ -37,7 +42,6 @@ public class Player : Singleton<Player>
     float gravity = 9.81f;
     float verticalSpeed = 0f;
     private float easytimer = 1;
-    private float NTime = 0;
     private bool is_sticking, playingSong = false;
     private string animMoveSpeed = "MoveSpeed";
     private string animRotation = "Rotation";
@@ -109,7 +113,7 @@ public class Player : Singleton<Player>
         }
 
         var delta = player_rb.position - oldPosition;
-        shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f && verticalSpeed != 0f);
+        shouldKickUpwards = !IsWalkingIntoWall() && (delta.x == 0f && oldMove.x != 0f);
         //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
 
         if (isGrounded)
@@ -158,6 +162,28 @@ public class Player : Singleton<Player>
         {
             oldMove = Vector2.zero;
         }
+    }
+
+    bool IsWalkingIntoWall()
+    {
+        foreach (var origin in rayOrigins)
+        {
+            var offset = (is_facing_right ? Vector3.right : Vector3.left) * .5f;
+            var startPos = origin.position + offset;
+
+            //Debug.DrawLine(startPos, startPos + offset * .1f, Color.green, 1f);
+
+            var hit = Physics2D.Raycast(
+                startPos,
+                offset,
+                .1f,
+                groundLayerMask
+                );
+
+            if (hit.collider != null)
+                return true;
+        }
+        return false;
     }
 
     #region Collision Checks
@@ -221,7 +247,6 @@ public class Player : Singleton<Player>
             verticalSpeed *= .5f;
     }
 
-    //Rigidbody2D linkedPlatformBody = null;
     public void StickOnFloor(InputAction.CallbackContext context)
     {
         RaycastHit2D hit;
@@ -236,13 +261,6 @@ public class Player : Singleton<Player>
             catch { }
             transform.SetParent(under_platform);
             playerAnimator.SetBool(animSticking, is_sticking);
-
-            //if (hit.collider.gameObject.CompareTag("RotatingPlatform"))
-            //{
-            //    var comp = hit.collider.gameObject.GetComponentInParent<Rigidbody2D>();
-            //    LinkPlatform(comp);
-            //    linkedPlatformBody = comp;
-            //}
         }
 
         if (context.canceled)
@@ -254,8 +272,6 @@ public class Player : Singleton<Player>
             playerAnimator.SetBool(animSticking, is_sticking);
             transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
             player_rb.MoveRotation(0);
-
-            //UnlinkPlatform(linkedPlatformBody);
         }
     }
 
