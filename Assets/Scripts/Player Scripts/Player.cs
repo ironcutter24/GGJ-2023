@@ -127,6 +127,8 @@ public class Player : Singleton<Player>
         RaycastHit2D hit;
         isGrounded = IsGrounded(out hit);
 
+        Debug.LogWarning("Can jump: " + canJump);
+
         if (!isGrounded && wasGrounded && verticalSpeed <= 0f)
             SetCoyoteTime();
 
@@ -159,7 +161,17 @@ public class Player : Singleton<Player>
         }
         else
         {
-            verticalSpeed -= gravity * gravity_scale * Time.deltaTime;
+            if (hasJump && canJump)
+            {
+                verticalSpeed = jump_power;
+                hasJump = false;
+                coyoteTimer.Set(0f);
+                UnlinkPlatform();
+            }
+            else
+            {
+                verticalSpeed -= gravity * gravity_scale * Time.deltaTime;
+            }
 
             if (shouldKickUpwards)
                 verticalSpeed = 0f;
@@ -189,8 +201,6 @@ public class Player : Singleton<Player>
         {
             oldMove = Vector2.zero;
         }
-
-        playerAnimator.SetFloat(animVerticalSpeed, verticalSpeed);
     }
 
     #region Collision Checks
@@ -273,7 +283,7 @@ public class Player : Singleton<Player>
     {
         ChangeControlInput(context);
 
-        if (context.performed && isGrounded)
+        if (context.performed && canJump)
         {
             hasJump = true;
             playerAnimator.SetBool(animJumpStart, true);
