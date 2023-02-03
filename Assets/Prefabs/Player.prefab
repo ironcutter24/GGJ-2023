@@ -290,7 +290,7 @@ MonoBehaviour:
   - {fileID: 2528264564504178773}
   - {fileID: 38973938575251147}
   graphics: {fileID: 6051270404718489390}
-  turnDuration: 0.2
+  turnDuration: 0.05
 --- !u!1 &3440207371343171591
 GameObject:
   m_ObjectHideFlags: 0
