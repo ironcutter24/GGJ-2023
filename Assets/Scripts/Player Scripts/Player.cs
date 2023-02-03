@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 using Utility.Patterns;
 
 public class Player : Singleton<Player>
@@ -42,12 +43,14 @@ public class Player : Singleton<Player>
     float gravity = 9.81f;
     float verticalSpeed = 0f;
     private float easytimer = 1;
-    private bool is_sticking, playingSong = false;
+    private bool is_sticking, playingSong , isController = false;
     private string animMoveSpeed = "MoveSpeed";
     private string animRotation = "Rotation";
     private string animRotationDirection = "RotationDirection";
     private string animSticking = "IsSticking";
     private string animJumpStart = "JumpStart";
+    private string animVerticalSpeed = "VerticalSpeed";
+
 
     protected override void Awake()
     {
@@ -68,6 +71,21 @@ public class Player : Singleton<Player>
         player_move = player_controls.Player.Move;
         player_move.Enable();
     }
+
+    private void ChangeControlInput(InputAction.CallbackContext context)
+    {
+        if (context.control.device is Keyboard && isController)
+        {
+            isController = false;
+            GameManager.KeyboardOrController.Invoke(isController);
+        }
+        else if (context.control.device is Gamepad && !isController)
+        {
+            isController = true;
+            GameManager.KeyboardOrController.Invoke(isController);
+        }
+    }
+
 
     private void OnDisable()
     {
@@ -123,8 +141,8 @@ public class Player : Singleton<Player>
             else
             {
                 verticalSpeed = 0f;
+                playerAnimator.SetBool(animJumpStart, false);
             }
-            playerAnimator.SetBool(animJumpStart, false);
         }
         else
         {
@@ -158,6 +176,7 @@ public class Player : Singleton<Player>
         {
             oldMove = Vector2.zero;
         }
+        playerAnimator.SetFloat(animVerticalSpeed, verticalSpeed);
     }
 
     #region Collision Checks
@@ -216,6 +235,8 @@ public class Player : Singleton<Player>
 
     public void Move(InputAction.CallbackContext context)
     {
+        ChangeControlInput(context);
+
         move_direction.x = context.ReadValue<Vector2>().x;
         playerAnimator.SetInteger(animMoveSpeed, Mathf.Abs((int)move_direction.x));
     }
@@ -233,6 +254,8 @@ public class Player : Singleton<Player>
 
     public void Jump(InputAction.CallbackContext context)
     {
+        ChangeControlInput(context);
+
         if (context.performed && isGrounded)
         {
             hasJump = true;
@@ -245,6 +268,8 @@ public class Player : Singleton<Player>
 
     public void StickOnFloor(InputAction.CallbackContext context)
     {
+        ChangeControlInput(context);
+
         RaycastHit2D hit;
         if (context.started && IsGrounded(out hit))
         {
@@ -273,6 +298,7 @@ public class Player : Singleton<Player>
 
     public void PlayGoodMusic(InputAction.CallbackContext context)
     {
+        ChangeControlInput(context);
         if (context.performed && !playingSong)
         {
             CheckActivable(true);
@@ -283,6 +309,7 @@ public class Player : Singleton<Player>
 
     public void PlayBadMusic(InputAction.CallbackContext context)
     {
+        ChangeControlInput(context);
         if (context.performed && !playingSong)
         {
             CheckActivable(false);
