@@ -117,6 +117,7 @@ MonoBehaviour:
   steps: 1
   stepSize: 1
   turnDirection: 1
+  CogGraphics: {fileID: 2750981684673718697}
 --- !u!1 &9118174461710640424
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,6 +356,12 @@ PrefabInstance:
 --- !u!4 &1261238182631434406 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4818482790545126810, guid: 15e04793baaf52f4484566236126a62b,
+    type: 3}
+  m_PrefabInstance: {fileID: 6007346569037323580}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2750981684673718697 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8463128620355073173, guid: 15e04793baaf52f4484566236126a62b,
     type: 3}
   m_PrefabInstance: {fileID: 6007346569037323580}
   m_PrefabAsset: {fileID: 0}
