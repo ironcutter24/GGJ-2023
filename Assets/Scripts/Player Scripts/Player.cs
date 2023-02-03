@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utility.Patterns;
@@ -54,6 +52,8 @@ public class Player : Singleton<Player>
         wave = GetComponentInChildren<SoundWavesVFX>();
         playerAnimator = GetComponentInChildren<Animator>();
         fixedJoint = GetComponent<FixedJoint2D>();
+
+        CheckPoint.Set(transform.position);
     }
 
     private void OnEnable()
@@ -226,10 +226,10 @@ public class Player : Singleton<Player>
             verticalSpeed *= .5f;
     }
 
+    Rigidbody2D linkedPlatformBody = null;
     public void StickOnFloor(InputAction.CallbackContext context)
     {
         RaycastHit2D hit;
-
         if (context.started && IsGrounded(out hit))
         {
             is_sticking = true;
@@ -241,6 +241,13 @@ public class Player : Singleton<Player>
             catch { }
             transform.SetParent(under_platform);
             playerAnimator.SetBool(animSticking, is_sticking);
+
+            //if (hit.collider.gameObject.CompareTag("RotatingPlatform"))
+            //{
+            //    var comp = hit.collider.gameObject.GetComponentInParent<Rigidbody2D>();
+            //    LinkPlatform(comp);
+            //    linkedPlatformBody = comp;
+            //}
         }
 
         if (context.canceled)
@@ -250,8 +257,10 @@ public class Player : Singleton<Player>
             transform.parent = null;
             verticalSpeed = 0;
             playerAnimator.SetBool(animSticking, is_sticking);
-            //transform.rotation = Quaternion.Euler(0, is_facing_right ? 90 : 180, 0);
+            transform.rotation = Quaternion.Euler(0, is_facing_right ? 90 : 180, 0);
             player_rb.MoveRotation(0);
+
+            //UnlinkPlatform(linkedPlatformBody);
         }
     }
 
@@ -326,7 +335,7 @@ public class Player : Singleton<Player>
 
     void Death()
     {
-        transform.position = GameManager.Instance.lastCheckPointPos;
+        transform.position = CheckPoint.LastActivated;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

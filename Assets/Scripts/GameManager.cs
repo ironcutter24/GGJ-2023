@@ -5,10 +5,9 @@ using Utility.Patterns;
 
 public class GameManager : Singleton<GameManager>
 {
-    public Vector2 lastCheckPointPos;
-
-    void Start()
+    protected override void Awake()
     {
+        base.Awake();
         DontDestroyOnLoad(gameObject);
     }
 

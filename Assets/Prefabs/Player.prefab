@@ -284,6 +284,7 @@ MonoBehaviour:
   plantLayerMask:
     serializedVersion: 2
     m_Bits: 1536
+  Filippo: {fileID: 3417345697321791995}
 --- !u!1001 &3339667520933380182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -409,6 +410,12 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!4 &3417345697321791995 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 86756021014884781, guid: b37ac6589a8ec2d4d91a09eba0ffcb93,
+    type: 3}
+  m_PrefabInstance: {fileID: 3339667520933380182}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6051270404718489391 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9052956209529794425, guid: b37ac6589a8ec2d4d91a09eba0ffcb93,
