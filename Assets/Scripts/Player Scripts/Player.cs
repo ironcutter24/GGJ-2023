@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utility.Patterns;
+using Utility.Time;
 
 public class Player : Singleton<Player>
 {
@@ -37,7 +38,6 @@ public class Player : Singleton<Player>
     private FixedJoint2D fixedJoint;
     private Transform under_platform;
 
-    bool isGrounded = false;
     bool hasJump = false;
     float gravity = 9.81f;
     float verticalSpeed = 0f;
@@ -49,6 +49,10 @@ public class Player : Singleton<Player>
     private string animSticking = "IsSticking";
     private string animJumpStart = "JumpStart";
     private string animVerticalSpeed = "VerticalSpeed";
+
+    private bool isGrounded = false;
+    private bool wasGrounded = false;
+    private bool canJump => isGrounded || !coyoteTimer.IsExpired;
 
     protected override void Awake()
     {
@@ -107,12 +111,24 @@ public class Player : Singleton<Player>
         }
     }
 
+    [SerializeField]
+    float coyoteTimeDuration = .1f;
+    Timer coyoteTimer = new Timer();
+    void SetCoyoteTime()
+    {
+        coyoteTimer.Set(coyoteTimeDuration);
+    }
+
     Vector2 oldPosition, oldMove;
     bool shouldKickUpwards = false;
     private void FixedUpdate()
     {
+        wasGrounded = isGrounded;
         RaycastHit2D hit;
         isGrounded = IsGrounded(out hit);
+
+        if (!isGrounded && wasGrounded && verticalSpeed <= 0f)
+            SetCoyoteTime();
 
         if (hit.collider != null && hit.collider.CompareTag("MovingPlatform"))
         {
@@ -173,6 +189,7 @@ public class Player : Singleton<Player>
         {
             oldMove = Vector2.zero;
         }
+
         playerAnimator.SetFloat(animVerticalSpeed, verticalSpeed);
     }
 
@@ -302,18 +319,16 @@ public class Player : Singleton<Player>
                 playerAnimator.SetBool(animSticking, is_sticking);
             }
         }
-    }
 
-    public Vector3 GetUnstickTraslation(Transform trs)
-    {
-        float angle = Vector2.Angle(trs.up, Vector3.down);
-
-        if (angle < 90)
+        Vector3 GetUnstickTraslation(Transform trs)
         {
-            return trs.position + trs.up * Mathf.Lerp(2f, 0f, angle / 90);
+            float angle = Vector2.Angle(trs.up, Vector3.down);
+            if (angle < 90)
+            {
+                return trs.position + trs.up * Mathf.Lerp(2f, 0f, angle / 90);
+            }
+            return trs.position;
         }
-
-        return trs.position;
     }
 
     public void PlayGoodMusic(InputAction.CallbackContext context)
