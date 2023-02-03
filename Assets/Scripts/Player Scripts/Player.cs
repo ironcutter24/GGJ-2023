@@ -25,6 +25,8 @@ public class Player : Singleton<Player>
     GameObject graphics;
     [SerializeField]
     float turnDuration = .2f;
+    [SerializeField]
+    public Fade fade;
 
     private Vector2 move_direction;
 
