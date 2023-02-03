@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +13,6 @@ public class MovingPlatform : RhythmObject
 
     private Vector3 gridPosition;
 
-    Player attachedPlayer;
-
     protected override void Start()
     {
         gridPosition = transform.position;
@@ -21,29 +20,11 @@ public class MovingPlatform : RhythmObject
         base.Start();
     }
 
-    public void AttachPlayer(Player target)
-    {
-        attachedPlayer = target;
-    }
-
-    public void DetachPlayer(Player target)
-    {
-        if (attachedPlayer == target)
-            attachedPlayer = null;
-    }
-
     protected override void Move()
     {
         gridPosition += new Vector3(direction * stepSize, 0f, 0f);
-
-        rb.DOMove(new Vector2(direction * stepSize, 0f), AudioManager.PlatformLerpDuration).SetRelative()
-            .OnUpdate(MovePlayer);
-
-        void MovePlayer()
-        {
-            //if (attachedPlayer != null)
-            //    attachedPlayer.MoveAdditive(new Vector2(direction * stepSize, 0f));
-        }
+        rb.DOMove(new Vector2(direction * stepSize, 0f), AudioManager.PlatformLerpDuration)
+            .SetRelative();
     }
 
     protected override void RevertToDefaults()
