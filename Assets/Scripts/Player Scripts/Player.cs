@@ -127,7 +127,7 @@ public class Player : Singleton<Player>
         RaycastHit2D hit;
         isGrounded = IsGrounded(out hit);
 
-        Debug.LogWarning("Can jump: " + canJump);
+        //Debug.LogWarning("Can jump: " + canJump);
 
         if (!isGrounded && wasGrounded && verticalSpeed <= 0f)
             SetCoyoteTime();
@@ -419,6 +419,8 @@ public class Player : Singleton<Player>
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log("Obj: " + collision.gameObject.name + "\tLayer: " + collision.gameObject.layer);
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
             Death();
@@ -427,6 +429,8 @@ public class Player : Singleton<Player>
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("Obj: " + collision.gameObject.name + "\tLayer: " + collision.gameObject.layer);
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
             Death();

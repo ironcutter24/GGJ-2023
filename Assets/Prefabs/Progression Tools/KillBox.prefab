@@ -118,6 +118,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8129565434329876290}
     m_Modifications:
+    - target: {fileID: 1313378256042310216, guid: fdaec6a6adff93a40b5b9130db575337,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 5561401937007973829, guid: fdaec6a6adff93a40b5b9130db575337,
         type: 3}
       propertyPath: m_RootOrder
@@ -173,10 +178,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7885855318150753777, guid: fdaec6a6adff93a40b5b9130db575337,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8606212027110498396, guid: fdaec6a6adff93a40b5b9130db575337,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 9037334329159895509, guid: fdaec6a6adff93a40b5b9130db575337,
         type: 3}
       propertyPath: m_Name
       value: ThornsBushModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 9037334329159895509, guid: fdaec6a6adff93a40b5b9130db575337,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdaec6a6adff93a40b5b9130db575337, type: 3}
