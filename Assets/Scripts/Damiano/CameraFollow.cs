@@ -2,33 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField]
     Player target;
 
     [SerializeField]
-    [Range(0f, 1f)]
-    float lerpInterpolation = .2f;
+    float interpolation = 2.80f;
 
     [SerializeField]
     Vector2 offset = Vector2.zero;
+
+    [SerializeField]
+    float cameraDistance = 22f;
 
     Vector2 targetOffset = Vector2.zero;
     Vector2 TargetPosition => target.transform.position + new Vector3(targetOffset.x + offset.x * GetOffsetSignX(), targetOffset.y + offset.y, 0f);
 
     void Start()
     {
-        if(target == null)
+        if (target == null)
             target = GameObject.Find("Player").GetComponent<Player>();
+
+        SetTargetPosition2D(TargetPosition);
     }
 
     void LateUpdate()
     {
-        var newPosition = Vector3.Lerp(transform.position, TargetPosition, lerpInterpolation * 60 * Time.deltaTime);
-        newPosition.z = transform.position.z;
+        SetTargetPosition2D(Vector3.Lerp(transform.position, TargetPosition, interpolation * Time.deltaTime));
+    }
 
-        transform.position = newPosition;
+    void SetTargetPosition2D(Vector2 newPosition)
+    {
+        transform.position = new Vector3(newPosition.x, newPosition.y, -cameraDistance);
     }
 
     float GetOffsetSignX()
