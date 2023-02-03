@@ -107,7 +107,7 @@ public class Player : Singleton<Player>
         }
 
         var delta = player_rb.position - oldPosition;
-        shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f);
+        shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f && verticalSpeed != 0f);
         //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
 
         if (isGrounded)
