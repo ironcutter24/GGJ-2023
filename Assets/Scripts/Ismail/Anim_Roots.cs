@@ -15,7 +15,7 @@ public class Anim_Roots : MonoBehaviour
     LayerMask groundMask;
 
     [SerializeField, Range(1, 12)]
-    private float maxLenght = 8;
+    private float maxLenght, minLenght = 8;
 
     [SerializeField]
     private bool moveAtStart;
@@ -86,9 +86,13 @@ public class Anim_Roots : MonoBehaviour
         else
         {
             Debug.LogWarning("Root could not hit ground");
-
+            myTween = graphics.transform.DOLocalMoveX(minLenght, AudioManager.RootsForwardSpeed)
+            .OnUpdate(CollUpdate)
+                .OnComplete(() => myTween = graphics.transform.DOLocalMoveX(0f, AudioManager.RootsBackwardSpeed)
+                .SetSpeedBased())
+                .SetSpeedBased();
+            
             // Failed start animation
-
         }
     }
 

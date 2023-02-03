@@ -79,7 +79,8 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 384
-  maxLenght: 8
+  maxLenght: 10
+  minLenght: 2
   moveAtStart: 0
 --- !u!114 &96415202249282265
 MonoBehaviour:
