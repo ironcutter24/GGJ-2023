@@ -16,6 +16,8 @@ public class Player : Singleton<Player>
     [SerializeField]
     [Tooltip("DO NOT TOUCH")]
     private LayerMask groundLayerMask, plantLayerMask;
+    [SerializeField]
+    private Transform Filippo;
 
     private Vector2 move_direction;
 
@@ -34,6 +36,7 @@ public class Player : Singleton<Player>
     float gravity = 9.81f;
     float verticalSpeed = 0f;
     private float easytimer = 1;
+    private float NTime = 0;
     private bool is_sticking, playingSong = false;
     private string animMoveSpeed = "MoveSpeed";
     private string animRotation = "Rotation";
@@ -72,6 +75,17 @@ public class Player : Singleton<Player>
         }
         //if (playerAnimator.GetBool(animRotation))
         //    transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0), 1);
+
+        NTime = playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+        if (is_facing_right && NTime >= 0.979f)
+        {
+            Filippo.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+        }
+        if (!is_facing_right && NTime >= 0.979f)
+        {
+            Filippo.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+        }
 
         if (playingSong)
         {
