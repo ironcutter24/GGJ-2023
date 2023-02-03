@@ -52,7 +52,6 @@ public class Player : Singleton<Player>
     private string animJumpStart = "JumpStart";
     private string animVerticalSpeed = "VerticalSpeed";
 
-
     protected override void Awake()
     {
         base.Awake();
@@ -86,7 +85,6 @@ public class Player : Singleton<Player>
             GameManager.KeyboardOrController.Invoke(isController);
         }
     }
-
 
     private void OnDisable()
     {
@@ -128,7 +126,7 @@ public class Player : Singleton<Player>
         }
 
         var delta = player_rb.position - oldPosition;
-        shouldKickUpwards = !IsWalkingIntoWall() && ( delta.x == 0f && oldMove.x != 0f );
+        shouldKickUpwards = !IsWalkingIntoWall() && (delta.x == 0f && oldMove.x != 0f);
         //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
 
         if (isGrounded)
@@ -186,7 +184,7 @@ public class Player : Singleton<Player>
     {
         foreach (var origin in rayOrigins)
         {
-            var offset = ( is_facing_right ? Vector3.right : Vector3.left ) * .5f;
+            var offset = (is_facing_right ? Vector3.right : Vector3.left) * .5f;
             var startPos = origin.position + offset;
 
             //Debug.DrawLine(startPos, startPos + offset * .1f, Color.green, 1f);
@@ -277,27 +275,47 @@ public class Player : Singleton<Player>
         RaycastHit2D hit;
         if (context.started && IsGrounded(out hit))
         {
-            is_sticking = true;
-            player_rb.simulated = false;
             try
             {
                 under_platform = hit.collider.gameObject.GetComponentInParent<RotatingPlatform>().transform;
+                transform.SetParent(under_platform);
+
+                player_rb.simulated = false;
+                is_sticking = true;
+
+                playerAnimator.SetBool(animSticking, is_sticking);
             }
             catch { }
-            transform.SetParent(under_platform);
-            playerAnimator.SetBool(animSticking, is_sticking);
         }
 
         if (context.canceled)
         {
-            is_sticking = false;
-            player_rb.simulated = true;
-            transform.parent = null;
-            verticalSpeed = 0;
-            playerAnimator.SetBool(animSticking, is_sticking);
-            transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
-            player_rb.MoveRotation(0);
+            if (is_sticking)
+            {
+                transform.parent = null;
+                transform.position = GetUnstickTraslation(transform);
+                transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
+
+                player_rb.simulated = true;
+
+                verticalSpeed = 0;
+                is_sticking = false;
+
+                playerAnimator.SetBool(animSticking, is_sticking);
+            }
         }
+    }
+
+    public Vector3 GetUnstickTraslation(Transform trs)
+    {
+        float angle = Vector2.Angle(trs.up, Vector3.down);
+
+        if (angle < 90)
+        {
+            return trs.position + trs.up * Mathf.Lerp(2f, 0f, angle / 90);
+        }
+
+        return trs.position;
     }
 
     public void PlayGoodMusic(InputAction.CallbackContext context)
