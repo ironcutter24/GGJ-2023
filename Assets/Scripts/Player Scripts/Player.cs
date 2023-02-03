@@ -154,26 +154,6 @@ public class Player : Singleton<Player>
         }
     }
 
-    public void LinkPlatform(Rigidbody2D rb)
-    {
-        fixedJoint.autoConfigureConnectedAnchor = true;
-        fixedJoint.connectedBody = rb;
-        fixedJoint.enabled = true;
-        fixedJoint.autoConfigureConnectedAnchor = false;
-    }
-
-    public void UnlinkPlatform(/*Rigidbody2D rb*/)
-    {
-        //if (fixedJoint.connectedBody == rb)
-        //{
-        //    fixedJoint.enabled = false;
-        //    fixedJoint.connectedBody = null;
-        //}
-
-        fixedJoint.enabled = false;
-        fixedJoint.connectedBody = null;
-    }
-
     #region Collision Checks
 
     private bool IsGrounded()
@@ -298,6 +278,33 @@ public class Player : Singleton<Player>
                     comp.Retreat_Root();
             }
             catch { }
+        }
+    }
+
+    #endregion
+
+    #region Platform linking
+
+    public void LinkPlatform(Rigidbody2D rb)
+    {
+        fixedJoint.autoConfigureConnectedAnchor = true;
+        fixedJoint.connectedBody = rb;
+        fixedJoint.enabled = true;
+        fixedJoint.autoConfigureConnectedAnchor = false;
+    }
+
+    public void UnlinkPlatform()
+    {
+        fixedJoint.enabled = false;
+        fixedJoint.connectedBody = null;
+    }
+
+    public void UnlinkPlatform(Rigidbody2D rb)
+    {
+        if (fixedJoint.connectedBody == rb)
+        {
+            fixedJoint.enabled = false;
+            fixedJoint.connectedBody = null;
         }
     }
 
