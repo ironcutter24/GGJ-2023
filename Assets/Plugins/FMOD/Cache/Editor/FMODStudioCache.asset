@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: Assets/Audio/FMOD Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638109499060336853
+  lastModified: 638110426006514003
   FileSizes:
   - Name: Desktop
-    Value: 6252
+    Value: 1941600
   Exists: 1
 --- !u!114 &-8485967619705570109
 MonoBehaviour:
@@ -46,7 +46,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 1678
 --- !u!114 &-7593326916416039806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,7 +73,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 734
 --- !u!114 &-4289440645098914275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 734
 --- !u!114 &-3443437694612327513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,33 +142,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Radici
   Guid:
-    Data1: -661920473
-    Data2: 1336351479
-    Data3: -1813843289
-    Data4: 1445282120
-  Banks:
-  - {fileID: -9077416285754737801}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-2928335223117148907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Radici Piedi
-  m_EditorClassIdentifier: 
-  Path: event:/Radici Piedi
-  Guid:
     Data1: 1699843717
     Data2: 1128473866
     Data3: 1392659844
@@ -181,7 +154,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 776
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,17 +175,100 @@ MonoBehaviour:
   - {fileID: -3088365119331981975}
   - {fileID: 1392785345106142083}
   - {fileID: 5148173689609023267}
-  - {fileID: -2928335223117148907}
   - {fileID: -7593326916416039806}
   - {fileID: -4289440645098914275}
   - {fileID: -8485967619705570109}
+  - {fileID: 236034454710284169}
+  - {fileID: 1072039586251781869}
+  - {fileID: 106579247973664144}
   EditorParameters: []
   MasterBanks:
   - {fileID: -9077416285754737801}
   StringsBanks:
   - {fileID: 1788428219000422465}
-  cacheTime: 638109499060336853
+  cacheTime: 638110426006529059
   cacheVersion: 131601
+--- !u!114 &106579247973664144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Radici OUT
+  m_EditorClassIdentifier: 
+  Path: event:/Radici OUT
+  Guid:
+    Data1: -260845633
+    Data2: 1237962014
+    Data3: -1628751698
+    Data4: 573143010
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1068
+--- !u!114 &236034454710284169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Radici Player
+  m_EditorClassIdentifier: 
+  Path: event:/Radici Player
+  Guid:
+    Data1: -661920473
+    Data2: 1336351479
+    Data3: -1813843289
+    Data4: 1445282120
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 914
+--- !u!114 &1072039586251781869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/PietraGirevole
+  m_EditorClassIdentifier: 
+  Path: event:/PietraGirevole
+  Guid:
+    Data1: 15947101
+    Data2: 1195688803
+    Data3: 1594606228
+    Data4: 1574369661
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 734
 --- !u!114 &1392785345106142083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,7 +295,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 629
 --- !u!114 &1788428219000422465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,10 +311,34 @@ MonoBehaviour:
   Path: Assets/Audio/FMOD Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638109499060336853
+  lastModified: 638110426006529059
   FileSizes:
   - Name: Desktop
-    Value: 1056
+    Value: 1294
+  Exists: 1
+--- !u!114 &3440162311852856111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/OST/MenuTheme
+  m_EditorClassIdentifier: 
+  Name: MenuTheme
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 2119764333
+    data2: 696661478
+  Type: 0
+  IsGlobal: 0
+  Labels: []
   Exists: 1
 --- !u!114 &5148173689609023267
 MonoBehaviour:
@@ -280,10 +360,61 @@ MonoBehaviour:
     Data4: 281994401
   Banks:
   - {fileID: -9077416285754737801}
-  IsStream: 0
+  IsStream: 1
   Is3D: 0
-  IsOneShot: 1
-  Parameters: []
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 3440162311852856111}
+  - {fileID: 8590857142850217484}
+  - {fileID: 7193579762518053303}
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 73000
+--- !u!114 &7193579762518053303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/OST/Lvl
+  m_EditorClassIdentifier: 
+  Name: Lvl
+  StudioPath: 
+  Min: 1
+  Max: 3
+  Default: 2
+  ID:
+    data1: 4294118833
+    data2: 913421835
+  Type: 1
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &8590857142850217484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/OST/Cutoff
+  m_EditorClassIdentifier: 
+  Name: Cutoff
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3242294703
+    data2: 3492720204
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1

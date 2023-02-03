@@ -1,7 +1,8 @@
-using System.Collections;
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 using Utility.Patterns;
 
 public class Player : Singleton<Player>
@@ -16,8 +17,15 @@ public class Player : Singleton<Player>
     [SerializeField]
     [Tooltip("DO NOT TOUCH")]
     private LayerMask groundLayerMask, plantLayerMask;
+
     [SerializeField]
-    private Transform Filippo;
+    List<Transform> rayOrigins = new List<Transform>();
+
+    [Header("Graphics")]
+    [SerializeField]
+    GameObject graphics;
+    [SerializeField]
+    float turnDuration = .2f;
 
     private Vector2 move_direction;
 
@@ -27,22 +35,22 @@ public class Player : Singleton<Player>
     private Rigidbody2D player_rb;
     private CapsuleCollider2D player_capsule;
     private SoundWavesVFX wave;
-
     private FixedJoint2D fixedJoint;
-
     private Transform under_platform;
 
+    bool isGrounded = false;
     bool hasJump = false;
     float gravity = 9.81f;
     float verticalSpeed = 0f;
     private float easytimer = 1;
-    private float NTime = 0;
-    private bool is_sticking, playingSong = false;
+    private bool is_sticking, playingSong , isController = false;
     private string animMoveSpeed = "MoveSpeed";
     private string animRotation = "Rotation";
     private string animRotationDirection = "RotationDirection";
     private string animSticking = "IsSticking";
     private string animJumpStart = "JumpStart";
+    private string animVerticalSpeed = "VerticalSpeed";
+
 
     protected override void Awake()
     {
@@ -54,6 +62,8 @@ public class Player : Singleton<Player>
         wave = GetComponentInChildren<SoundWavesVFX>();
         playerAnimator = GetComponentInChildren<Animator>();
         fixedJoint = GetComponent<FixedJoint2D>();
+
+        CheckPoint.Set(transform.position);
     }
 
     private void OnEnable()
@@ -61,6 +71,21 @@ public class Player : Singleton<Player>
         player_move = player_controls.Player.Move;
         player_move.Enable();
     }
+
+    private void ChangeControlInput(InputAction.CallbackContext context)
+    {
+        if (context.control.device is Keyboard && isController)
+        {
+            isController = false;
+            GameManager.KeyboardOrController.Invoke(isController);
+        }
+        else if (context.control.device is Gamepad && !isController)
+        {
+            isController = true;
+            GameManager.KeyboardOrController.Invoke(isController);
+        }
+    }
+
 
     private void OnDisable()
     {
@@ -73,19 +98,6 @@ public class Player : Singleton<Player>
         {
             Flip();
         }
-        //if (playerAnimator.GetBool(animRotation))
-        //    transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0), 1);
-
-        NTime = playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-
-        if (is_facing_right && NTime >= 0.979f)
-        {
-            Filippo.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-        }
-        if (!is_facing_right && NTime >= 0.979f)
-        {
-            Filippo.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-        }
 
         if (playingSong)
         {
@@ -97,8 +109,6 @@ public class Player : Singleton<Player>
             }
         }
     }
-
-    bool isGrounded = false;
 
     Vector2 oldPosition, oldMove;
     bool shouldKickUpwards = false;
@@ -117,7 +127,7 @@ public class Player : Singleton<Player>
         }
 
         var delta = player_rb.position - oldPosition;
-        shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f);
+        shouldKickUpwards = !IsWalkingIntoWall() && (delta.x == 0f && oldMove.x != 0f);
         //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
 
         if (isGrounded)
@@ -131,8 +141,8 @@ public class Player : Singleton<Player>
             else
             {
                 verticalSpeed = 0f;
+                playerAnimator.SetBool(animJumpStart, false);
             }
-            playerAnimator.SetBool(animJumpStart, false);
         }
         else
         {
@@ -145,7 +155,7 @@ public class Player : Singleton<Player>
         if (IsTouchingRoof())
             verticalSpeed = -1f;
 
-        if (!is_sticking /*&& !playerAnimator.GetBool(animRotation)*/)
+        if (!is_sticking)
         {
             var kickBugFixMove = (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero);
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
@@ -166,9 +176,32 @@ public class Player : Singleton<Player>
         {
             oldMove = Vector2.zero;
         }
+        playerAnimator.SetFloat(animVerticalSpeed, verticalSpeed);
     }
 
     #region Collision Checks
+
+    bool IsWalkingIntoWall()
+    {
+        foreach (var origin in rayOrigins)
+        {
+            var offset = (is_facing_right ? Vector3.right : Vector3.left) * .5f;
+            var startPos = origin.position + offset;
+
+            //Debug.DrawLine(startPos, startPos + offset * .1f, Color.green, 1f);
+
+            var hit = Physics2D.Raycast(
+                startPos,
+                offset,
+                .1f,
+                groundLayerMask
+                );
+
+            if (hit.collider != null)
+                return true;
+        }
+        return false;
+    }
 
     private bool IsGrounded()
     {
@@ -202,6 +235,8 @@ public class Player : Singleton<Player>
 
     public void Move(InputAction.CallbackContext context)
     {
+        ChangeControlInput(context);
+
         move_direction.x = context.ReadValue<Vector2>().x;
         playerAnimator.SetInteger(animMoveSpeed, Mathf.Abs((int)move_direction.x));
     }
@@ -212,10 +247,15 @@ public class Player : Singleton<Player>
 
         playerAnimator.SetBool(animRotation, true);
         playerAnimator.SetBool(animRotationDirection, is_facing_right);
+
+        float targetRotation = is_facing_right ? 0f : 180f;
+        graphics.transform.DORotate(new Vector3(0f, targetRotation, 0f), turnDuration);
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
+        ChangeControlInput(context);
+
         if (context.performed && isGrounded)
         {
             hasJump = true;
@@ -228,8 +268,9 @@ public class Player : Singleton<Player>
 
     public void StickOnFloor(InputAction.CallbackContext context)
     {
-        RaycastHit2D hit;
+        ChangeControlInput(context);
 
+        RaycastHit2D hit;
         if (context.started && IsGrounded(out hit))
         {
             is_sticking = true;
@@ -250,13 +291,14 @@ public class Player : Singleton<Player>
             transform.parent = null;
             verticalSpeed = 0;
             playerAnimator.SetBool(animSticking, is_sticking);
-            //transform.rotation = Quaternion.Euler(0, is_facing_right ? 90 : 180, 0);
+            transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
             player_rb.MoveRotation(0);
         }
     }
 
     public void PlayGoodMusic(InputAction.CallbackContext context)
     {
+        ChangeControlInput(context);
         if (context.performed && !playingSong)
         {
             CheckActivable(true);
@@ -267,6 +309,7 @@ public class Player : Singleton<Player>
 
     public void PlayBadMusic(InputAction.CallbackContext context)
     {
+        ChangeControlInput(context);
         if (context.performed && !playingSong)
         {
             CheckActivable(false);
@@ -326,7 +369,7 @@ public class Player : Singleton<Player>
 
     void Death()
     {
-        transform.position = GameManager.Instance.lastCheckPointPos;
+        transform.position = CheckPoint.LastActivated;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
