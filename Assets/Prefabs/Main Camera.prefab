@@ -105,7 +105,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 120
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -169,5 +169,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  lerpInterpolation: 0.047
-  offset: {x: 3, y: 2}
+  interpolation: 2.76
+  offset: {x: 3, y: 4}
+  cameraDistance: 22

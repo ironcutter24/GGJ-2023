@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 891322571676631902}
   - component: {fileID: 891322571676631901}
   - component: {fileID: 289119906}
+  - component: {fileID: 1307776518204307873}
   - component: {fileID: 6337363626972003618}
   - component: {fileID: 8891598311050059419}
   m_Layer: 0
@@ -74,6 +75,24 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!255 &1307776518204307873
+FixedJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891322571676631890}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_EnableCollision: 1
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 1
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 20.3, y: 2.2}
+  m_DampingRatio: 0
+  m_Frequency: 0
 --- !u!114 &6337363626972003618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba5f42925029a84c8713fc417827dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement_speed: 12
+  movement_speed: 10
   jump_power: 27
   gravity_scale: 9
   song_radius: 5
