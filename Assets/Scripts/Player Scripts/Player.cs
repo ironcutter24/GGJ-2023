@@ -48,6 +48,8 @@ public class Player : Singleton<Player>
     private string animRotationDirection = "RotationDirection";
     private string animSticking = "IsSticking";
     private string animJumpStart = "JumpStart";
+    private string animVerticalSpeed = "VerticalSpeed";
+
 
     protected override void Awake()
     {
@@ -160,6 +162,7 @@ public class Player : Singleton<Player>
         {
             oldMove = Vector2.zero;
         }
+        playerAnimator.SetFloat(animVerticalSpeed, verticalSpeed);
     }
 
     bool IsWalkingIntoWall()
