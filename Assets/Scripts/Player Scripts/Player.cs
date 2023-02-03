@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utility.Patterns;
@@ -16,8 +15,12 @@ public class Player : Singleton<Player>
     [SerializeField]
     [Tooltip("DO NOT TOUCH")]
     private LayerMask groundLayerMask, plantLayerMask;
+
     [SerializeField]
-    private Transform Filippo;
+    GameObject graphics;
+
+    [SerializeField]
+    float turnDuration = .2f;
 
     private Vector2 move_direction;
 
@@ -27,9 +30,7 @@ public class Player : Singleton<Player>
     private Rigidbody2D player_rb;
     private CapsuleCollider2D player_capsule;
     private SoundWavesVFX wave;
-
     private FixedJoint2D fixedJoint;
-
     private Transform under_platform;
 
     bool hasJump = false;
@@ -54,6 +55,8 @@ public class Player : Singleton<Player>
         wave = GetComponentInChildren<SoundWavesVFX>();
         playerAnimator = GetComponentInChildren<Animator>();
         fixedJoint = GetComponent<FixedJoint2D>();
+
+        CheckPoint.Set(transform.position);
     }
 
     private void OnEnable()
@@ -72,19 +75,6 @@ public class Player : Singleton<Player>
         if (!is_facing_right && move_direction.x > 0f || is_facing_right && move_direction.x < 0f)
         {
             Flip();
-        }
-        //if (playerAnimator.GetBool(animRotation))
-        //    transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0), 1);
-
-        NTime = playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-
-        if (is_facing_right && NTime >= 0.979f)
-        {
-            Filippo.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-        }
-        if (!is_facing_right && NTime >= 0.979f)
-        {
-            Filippo.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
         }
 
         if (playingSong)
@@ -117,7 +107,7 @@ public class Player : Singleton<Player>
         }
 
         var delta = player_rb.position - oldPosition;
-        shouldKickUpwards = ( delta.x == 0f && oldMove.x != 0f );
+        shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f && verticalSpeed != 0f);
         //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
 
         if (isGrounded)
@@ -131,8 +121,8 @@ public class Player : Singleton<Player>
             else
             {
                 verticalSpeed = 0f;
-                playerAnimator.SetBool(animJumpStart, false);
             }
+            playerAnimator.SetBool(animJumpStart, false);
         }
         else
         {
@@ -147,7 +137,7 @@ public class Player : Singleton<Player>
 
         if (!is_sticking /*&& !playerAnimator.GetBool(animRotation)*/)
         {
-            var kickBugFixMove = ( shouldKickUpwards ? Vector2.up * .1f : Vector2.zero );
+            var kickBugFixMove = (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero);
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
             oldPosition = player_rb.position;
             oldMove = move_direction;
@@ -212,6 +202,9 @@ public class Player : Singleton<Player>
 
         playerAnimator.SetBool(animRotation, true);
         playerAnimator.SetBool(animRotationDirection, is_facing_right);
+
+        float targetRotation = is_facing_right ? 0f : 180f;
+        graphics.transform.DORotate(new Vector3(0f, targetRotation, 0f), turnDuration);
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -223,16 +216,13 @@ public class Player : Singleton<Player>
         }
 
         if (context.canceled && verticalSpeed > 0f)
-        {
             verticalSpeed *= .5f;
-            playerAnimator.SetBool(animJumpStart, true);
-        }
     }
 
+    //Rigidbody2D linkedPlatformBody = null;
     public void StickOnFloor(InputAction.CallbackContext context)
     {
         RaycastHit2D hit;
-
         if (context.started && IsGrounded(out hit))
         {
             is_sticking = true;
@@ -244,6 +234,13 @@ public class Player : Singleton<Player>
             catch { }
             transform.SetParent(under_platform);
             playerAnimator.SetBool(animSticking, is_sticking);
+
+            //if (hit.collider.gameObject.CompareTag("RotatingPlatform"))
+            //{
+            //    var comp = hit.collider.gameObject.GetComponentInParent<Rigidbody2D>();
+            //    LinkPlatform(comp);
+            //    linkedPlatformBody = comp;
+            //}
         }
 
         if (context.canceled)
@@ -253,8 +250,10 @@ public class Player : Singleton<Player>
             transform.parent = null;
             verticalSpeed = 0;
             playerAnimator.SetBool(animSticking, is_sticking);
-            //transform.rotation = Quaternion.Euler(0, is_facing_right ? 90 : 180, 0);
+            transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
             player_rb.MoveRotation(0);
+
+            //UnlinkPlatform(linkedPlatformBody);
         }
     }
 
@@ -329,7 +328,7 @@ public class Player : Singleton<Player>
 
     void Death()
     {
-        transform.position = GameManager.Instance.lastCheckPointPos;
+        transform.position = CheckPoint.LastActivated;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
