@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
+using Utility.Patterns;
 
-public class Player : MonoBehaviour
+public class Player : Singleton<Player>
 {
     public bool is_facing_right { get; private set; } = true;
 
@@ -21,13 +19,16 @@ public class Player : MonoBehaviour
 
     private Vector2 move_direction;
 
-    private SoundWavesVFX wave;
-    private Rigidbody2D player_rb;
-    private Animator playerAnimator;
-    private InputAction player_move;
-    private Transform under_platform;
     private PlayerControls player_controls;
+    private InputAction player_move;
+    private Animator playerAnimator;
+    private Rigidbody2D player_rb;
     private CapsuleCollider2D player_capsule;
+    private SoundWavesVFX wave;
+
+    private FixedJoint2D fixedJoint;
+
+    private Transform under_platform;
 
     bool hasJump = false;
     float gravity = 9.81f;
@@ -40,15 +41,16 @@ public class Player : MonoBehaviour
     private string animSticking = "IsSticking";
     private string animJumpStart = "JumpStart";
 
-    //private string animStartSticking = "StartStiking";
-
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         player_controls = new PlayerControls();
         player_rb = GetComponent<Rigidbody2D>();
         player_capsule = GetComponent<CapsuleCollider2D>();
         wave = GetComponentInChildren<SoundWavesVFX>();
         playerAnimator = GetComponentInChildren<Animator>();
+        fixedJoint = GetComponent<FixedJoint2D>();
     }
 
     private void OnEnable()
@@ -83,30 +85,40 @@ public class Player : MonoBehaviour
         }
     }
 
-    Vector3 oldPlatformPos;
+    bool isGrounded = false;
+
     Vector2 oldPosition, oldMove;
     bool shouldKickUpwards = false;
     private void FixedUpdate()
     {
-        var delta = player_rb.position - oldPosition;
-        shouldKickUpwards = ( delta.x == 0f && oldMove.x != 0f );
+        RaycastHit2D hit;
+        isGrounded = IsGrounded(out hit);
 
+        if (hit.collider != null && hit.collider.CompareTag("MovingPlatform"))
+        {
+            LinkPlatform(hit.collider.gameObject.GetComponentInParent<Rigidbody2D>());
+        }
+        else
+        {
+            UnlinkPlatform();
+        }
+
+        var delta = player_rb.position - oldPosition;
+        shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f);
         //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
 
-        Debug.LogWarning("HasPlatform: " + movingPlatform != null);
-
-        if (movingPlatform != null)
-            oldPlatformPos = movingPlatform.transform.position;
-
-        if (IsGrounded())
+        if (isGrounded)
         {
             if (hasJump)
             {
                 verticalSpeed = jump_power;
                 hasJump = false;
+                UnlinkPlatform();
             }
             else
+            {
                 verticalSpeed = 0f;
+            }
             playerAnimator.SetBool(animJumpStart, false);
         }
         else
@@ -120,20 +132,47 @@ public class Player : MonoBehaviour
         if (IsTouchingRoof())
             verticalSpeed = -1f;
 
-        if (!is_sticking && !playerAnimator.GetBool(animRotation))
+        if (!is_sticking /*&& !playerAnimator.GetBool(animRotation)*/)
         {
+            var kickBugFixMove = (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero);
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
             oldPosition = player_rb.position;
             oldMove = move_direction;
 
-            var platformFollowMove = movingPlatform != null ? (Vector2)( movingPlatform.transform.position - oldPlatformPos ) : Vector2.zero;
-            var kickBugFixMove = ( shouldKickUpwards ? Vector2.up * .1f : Vector2.zero );
-            player_rb.MovePosition(player_rb.position + move * Time.deltaTime + platformFollowMove + kickBugFixMove);
+            if (fixedJoint.connectedBody == null)
+            {
+                player_rb.MovePosition(player_rb.position + move * Time.deltaTime + kickBugFixMove);
+            }
+            else
+            {
+                move.x = -move.x;
+                fixedJoint.anchor = fixedJoint.anchor + move * Time.deltaTime;
+            }
         }
         else
         {
             oldMove = Vector2.zero;
         }
+    }
+
+    public void LinkPlatform(Rigidbody2D rb)
+    {
+        fixedJoint.autoConfigureConnectedAnchor = true;
+        fixedJoint.connectedBody = rb;
+        fixedJoint.enabled = true;
+        fixedJoint.autoConfigureConnectedAnchor = false;
+    }
+
+    public void UnlinkPlatform(/*Rigidbody2D rb*/)
+    {
+        //if (fixedJoint.connectedBody == rb)
+        //{
+        //    fixedJoint.enabled = false;
+        //    fixedJoint.connectedBody = null;
+        //}
+
+        fixedJoint.enabled = false;
+        fixedJoint.connectedBody = null;
     }
 
     #region Collision Checks
@@ -184,11 +223,11 @@ public class Player : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (IsGrounded())
-            playerAnimator.SetBool(animJumpStart, true);
-
-        if (context.performed)
+        if (context.performed && isGrounded)
+        {
             hasJump = true;
+            playerAnimator.SetBool(animJumpStart, true);
+        }
 
         if (context.canceled && verticalSpeed > 0f)
             verticalSpeed *= .5f;
@@ -210,7 +249,6 @@ public class Player : MonoBehaviour
             transform.SetParent(under_platform);
             playerAnimator.SetBool(animSticking, is_sticking);
         }
-
 
         if (context.canceled)
         {
@@ -271,34 +309,11 @@ public class Player : MonoBehaviour
         transform.position = GameManager.Instance.lastCheckPointPos;
     }
 
-    MovingPlatform movingPlatform = null;
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
             Death();
-        }
-
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
-        {
-            RaycastHit2D hit;
-            if (IsGrounded(out hit))
-            {
-                var comp = hit.collider.gameObject.GetComponent<MovingPlatform>();
-                if (comp != null)
-                {
-                    movingPlatform = comp;
-                    oldPlatformPos = movingPlatform.transform.position;
-                }
-            }
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
-        {
-            movingPlatform = null;
         }
     }
 
