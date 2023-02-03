@@ -43,7 +43,7 @@ public class Player : Singleton<Player>
     float gravity = 9.81f;
     float verticalSpeed = 0f;
     private float easytimer = 1;
-    private bool is_sticking, playingSong , isController = false;
+    private bool is_sticking, playingSong, isController = false;
     private string animMoveSpeed = "MoveSpeed";
     private string animRotation = "Rotation";
     private string animRotationDirection = "RotationDirection";
@@ -127,7 +127,7 @@ public class Player : Singleton<Player>
         }
 
         var delta = player_rb.position - oldPosition;
-        shouldKickUpwards = !IsWalkingIntoWall() && (delta.x == 0f && oldMove.x != 0f);
+        shouldKickUpwards = !IsWalkingIntoWall() && ( delta.x == 0f && oldMove.x != 0f );
         //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
 
         if (isGrounded)
@@ -182,7 +182,7 @@ public class Player : Singleton<Player>
     {
         foreach (var origin in rayOrigins)
         {
-            var offset = (is_facing_right ? Vector3.right : Vector3.left) * .5f;
+            var offset = ( is_facing_right ? Vector3.right : Vector3.left ) * .5f;
             var startPos = origin.position + offset;
 
             //Debug.DrawLine(startPos, startPos + offset * .1f, Color.green, 1f);
@@ -244,8 +244,11 @@ public class Player : Singleton<Player>
     {
         is_facing_right = !is_facing_right;
 
-        playerAnimator.SetBool(animRotation, true);
-        playerAnimator.SetBool(animRotationDirection, is_facing_right);
+        if (isGrounded)
+        {
+            playerAnimator.SetBool(animRotation, true);
+            playerAnimator.SetBool(animRotationDirection, is_facing_right);
+        }
 
         float targetRotation = is_facing_right ? 0f : 180f;
         graphics.transform.DORotate(new Vector3(0f, targetRotation, 0f), turnDuration);
