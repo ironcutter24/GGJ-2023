@@ -233,7 +233,6 @@ public class Player : Singleton<Player>
             verticalSpeed *= .5f;
     }
 
-    /*
     public void StickOnFloor(InputAction.CallbackContext context)
     {
         RaycastHit2D hit;
@@ -262,7 +261,6 @@ public class Player : Singleton<Player>
             player_rb.MoveRotation(0);
         }
     }
-    */
 
     public void PlayGoodMusic(InputAction.CallbackContext context)
     {
