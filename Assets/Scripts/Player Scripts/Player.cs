@@ -16,6 +16,8 @@ public class Player : Singleton<Player>
     [SerializeField]
     [Tooltip("DO NOT TOUCH")]
     private LayerMask groundLayerMask, plantLayerMask;
+    [SerializeField]
+    private Transform Filippo;
 
     private Vector2 move_direction;
 
@@ -34,6 +36,7 @@ public class Player : Singleton<Player>
     float gravity = 9.81f;
     float verticalSpeed = 0f;
     private float easytimer = 1;
+    private float NTime = 0;
     private bool is_sticking, playingSong = false;
     private string animMoveSpeed = "MoveSpeed";
     private string animRotation = "Rotation";
@@ -70,9 +73,19 @@ public class Player : Singleton<Player>
         {
             Flip();
         }
-
         //if (playerAnimator.GetBool(animRotation))
         //    transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0), 1);
+
+        NTime = playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+        if (is_facing_right && NTime >= 0.979f)
+        {
+            Filippo.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+        }
+        if (!is_facing_right && NTime >= 0.979f)
+        {
+            Filippo.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+        }
 
         if (playingSong)
         {
@@ -153,26 +166,6 @@ public class Player : Singleton<Player>
         {
             oldMove = Vector2.zero;
         }
-    }
-
-    public void LinkPlatform(Rigidbody2D rb)
-    {
-        fixedJoint.autoConfigureConnectedAnchor = true;
-        fixedJoint.connectedBody = rb;
-        fixedJoint.enabled = true;
-        fixedJoint.autoConfigureConnectedAnchor = false;
-    }
-
-    public void UnlinkPlatform(/*Rigidbody2D rb*/)
-    {
-        //if (fixedJoint.connectedBody == rb)
-        //{
-        //    fixedJoint.enabled = false;
-        //    fixedJoint.connectedBody = null;
-        //}
-
-        fixedJoint.enabled = false;
-        fixedJoint.connectedBody = null;
     }
 
     #region Collision Checks
@@ -257,7 +250,7 @@ public class Player : Singleton<Player>
             transform.parent = null;
             verticalSpeed = 0;
             playerAnimator.SetBool(animSticking, is_sticking);
-            transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
+            //transform.rotation = Quaternion.Euler(0, is_facing_right ? 90 : 180, 0);
             player_rb.MoveRotation(0);
         }
     }
@@ -299,6 +292,33 @@ public class Player : Singleton<Player>
                     comp.Retreat_Root();
             }
             catch { }
+        }
+    }
+
+    #endregion
+
+    #region Platform linking
+
+    public void LinkPlatform(Rigidbody2D rb)
+    {
+        fixedJoint.autoConfigureConnectedAnchor = true;
+        fixedJoint.connectedBody = rb;
+        fixedJoint.enabled = true;
+        fixedJoint.autoConfigureConnectedAnchor = false;
+    }
+
+    public void UnlinkPlatform()
+    {
+        fixedJoint.enabled = false;
+        fixedJoint.connectedBody = null;
+    }
+
+    public void UnlinkPlatform(Rigidbody2D rb)
+    {
+        if (fixedJoint.connectedBody == rb)
+        {
+            fixedJoint.enabled = false;
+            fixedJoint.connectedBody = null;
         }
     }
 
