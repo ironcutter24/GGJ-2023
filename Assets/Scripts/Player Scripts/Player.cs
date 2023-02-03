@@ -68,7 +68,6 @@ public class Player : MonoBehaviour
         {
             Flip();
         }
-
         //if (playerAnimator.GetBool(animRotation))
         //    transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, is_facing_right ? 0 : 180, 0), 1);
 
@@ -219,7 +218,7 @@ public class Player : MonoBehaviour
             transform.parent = null;
             verticalSpeed = 0;
             playerAnimator.SetBool(animSticking, is_sticking);
-            transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
+            //transform.rotation = Quaternion.Euler(0, is_facing_right ? 90 : 180, 0);
             player_rb.MoveRotation(0);
         }
     }

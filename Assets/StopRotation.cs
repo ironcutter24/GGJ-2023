@@ -19,6 +19,7 @@ public class StopRotation : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("Rotation", false);
+        //animator.gameObject.transform.rotation = Quaternion.Euler(0,-90,0);
     }
 
     // OnStateMove is called before OnStateMove is called on any state inside this state machine
