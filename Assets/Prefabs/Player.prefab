@@ -285,7 +285,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1536
   graphics: {fileID: 6051270404718489390}
-  rotationSpeed: 600
+  turnDuration: 0.5
 --- !u!1001 &3339667520933380182
 PrefabInstance:
   m_ObjectHideFlags: 0

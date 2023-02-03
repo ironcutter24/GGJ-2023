@@ -121,8 +121,8 @@ public class Player : Singleton<Player>
             else
             {
                 verticalSpeed = 0f;
+                playerAnimator.SetBool(animJumpStart, false);
             }
-            playerAnimator.SetBool(animJumpStart, false);
         }
         else
         {
