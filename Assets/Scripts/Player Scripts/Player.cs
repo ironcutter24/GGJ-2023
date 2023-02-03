@@ -43,6 +43,8 @@ public class Player : Singleton<Player>
     private string animRotationDirection = "RotationDirection";
     private string animSticking = "IsSticking";
     private string animJumpStart = "JumpStart";
+     public Fade fade;
+
 
     protected override void Awake()
     {
@@ -333,6 +335,7 @@ public class Player : Singleton<Player>
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
+            fade.FadeOut();
             Death();
         }
     }
