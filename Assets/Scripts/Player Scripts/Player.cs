@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utility.Patterns;
-using static UnityEngine.UI.Image;
 
 public class Player : Singleton<Player>
 {
@@ -38,6 +37,7 @@ public class Player : Singleton<Player>
     private FixedJoint2D fixedJoint;
     private Transform under_platform;
 
+    bool isGrounded = false;
     bool hasJump = false;
     float gravity = 9.81f;
     float verticalSpeed = 0f;
@@ -92,8 +92,6 @@ public class Player : Singleton<Player>
         }
     }
 
-    bool isGrounded = false;
-
     Vector2 oldPosition, oldMove;
     bool shouldKickUpwards = false;
     private void FixedUpdate()
@@ -139,7 +137,7 @@ public class Player : Singleton<Player>
         if (IsTouchingRoof())
             verticalSpeed = -1f;
 
-        if (!is_sticking /*&& !playerAnimator.GetBool(animRotation)*/)
+        if (!is_sticking)
         {
             var kickBugFixMove = (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero);
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
@@ -162,6 +160,8 @@ public class Player : Singleton<Player>
         }
     }
 
+    #region Collision Checks
+
     bool IsWalkingIntoWall()
     {
         foreach (var origin in rayOrigins)
@@ -183,8 +183,6 @@ public class Player : Singleton<Player>
         }
         return false;
     }
-
-    #region Collision Checks
 
     private bool IsGrounded()
     {
