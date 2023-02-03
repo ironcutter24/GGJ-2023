@@ -117,7 +117,7 @@ public class Player : Singleton<Player>
         }
 
         var delta = player_rb.position - oldPosition;
-        shouldKickUpwards = (delta.x == 0f && oldMove.x != 0f);
+        shouldKickUpwards = ( delta.x == 0f && oldMove.x != 0f );
         //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
 
         if (isGrounded)
@@ -131,8 +131,8 @@ public class Player : Singleton<Player>
             else
             {
                 verticalSpeed = 0f;
+                playerAnimator.SetBool(animJumpStart, false);
             }
-            playerAnimator.SetBool(animJumpStart, false);
         }
         else
         {
@@ -147,7 +147,7 @@ public class Player : Singleton<Player>
 
         if (!is_sticking /*&& !playerAnimator.GetBool(animRotation)*/)
         {
-            var kickBugFixMove = (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero);
+            var kickBugFixMove = ( shouldKickUpwards ? Vector2.up * .1f : Vector2.zero );
             Vector2 move = new Vector2(move_direction.x * movement_speed, verticalSpeed);
             oldPosition = player_rb.position;
             oldMove = move_direction;
@@ -223,7 +223,10 @@ public class Player : Singleton<Player>
         }
 
         if (context.canceled && verticalSpeed > 0f)
+        {
             verticalSpeed *= .5f;
+            playerAnimator.SetBool(animJumpStart, true);
+        }
     }
 
     public void StickOnFloor(InputAction.CallbackContext context)
