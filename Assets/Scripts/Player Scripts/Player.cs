@@ -347,7 +347,7 @@ public class Player : Singleton<Player>
         if (context.performed && !playingSong)
         {
             CheckActivable(true);
-            print("GOOD SONG");
+            //print("GOOD SONG");
             playingSong = true;
         }
     }
@@ -358,7 +358,7 @@ public class Player : Singleton<Player>
         if (context.performed && !playingSong)
         {
             CheckActivable(false);
-            print("BAD SONG");
+            //print("BAD SONG");
             playingSong = true;
         }
     }
@@ -419,7 +419,7 @@ public class Player : Singleton<Player>
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Obj: " + collision.gameObject.name + "\tLayer: " + collision.gameObject.layer);
+        //Debug.Log("Obj: " + collision.gameObject.name + "\tLayer: " + collision.gameObject.layer);
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
@@ -429,7 +429,7 @@ public class Player : Singleton<Player>
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Obj: " + collision.gameObject.name + "\tLayer: " + collision.gameObject.layer);
+        //Debug.Log("Obj: " + collision.gameObject.name + "\tLayer: " + collision.gameObject.layer);
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {

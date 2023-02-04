@@ -47,6 +47,11 @@ public class AudioManager : Singleton<AudioManager>
         StartCoroutine(_RhythmUpdate());
     }
 
+    public void SetTrackIndex(int trackIndex)
+    {
+        FMODEventInstance.setParameterByName("Lvl", trackIndex);
+    }
+
     IEnumerator _RhythmUpdate()
     {
         while (true)
