@@ -1,9 +1,6 @@
 using DG.Tweening;
-<<<<<<< HEAD
-=======
 using FMODUnity;
 using System.Collections;
->>>>>>> main
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -210,20 +207,17 @@ public class Player : Singleton<Player>
         }
     }
 
-<<<<<<< HEAD
-=======
     [SerializeField]
     float stepSoundDuration = .2f;
     IEnumerator _SoundStepsLoop()
     {
         while (isGrounded && !Mathf.Approximately(move_direction.x, 0f))
         {
-            stepsSFX.Play();
+            //stepsSFX.Play();
             yield return new WaitForSeconds(stepSoundDuration);
         }
     }
 
->>>>>>> main
     #region Collision Checks
 
     bool IsWalkingIntoWall()
@@ -321,7 +315,7 @@ public class Player : Singleton<Player>
     {
         verticalSpeed = jump_power;
         hasJump = false;
-        jumpSFX.Play();
+        //jumpSFX.Play();
     }
 
     public void StickOnFloor(InputAction.CallbackContext context)
