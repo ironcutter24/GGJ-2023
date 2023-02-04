@@ -54,6 +54,8 @@ public class AudioManager : Singleton<AudioManager>
     {
         FMODEventInstance.setParameterByName("Lvl", 1);
         FMODEventInstance.setParameterByName("MenuTheme", 1f);
+
+        Cursor.visible = false;
     }
 
     public void GoToMenu()
@@ -63,6 +65,7 @@ public class AudioManager : Singleton<AudioManager>
         StopCoroutine(rhythmCoroutine);
         rhythmCoroutine = null;
 
+        Cursor.visible = true;
         Start();
     }
 
