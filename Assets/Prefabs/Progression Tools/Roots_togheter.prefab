@@ -80,7 +80,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   maxLenght: 10
-  minLenght: 2
+  minLenght: 0.6
   moveAtStart: 0
 --- !u!114 &96415202249282265
 MonoBehaviour:

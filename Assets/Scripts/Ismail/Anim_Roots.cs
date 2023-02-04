@@ -4,7 +4,6 @@ using DG.Tweening.Plugins.Options;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Anim_Roots : MonoBehaviour
 {
@@ -15,7 +14,10 @@ public class Anim_Roots : MonoBehaviour
     LayerMask groundMask;
 
     [SerializeField, Range(1, 12)]
-    private float maxLenght, minLenght = 8;
+    private float maxLenght;
+
+    [SerializeField, Range(0, 2)]
+    private float minLenght = 1;
 
     [SerializeField]
     private bool moveAtStart;
