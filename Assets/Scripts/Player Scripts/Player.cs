@@ -1,5 +1,6 @@
 using DG.Tweening;
 using FMODUnity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -204,11 +205,15 @@ public class Player : Singleton<Player>
         }
     }
 
-    void Jump()
+    [SerializeField]
+    float stepSoundDuration = .2f;
+    IEnumerator _SoundStepsLoop()
     {
-        verticalSpeed = jump_power;
-        hasJump = false;
-        jumpSFX.Play();
+        while (isGrounded && !Mathf.Approximately(move_direction.x, 0f))
+        {
+            stepsSFX.Play();
+            yield return new WaitForSeconds(stepSoundDuration);
+        }
     }
 
     #region Collision Checks
@@ -269,6 +274,9 @@ public class Player : Singleton<Player>
     {
         ChangeControlInput(context);
 
+        if (isGrounded && Mathf.Approximately(move_direction.x, 0f))
+            StartCoroutine(_SoundStepsLoop());
+
         move_direction.x = context.ReadValue<Vector2>().x;
         playerAnimator.SetInteger(animMoveSpeed, Mathf.Abs((int)move_direction.x));
     }
@@ -299,6 +307,13 @@ public class Player : Singleton<Player>
 
         if (context.canceled && verticalSpeed > 0f)
             verticalSpeed *= .5f;
+    }
+
+    void Jump()
+    {
+        verticalSpeed = jump_power;
+        hasJump = false;
+        jumpSFX.Play();
     }
 
     public void StickOnFloor(InputAction.CallbackContext context)
