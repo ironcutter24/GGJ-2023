@@ -141,9 +141,42 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""left"",
+                    ""name"": ""right"",
                     ""id"": ""7c390210-4f33-46c7-843d-487b24a23edc"",
-                    ""path"": ""<Gamepad>/leftStick/x"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": ""Normalize(min=-1,max=1)"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""04319d58-2dae-4c32-942d-a8da909ad780"",
+                    ""path"": ""<SwitchProControllerHID>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": ""Normalize(min=-1,max=1)"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""2f221613-76bd-4ab6-aabd-7f38c698b8bc"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": ""Normalize(min=-1,max=1)"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""7b0529b3-6f98-4b9c-90c9-1d7eda9117be"",
+                    ""path"": ""<SwitchProControllerHID>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": ""Normalize(min=-1,max=1)"",
                     ""groups"": ""Gamepad"",
