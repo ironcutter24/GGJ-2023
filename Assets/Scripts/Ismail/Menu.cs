@@ -1,32 +1,40 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private Vector3 originalScale;
     [SerializeField]
-    private Transform player;
+    private GameObject ScaleText;
+    [SerializeField]
+    private string NextScene;
+    private Vector3 scaleTo;
+    Sequence mySequence;
     private void Start()
     {
-        //Time.timeScale = 0f;
+        originalScale = ScaleText.transform.localScale;
+        scaleTo = originalScale * 1.1f;
+        mySequence = DOTween.Sequence();
+        mySequence.Append(ScaleText.transform.DOScale(scaleTo, 1.1f)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(int.MaxValue, LoopType.Yoyo));
+    }
+    void OnScale()
+    {
+        ScaleText.transform.DOScale(scaleTo, 1.1f)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
     }
     public void StartGame()
     {
-        gameObject.SetActive(false);
-        // Time.timeScale = 1f;
+        SceneManager.LoadScene(NextScene);
+     
+        mySequence.Kill();
     }
 
     public void QuitGame()
     {
-        Debug.Log("Quitting");
         Application.Quit();
-    }
-
-    public void CommandsList()
-    {
-        //TODO
     }
 }
