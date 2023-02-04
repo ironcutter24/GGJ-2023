@@ -76,6 +76,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fe1886ad5ed09546af1f9467728139a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  growSFX: {fileID: 4834855945693633806}
+  shrinkSFX: {fileID: 1658555279508591842}
   graphics: {fileID: 6840270756288085030}
   groundMask:
     serializedVersion: 2
