@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6895706104363580939}
   - component: {fileID: -3370351840301605163}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: AudioListener
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 561a70ffabdc58f4183b104317ffed18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioListener: {fileID: -3370351840301605163}
   target: {fileID: 0}
   interpolation: 2.76
   offset: {x: 3, y: 4}

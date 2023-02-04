@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class CameraFollow : MonoBehaviour
 {
+    [SerializeField]
+    StudioListener audioListener;
+    [Space]
     [SerializeField]
     Player target;
 
@@ -31,6 +35,7 @@ public class CameraFollow : MonoBehaviour
     void LateUpdate()
     {
         SetTargetPosition2D(Vector3.Lerp(transform.position, TargetPosition, interpolation * Time.deltaTime));
+        audioListener.transform.localPosition = Vector3.forward * cameraDistance;
     }
 
     void SetTargetPosition2D(Vector2 newPosition)
