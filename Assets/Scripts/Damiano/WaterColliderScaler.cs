@@ -30,7 +30,8 @@ public class WaterColliderScaler : MonoBehaviour
     void FitCollider()
     {
         var size = (Vector2)waterVolume.Dimensions;
-        boxCollider.size = size - Vector2.one * .2f;
+
+        boxCollider.size = size;
         boxCollider.offset = (size - Vector2.one) * .5f;
     }
 }

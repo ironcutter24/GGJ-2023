@@ -1,5 +1,4 @@
 using DG.Tweening;
-using FMODUnity;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,9 +9,6 @@ public class Player : Singleton<Player>
 {
     public bool is_facing_right { get; private set; } = true;
 
-    [SerializeField]
-    StudioEventEmitter stepsSFX, jumpSFX, landingSFX, stickingSFX, deathOnSpikesSFX;
-    [Space]
     [SerializeField]
     private float movement_speed, jump_power, gravity_scale = 1f, song_radius = 5f, song_duration = .6f;
     [SerializeField]
@@ -54,6 +50,7 @@ public class Player : Singleton<Player>
     private string animRotationDirection = "RotationDirection";
     private string animSticking = "IsSticking";
     private string animJumpStart = "JumpStart";
+    private string animVerticalSpeed = "VerticalSpeed";
 
     private bool isGrounded = false;
     private bool wasGrounded = false;
@@ -132,8 +129,7 @@ public class Player : Singleton<Player>
         RaycastHit2D hit;
         isGrounded = IsGrounded(out hit);
 
-        if (!wasGrounded && isGrounded)
-            landingSFX.Play();
+        //Debug.LogWarning("Can jump: " + canJump);
 
         if (!isGrounded && wasGrounded && verticalSpeed <= 0f)
             SetCoyoteTime();
@@ -149,12 +145,14 @@ public class Player : Singleton<Player>
 
         var delta = player_rb.position - oldPosition;
         shouldKickUpwards = !IsWalkingIntoWall() && (delta.x == 0f && oldMove.x != 0f);
+        //Debug.LogWarning("Kick: " + shouldKickUpwards + "\tDelta: " + delta + "\tMove: " + oldMove);
 
         if (isGrounded)
         {
             if (hasJump)
             {
-                Jump();
+                verticalSpeed = jump_power;
+                hasJump = false;
                 UnlinkPlatform();
             }
             else
@@ -167,9 +165,10 @@ public class Player : Singleton<Player>
         {
             if (hasJump && canJump)
             {
-                Jump();
-                UnlinkPlatform();
+                verticalSpeed = jump_power;
+                hasJump = false;
                 coyoteTimer.Set(0f);
+                UnlinkPlatform();
             }
             else
             {
@@ -204,13 +203,6 @@ public class Player : Singleton<Player>
         {
             oldMove = Vector2.zero;
         }
-    }
-
-    void Jump()
-    {
-        verticalSpeed = jump_power;
-        hasJump = false;
-        jumpSFX.Play();
     }
 
     #region Collision Checks
@@ -318,7 +310,6 @@ public class Player : Singleton<Player>
                 player_rb.simulated = false;
                 is_sticking = true;
 
-                stickingSFX.Play();
                 playerAnimator.SetBool(animSticking, is_sticking);
             }
             catch { }
@@ -358,6 +349,7 @@ public class Player : Singleton<Player>
         if (context.performed && !playingSong)
         {
             CheckActivable(true);
+            //print("GOOD SONG");
             playingSong = true;
         }
     }
@@ -368,6 +360,7 @@ public class Player : Singleton<Player>
         if (context.performed && !playingSong)
         {
             CheckActivable(false);
+            //print("BAD SONG");
             playingSong = true;
         }
     }
@@ -428,18 +421,21 @@ public class Player : Singleton<Player>
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //Debug.Log("Obj: " + collision.gameObject.name + "\tLayer: " + collision.gameObject.layer);
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
-            deathOnSpikesSFX.Play();
+            fade.FadeOut();
             Death();
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Debug.Log("Obj: " + collision.gameObject.name + "\tLayer: " + collision.gameObject.layer);
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
-            deathOnSpikesSFX.Play();
             Death();
         }
     }

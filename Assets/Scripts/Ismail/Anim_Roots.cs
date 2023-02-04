@@ -1,16 +1,12 @@
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
-using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Anim_Roots : MonoBehaviour
 {
-    [SerializeField]
-    StudioEventEmitter growSFX, shrinkSFX;
-    [Space]
     [SerializeField]
     private GameObject graphics;
 
@@ -79,12 +75,11 @@ public class Anim_Roots : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * .5f, transform.right, maxLenght - 1, groundMask);
 
-        if (hit.collider != null)
+        if(hit.collider != null)
         {
             Collider.enabled = true;
             isRetreat = isAhead = true;
 
-            growSFX.Play();
             myTween = graphics.transform.DOLocalMoveX(maxLenght, AudioManager.RootsForwardSpeed)
                 .OnUpdate(CollUpdate)
                 .OnComplete(() => isRetreat = false)
@@ -98,6 +93,8 @@ public class Anim_Roots : MonoBehaviour
                 .OnComplete(() => myTween = graphics.transform.DOLocalMoveX(0f, AudioManager.RootsBackwardSpeed)
                 .SetSpeedBased())
                 .SetSpeedBased();
+            
+            // Failed start animation
         }
     }
 
@@ -108,7 +105,6 @@ public class Anim_Roots : MonoBehaviour
             isRetreat = isAhead = true;
             IsLockInWall = false;
 
-            shrinkSFX.Play();
             myTween = graphics.transform.DOLocalMoveX(0f, AudioManager.RootsBackwardSpeed)
                 .OnUpdate(CollUpdateBack)
                 .OnComplete(() => Collider.enabled = false)
