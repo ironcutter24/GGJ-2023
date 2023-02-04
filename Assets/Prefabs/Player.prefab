@@ -275,6 +275,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba5f42925029a84c8713fc417827dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stepsSFX: {fileID: 8965182988423854884}
+  jumpSFX: {fileID: 8785642247999754510}
+  landingSFX: {fileID: 8405513085613291405}
+  stickingSFX: {fileID: 8684502681173433405}
+  deathOnSpikesSFX: {fileID: 4574741275112152773}
   movement_speed: 10
   jump_power: 27
   gravity_scale: 9
@@ -337,10 +342,73 @@ Transform:
   - {fileID: 9061391399786490671}
   - {fileID: 1533673530340524965}
   - {fileID: 1957833597227652546}
+  - {fileID: 4682724040548349753}
   - {fileID: 5233038205840848580}
   m_Father: {fileID: 891322571676631902}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2307602393544492196
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4682724040548349753}
+  - component: {fileID: 8684502681173433405}
+  m_Layer: 0
+  m_Name: StickingSFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4682724040548349753
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2307602393544492196}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8888158611301497071}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8684502681173433405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2307602393544492196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -661920473
+      Data2: 1336351479
+      Data3: -1813843289
+      Data4: 1445282120
+    Path: event:/Radici Player
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &3440207371343171591
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +482,7 @@ GameObject:
   - component: {fileID: 5233038205840848580}
   - component: {fileID: 4574741275112152773}
   m_Layer: 0
-  m_Name: DeathSFX
+  m_Name: DeathOnSpikesSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -433,7 +501,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8888158611301497071}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4574741275112152773
 MonoBehaviour:

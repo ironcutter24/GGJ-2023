@@ -1,9 +1,13 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class RhythmObject : MonoBehaviour
 {
+    [SerializeField]
+    StudioEventEmitter rotationSFX;
+    [Space]
     [SerializeField]
     bool isLoop = true;
 
@@ -54,6 +58,7 @@ public abstract class RhythmObject : MonoBehaviour
             if (isLoop)
                 UpdateCurrentIndex();
 
+            rotationSFX.Play();
             Move();
         }
         else
