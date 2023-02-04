@@ -26,7 +26,7 @@ public class Anim_Roots : MonoBehaviour
     private bool isAhead, isRetreat;
 
     TweenerCore<Vector3, Vector3, VectorOptions> myTween;
-    private RhythmObject attachedPlatform = null;
+    private List<RhythmObject> attachedPlatforms = new List<RhythmObject>();
 
     public bool IsLockInWall { get; private set; } = false;
 
@@ -110,11 +110,14 @@ public class Anim_Roots : MonoBehaviour
                 .OnComplete(() => Collider.enabled = false)
                 .SetSpeedBased();
 
-            if (attachedPlatform != null)
+            if (attachedPlatforms.Count > 0)
             {
-                Debug.Log("Detaching root...");
-                attachedPlatform.DetachRoot(this);
-                attachedPlatform = null;
+                Debug.Log("Detaching root from platforms...");
+                foreach (var p in attachedPlatforms)
+                {
+                    p.DetachRoot(this);
+                }
+                attachedPlatforms.Clear();
             }
         }
     }
@@ -148,11 +151,12 @@ public class Anim_Roots : MonoBehaviour
 
             IsLockInWall = true;
 
-            attachedPlatform = collision.gameObject.GetComponent<RhythmObject>();
-            if (attachedPlatform != null)
+            var comp = collision.gameObject.GetComponent<RhythmObject>();
+            if (comp != null)
             {
                 Debug.Log("Attaching root...");
-                attachedPlatform.AttachRoot(this);
+                comp.AttachRoot(this);
+                attachedPlatforms.Add(comp);
             }
         }
     }
