@@ -42,9 +42,14 @@ public class AudioManager : Singleton<AudioManager>
 
     void StartGameMusic()
     {
-        //FMODEventInstance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
-        //FMODEventInstance.start();
+        FMODEventInstance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
+        FMODEventInstance.start();
         StartCoroutine(_RhythmUpdate());
+    }
+
+    public void SetTrackIndex(int trackIndex)
+    {
+        FMODEventInstance.setParameterByName("Lvl", trackIndex);
     }
 
     IEnumerator _RhythmUpdate()

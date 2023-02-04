@@ -4,7 +4,6 @@ using DG.Tweening.Plugins.Options;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Anim_Roots : MonoBehaviour
 {
@@ -15,7 +14,10 @@ public class Anim_Roots : MonoBehaviour
     LayerMask groundMask;
 
     [SerializeField, Range(1, 12)]
-    private float maxLenght = 8;
+    private float maxLenght;
+
+    [SerializeField, Range(0, 2)]
+    private float minLenght = 1;
 
     [SerializeField]
     private bool moveAtStart;
@@ -86,9 +88,13 @@ public class Anim_Roots : MonoBehaviour
         else
         {
             Debug.LogWarning("Root could not hit ground");
-
+            myTween = graphics.transform.DOLocalMoveX(minLenght, AudioManager.RootsForwardSpeed)
+            .OnUpdate(CollUpdate)
+                .OnComplete(() => myTween = graphics.transform.DOLocalMoveX(0f, AudioManager.RootsBackwardSpeed)
+                .SetSpeedBased())
+                .SetSpeedBased();
+            
             // Failed start animation
-
         }
     }
 

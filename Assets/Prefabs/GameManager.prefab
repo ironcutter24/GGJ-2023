@@ -59,11 +59,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fmodEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -561037485
+      Data2: 1314539485
+      Data3: -1569003631
+      Data4: 281994401
+    Path: event:/OST
   bpm: 120
   subdivision: 4
   step: 4

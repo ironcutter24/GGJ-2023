@@ -56,9 +56,15 @@ public abstract class RhythmObject : MonoBehaviour
 
             Move();
         }
+        else
+        {
+            CannotMove();
+        }
     }
 
     protected abstract void Move();
+
+    protected virtual void CannotMove() { }
 
     protected abstract void RevertToDefaults();
 
