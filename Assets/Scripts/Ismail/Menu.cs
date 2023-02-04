@@ -1,16 +1,15 @@
-using DG.Tweening;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+//using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    [SerializeField]
-    private string NextScene;
+    //[SerializeField]
+    //private string NextScene;
 
- 
     public void StartGame()
     {
-        SceneManager.LoadScene(NextScene);
+        //SceneManager.LoadScene(NextScene);
+        GameManager.Instance.LoadLevelScene();
     }
 
     public void QuitGame()

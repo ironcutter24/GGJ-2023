@@ -24,6 +24,9 @@ public class AudioManager : Singleton<AudioManager>
 
     [SerializeField]
     int step = 4;
+    [Space]
+    [SerializeField]
+    bool isLevelOnlyMode = false;
 
     [Header("Platforms settings")]
     [SerializeField]
@@ -35,16 +38,32 @@ public class AudioManager : Singleton<AudioManager>
 
     public static event Action OnRhythmUpdate;
 
+    Coroutine rhythmCoroutine = null;
+
     private void Start()
     {
-        StartGameMusic();
+        FMODEventInstance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
+        FMODEventInstance.setParameterByName("Lvl", 1);
+        FMODEventInstance.setParameterByName("MenuTheme", isLevelOnlyMode ? 1f : 0f);
+        FMODEventInstance.start();
+
+        rhythmCoroutine = StartCoroutine(_RhythmUpdate());
     }
 
-    void StartGameMusic()
+    public void GoToLevel()
     {
-        FMODEventInstance = FMODUnity.RuntimeManager.CreateInstance(fmodEvent);
-        FMODEventInstance.start();
-        StartCoroutine(_RhythmUpdate());
+        FMODEventInstance.setParameterByName("Lvl", 1);
+        FMODEventInstance.setParameterByName("MenuTheme", 1f);
+    }
+
+    public void GoToMenu()
+    {
+        FMODEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+
+        StopCoroutine(rhythmCoroutine);
+        rhythmCoroutine = null;
+
+        Start();
     }
 
     public void SetTrackIndex(int trackIndex)
