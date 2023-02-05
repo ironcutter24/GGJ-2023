@@ -12,7 +12,7 @@ public class Player : Singleton<Player>
     public bool is_facing_right { get; private set; } = true;
 
     [SerializeField]
-    StudioEventEmitter stepsSFX, jumpSFX, landingSFX, stickingSFX, deathOnSpikesSFX;
+    StudioEventEmitter stepsSFX, jumpSFX, landingSFX, stickingSFX, growSongSFX, shrinkSongSFX, deathOnSpikesSFX, deathInWaterSFX;
     [Space]
     [SerializeField]
     private float movement_speed, jump_power, gravity_scale = 1f, song_radius = 5f, song_duration = .6f;
@@ -372,6 +372,7 @@ public class Player : Singleton<Player>
         {
             CheckActivable(true);
             playingSong = true;
+            growSongSFX.Play();
         }
     }
 
@@ -382,6 +383,7 @@ public class Player : Singleton<Player>
         {
             CheckActivable(false);
             playingSong = true;
+            shrinkSongSFX.Play();
         }
     }
 
@@ -452,7 +454,8 @@ public class Player : Singleton<Player>
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
-            deathOnSpikesSFX.Play();
+            //deathOnSpikesSFX.Play();
+            deathInWaterSFX.Play();
             Death();
         }
     }
