@@ -99,7 +99,7 @@ public class Player : Singleton<Player>
 
     void Update()
     {
-        if (!is_facing_right && move_direction.x > 0f || is_facing_right && move_direction.x < 0f)
+        if ((!is_facing_right && move_direction.x > 0f || is_facing_right && move_direction.x < 0f) && !is_sticking)
         {
             Flip();
         }
@@ -343,7 +343,8 @@ public class Player : Singleton<Player>
             {
                 transform.parent = null;
                 transform.position = GetUnstickTraslation(transform);
-                transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
+                transform.rotation = Quaternion.identity;
+                graphics.transform.rotation = Quaternion.Euler(0, is_facing_right ? 0 : 180, 0);
 
                 player_rb.simulated = true;
 
