@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: Assets/Audio/FMOD Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638111868934311644
+  lastModified: 638111950636114567
   FileSizes:
   - Name: Desktop
-    Value: 2250496
+    Value: 2250944
   Exists: 1
 --- !u!114 &-8485967619705570109
 MonoBehaviour:
@@ -100,7 +100,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 4576
+  Length: 2375
 --- !u!114 &-4289440645098914275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 5440
+  Length: 3000
 --- !u!114 &-3088365119331981975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,16 +207,16 @@ MonoBehaviour:
   - {fileID: 236034454710284169}
   - {fileID: 1072039586251781869}
   - {fileID: 106579247973664144}
-  - {fileID: 8617524951450669999}
   - {fileID: -6595747901740304455}
   - {fileID: 2651731775201765865}
   - {fileID: -4026884053720455826}
+  - {fileID: 2884906870490717260}
   EditorParameters: []
   MasterBanks:
   - {fileID: -9077416285754737801}
   StringsBanks:
   - {fileID: 1788428219000422465}
-  cacheTime: 638111868934361687
+  cacheTime: 638111950636134590
   cacheVersion: 131601
 --- !u!114 &106579247973664144
 MonoBehaviour:
@@ -341,10 +341,10 @@ MonoBehaviour:
   Path: Assets/Audio/FMOD Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638111868934361687
+  lastModified: 638111950636134590
   FileSizes:
   - Name: Desktop
-    Value: 1432
+    Value: 1434
   Exists: 1
 --- !u!114 &2651731775201765865
 MonoBehaviour:
@@ -373,6 +373,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 13006
+--- !u!114 &2884906870490717260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Morte Caduta
+  m_EditorClassIdentifier: 
+  Path: event:/Morte Caduta
+  Guid:
+    Data1: -793077480
+    Data2: 1303684244
+    Data3: -1675089494
+    Data4: -2124662276
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5000
 --- !u!114 &3440162311852856111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,30 +502,3 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &8617524951450669999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Morte Acqua
-  m_EditorClassIdentifier: 
-  Path: event:/Morte Acqua
-  Guid:
-    Data1: -793077480
-    Data2: 1303684244
-    Data3: -1675089494
-    Data4: -2124662276
-  Banks:
-  - {fileID: -9077416285754737801}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 5000
