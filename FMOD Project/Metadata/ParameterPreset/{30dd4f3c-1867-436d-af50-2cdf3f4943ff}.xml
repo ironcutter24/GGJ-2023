@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{30dd4f3c-1867-436d-af50-2cdf3f4943ff}">
+		<property name="name">
+			<value>MenuTheme</value>
+		</property>
+		<relationship name="folder">
+			<destination>{c474e1c3-6e18-4677-8939-52feeec04fd4}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{038a251e-793d-486c-9726-322ca6a34397}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{038a251e-793d-486c-9726-322ca6a34397}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="seekSpeed">
+			<value>1.3000000715255737</value>
+		</property>
+		<relationship name="automators">
+			<destination>{11105746-dd3e-449b-95b4-479781f3ec45}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{11105746-dd3e-449b-95b4-479781f3ec45}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>cursorPosition</value>
+		</property>
+	</object>
+</objects>

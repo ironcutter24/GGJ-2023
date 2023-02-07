@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{47b3aebb-7b2a-4070-99cb-64b5ffcc1cd2}">
+		<property name="assetPath">
+			<value>SFX/RadicePlayer_1 - 04 RadiciPlayer IN_1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.91455782312925171</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{cdc31589-618c-47cf-9d13-3ca9bfa6f7f5}</destination>
+		</relationship>
+	</object>
+</objects>
