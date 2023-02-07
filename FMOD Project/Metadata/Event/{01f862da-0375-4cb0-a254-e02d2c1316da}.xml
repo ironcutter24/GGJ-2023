@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{01f862da-0375-4cb0-a254-e02d2c1316da}">
 		<property name="name">
-			<value>Atterraggio</value>
+			<value>Landing</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{43aeff0b-0758-4e13-90c7-1f0fa56bdf67}</destination>
+			<destination>{146e997d-a91d-4975-abf9-063967c0290e}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{0f7297be-eabc-44ce-93b2-0718f48fa66f}</destination>

@@ -206,7 +206,7 @@ MonoBehaviour:
       Data2: 1128473866
       Data3: 1392659844
       Data4: -1953558732
-    Path: event:/Radici
+    Path: event:/Roots/Grow
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -301,7 +301,7 @@ MonoBehaviour:
       Data2: 1237962014
       Data3: -1628751698
       Data4: 573143010
-    Path: event:/Radici OUT
+    Path: event:/Roots/Shrink
   Event: 
   PlayEvent: 0
   StopEvent: 0

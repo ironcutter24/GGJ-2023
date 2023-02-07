@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{00f3555d-c363-4744-94c2-0b5f7df9d65d}">
 		<property name="name">
-			<value>PietraGirevole</value>
+			<value>Rotation</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
 		</property>
 		<relationship name="folder">
-			<destination>{43aeff0b-0758-4e13-90c7-1f0fa56bdf67}</destination>
+			<destination>{30305168-c9cf-47a8-951a-7cb84e290085}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{e1c53713-b49e-42ea-8bfb-4f9242e4e4a6}</destination>

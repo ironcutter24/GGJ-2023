@@ -405,7 +405,7 @@ MonoBehaviour:
       Data2: 1336351479
       Data3: -1813843289
       Data4: 1445282120
-    Path: event:/Radici Player
+    Path: event:/Player/Abilities/Rooting
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -529,7 +529,7 @@ MonoBehaviour:
       Data2: 1117074492
       Data3: -2110471284
       Data4: -1608757479
-    Path: event:/Morte Impatto
+    Path: event:/Player/DeathSpikes
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -591,7 +591,7 @@ MonoBehaviour:
       Data2: 1130118335
       Data3: 1434392962
       Data4: -658309383
-    Path: event:/GrowSong
+    Path: event:/Player/Abilities/GrowSong
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -718,7 +718,7 @@ MonoBehaviour:
       Data2: 1239275356
       Data3: 1560766654
       Data4: -1318462091
-    Path: event:/Passi
+    Path: event:/Player/Movement/Steps
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -780,7 +780,7 @@ MonoBehaviour:
       Data2: 1330305185
       Data3: -1486533482
       Data4: 714029119
-    Path: event:/Salto
+    Path: event:/Player/Movement/Jump
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -842,7 +842,7 @@ MonoBehaviour:
       Data2: 1286603637
       Data3: 769676450
       Data4: -636087508
-    Path: event:/Atterraggio
+    Path: event:/Player/Movement/Landing
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -904,7 +904,7 @@ MonoBehaviour:
       Data2: 1215998443
       Data3: -590040439
       Data4: 851255219
-    Path: event:/ShrinkSong
+    Path: event:/Player/Abilities/ShrinkSong
   Event: 
   PlayEvent: 0
   StopEvent: 0
@@ -966,7 +966,7 @@ MonoBehaviour:
       Data2: 1303684244
       Data3: -1675089494
       Data4: -2124662276
-    Path: event:/Morte Caduta
+    Path: event:/Player/DeathDrown
   Event: 
   PlayEvent: 0
   StopEvent: 0

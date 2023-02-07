@@ -15,12 +15,12 @@ MonoBehaviour:
   Path: Assets/Audio/FMOD Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638111963117171897
+  lastModified: 638114084641299450
   FileSizes:
   - Name: Desktop
-    Value: 2250944
+    Value: 2251232
   Exists: 1
---- !u!114 &-8485967619705570109
+--- !u!114 &-8067935003364925441
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -30,24 +30,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Atterraggio
+  m_Name: event:/Roots/Shrink
   m_EditorClassIdentifier: 
-  Path: event:/Atterraggio
+  Path: event:/Roots/Shrink
   Guid:
-    Data1: 33055450
-    Data2: 1286603637
-    Data3: 769676450
-    Data4: -636087508
+    Data1: -260845633
+    Data2: 1237962014
+    Data3: -1628751698
+    Data4: 573143010
   Banks:
   - {fileID: -9077416285754737801}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 1678
---- !u!114 &-7593326916416039806
+  Length: 1068
+--- !u!114 &-2973984021428919937
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,9 +57,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Passi
+  m_Name: event:/Player/Movement/Steps
   m_EditorClassIdentifier: 
-  Path: event:/Passi
+  Path: event:/Player/Movement/Steps
   Guid:
     Data1: -1011714378
     Data2: 1239275356
@@ -74,114 +74,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 734
---- !u!114 &-6595747901740304455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/ShrinkSong
-  m_EditorClassIdentifier: 
-  Path: event:/ShrinkSong
-  Guid:
-    Data1: -1881632630
-    Data2: 1215998443
-    Data3: -590040439
-    Data4: 851255219
-  Banks:
-  - {fileID: -9077416285754737801}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 2375
---- !u!114 &-4289440645098914275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Morte Impatto
-  m_EditorClassIdentifier: 
-  Path: event:/Morte Impatto
-  Guid:
-    Data1: -788695086
-    Data2: 1117074492
-    Data3: -2110471284
-    Data4: -1608757479
-  Banks:
-  - {fileID: -9077416285754737801}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 734
---- !u!114 &-4026884053720455826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/GrowSong
-  m_EditorClassIdentifier: 
-  Path: event:/GrowSong
-  Guid:
-    Data1: 1095179507
-    Data2: 1130118335
-    Data3: 1434392962
-    Data4: -658309383
-  Banks:
-  - {fileID: -9077416285754737801}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 3000
---- !u!114 &-3088365119331981975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Radici
-  m_EditorClassIdentifier: 
-  Path: event:/Radici
-  Guid:
-    Data1: 1699843717
-    Data2: 1128473866
-    Data3: 1392659844
-    Data4: -1953558732
-  Banks:
-  - {fileID: -9077416285754737801}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 776
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,27 +90,27 @@ MonoBehaviour:
   - {fileID: 1788428219000422465}
   - {fileID: -9077416285754737801}
   EditorEvents:
-  - {fileID: -3088365119331981975}
-  - {fileID: 1392785345106142083}
   - {fileID: 5148173689609023267}
-  - {fileID: -7593326916416039806}
-  - {fileID: -4289440645098914275}
-  - {fileID: -8485967619705570109}
-  - {fileID: 236034454710284169}
-  - {fileID: 1072039586251781869}
-  - {fileID: 106579247973664144}
-  - {fileID: -6595747901740304455}
   - {fileID: 2651731775201765865}
-  - {fileID: -4026884053720455826}
-  - {fileID: 2884906870490717260}
+  - {fileID: 2247478543209275517}
+  - {fileID: 7342652444291892846}
+  - {fileID: 1034888328294395255}
+  - {fileID: 1666422014808956822}
+  - {fileID: 7075877812977372498}
+  - {fileID: 4771242630646923739}
+  - {fileID: -2973984021428919937}
+  - {fileID: -8067935003364925441}
+  - {fileID: 3642150237684335776}
+  - {fileID: 5877503278895615853}
+  - {fileID: 5810854258637919398}
   EditorParameters: []
   MasterBanks:
   - {fileID: -9077416285754737801}
   StringsBanks:
   - {fileID: 1788428219000422465}
-  cacheTime: 638111963117171897
+  cacheTime: 638114084641314535
   cacheVersion: 131601
---- !u!114 &106579247973664144
+--- !u!114 &1034888328294395255
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -228,90 +120,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Radici OUT
+  m_Name: event:/Player/Movement/Jump
   m_EditorClassIdentifier: 
-  Path: event:/Radici OUT
-  Guid:
-    Data1: -260845633
-    Data2: 1237962014
-    Data3: -1628751698
-    Data4: 573143010
-  Banks:
-  - {fileID: -9077416285754737801}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 1068
---- !u!114 &236034454710284169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Radici Player
-  m_EditorClassIdentifier: 
-  Path: event:/Radici Player
-  Guid:
-    Data1: -661920473
-    Data2: 1336351479
-    Data3: -1813843289
-    Data4: 1445282120
-  Banks:
-  - {fileID: -9077416285754737801}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 914
---- !u!114 &1072039586251781869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/PietraGirevole
-  m_EditorClassIdentifier: 
-  Path: event:/PietraGirevole
-  Guid:
-    Data1: 15947101
-    Data2: 1195688803
-    Data3: 1594606228
-    Data4: 1574369661
-  Banks:
-  - {fileID: -9077416285754737801}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 734
---- !u!114 &1392785345106142083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Salto
-  m_EditorClassIdentifier: 
-  Path: event:/Salto
+  Path: event:/Player/Movement/Jump
   Guid:
     Data1: -1669039799
     Data2: 1330305185
@@ -326,6 +137,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 629
+--- !u!114 &1666422014808956822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Platforms/Rotation
+  m_EditorClassIdentifier: 
+  Path: event:/Platforms/Rotation
+  Guid:
+    Data1: 15947101
+    Data2: 1195688803
+    Data3: 1594606228
+    Data4: 1574369661
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 734
 --- !u!114 &1788428219000422465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,11 +179,38 @@ MonoBehaviour:
   Path: Assets/Audio/FMOD Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638111963117171897
+  lastModified: 638114084641314535
   FileSizes:
   - Name: Desktop
-    Value: 1434
+    Value: 1464
   Exists: 1
+--- !u!114 &2247478543209275517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/DeathDrown
+  m_EditorClassIdentifier: 
+  Path: event:/Player/DeathDrown
+  Guid:
+    Data1: -793077480
+    Data2: 1303684244
+    Data3: -1675089494
+    Data4: -2124662276
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5000
 --- !u!114 &2651731775201765865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,33 +238,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 13006
---- !u!114 &2884906870490717260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Morte Caduta
-  m_EditorClassIdentifier: 
-  Path: event:/Morte Caduta
-  Guid:
-    Data1: -793077480
-    Data2: 1303684244
-    Data3: -1675089494
-    Data4: -2124662276
-  Banks:
-  - {fileID: -9077416285754737801}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 5000
 --- !u!114 &3440162311852856111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +262,60 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &3642150237684335776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/DeathSpikes
+  m_EditorClassIdentifier: 
+  Path: event:/Player/DeathSpikes
+  Guid:
+    Data1: -788695086
+    Data2: 1117074492
+    Data3: -2110471284
+    Data4: -1608757479
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 734
+--- !u!114 &4771242630646923739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Abilities/ShrinkSong
+  m_EditorClassIdentifier: 
+  Path: event:/Player/Abilities/ShrinkSong
+  Guid:
+    Data1: -1881632630
+    Data2: 1215998443
+    Data3: -590040439
+    Data4: 851255219
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2375
 --- !u!114 &5148173689609023267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,6 +346,87 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 73000
+--- !u!114 &5810854258637919398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Abilities/GrowSong
+  m_EditorClassIdentifier: 
+  Path: event:/Player/Abilities/GrowSong
+  Guid:
+    Data1: 1095179507
+    Data2: 1130118335
+    Data3: 1434392962
+    Data4: -658309383
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3000
+--- !u!114 &5877503278895615853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Movement/Landing
+  m_EditorClassIdentifier: 
+  Path: event:/Player/Movement/Landing
+  Guid:
+    Data1: 33055450
+    Data2: 1286603637
+    Data3: 769676450
+    Data4: -636087508
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1678
+--- !u!114 &7075877812977372498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Roots/Grow
+  m_EditorClassIdentifier: 
+  Path: event:/Roots/Grow
+  Guid:
+    Data1: 1699843717
+    Data2: 1128473866
+    Data3: 1392659844
+    Data4: -1953558732
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 776
 --- !u!114 &7193579762518053303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,6 +451,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &7342652444291892846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Abilities/Rooting
+  m_EditorClassIdentifier: 
+  Path: event:/Player/Abilities/Rooting
+  Guid:
+    Data1: -661920473
+    Data2: 1336351479
+    Data3: -1813843289
+    Data4: 1445282120
+  Banks:
+  - {fileID: -9077416285754737801}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 914
 --- !u!114 &8590857142850217484
 MonoBehaviour:
   m_ObjectHideFlags: 0

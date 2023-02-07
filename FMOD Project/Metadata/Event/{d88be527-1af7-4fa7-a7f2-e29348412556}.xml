@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{d88be527-1af7-4fa7-a7f2-e29348412556}">
 		<property name="name">
-			<value>Radici Player</value>
+			<value>Rooting</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{43aeff0b-0758-4e13-90c7-1f0fa56bdf67}</destination>
+			<destination>{4e52b4d1-ed44-4cd6-a370-b0c504d814a0}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{cc547c5a-e019-44df-b37b-5dae8dad991d}</destination>

@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{f073cfbf-cd1e-49c9-ae38-eb9ee2772922}">
 		<property name="name">
-			<value>Radici OUT</value>
+			<value>Shrink</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
 		</property>
 		<relationship name="folder">
-			<destination>{43aeff0b-0758-4e13-90c7-1f0fa56bdf67}</destination>
+			<destination>{001cbf4a-bd52-4bf8-8f5e-96517959da0a}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{976da793-754a-4b74-8ce3-6c1e46f8084a}</destination>

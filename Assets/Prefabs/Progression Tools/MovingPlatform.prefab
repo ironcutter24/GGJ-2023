@@ -359,7 +359,7 @@ MonoBehaviour:
       Data2: 1195688803
       Data3: 1594606228
       Data4: 1574369661
-    Path: event:/PietraGirevole
+    Path: event:/Platforms/Rotation
   Event: 
   PlayEvent: 0
   StopEvent: 0
