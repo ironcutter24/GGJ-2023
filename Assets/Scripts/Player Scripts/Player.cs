@@ -43,8 +43,12 @@ public class Player : Singleton<Player>
     const float gravity = 9.81f;
     float verticalSpeed = 0f;
 
-    bool hasJump = false, isGrounded = false, wasGrounded = false;
-    bool canJump => isGrounded || !coyoteTimer.IsExpired;
+    bool hasJump = false;
+    bool wasGrounded = false;
+    Collider2D currentGround = null;
+    bool IsGrounded => currentGround != null;
+    bool CanJump => IsGrounded || !coyoteTimer.IsExpired;
+    bool IsLanding => !wasGrounded && IsGrounded;
 
     Timer songTimer = new Timer();
     Timer coyoteTimer = new Timer();
@@ -128,19 +132,17 @@ public class Player : Singleton<Player>
     bool shouldKickUpwards = false;
     private void FixedUpdate()
     {
-        wasGrounded = isGrounded;
-        RaycastHit2D hit;
-        isGrounded = IsGrounded(out hit);
+        RefreshGround();
 
-        if (!wasGrounded && isGrounded)
+        if (IsLanding)
             landingSFX.Play();
 
-        if (!isGrounded && wasGrounded && verticalSpeed <= 0f)
+        if (!IsGrounded && wasGrounded && verticalSpeed <= 0f)
             coyoteTimer.Set(coyoteTimeDuration);
 
-        if (hit.collider != null && hit.collider.CompareTag("MovingPlatform"))
+        if (currentGround != null && currentGround.CompareTag("MovingPlatform"))
         {
-            LinkPlatform(hit.collider.gameObject.GetComponentInParent<Rigidbody2D>());
+            LinkPlatform(currentGround.gameObject.GetComponentInParent<Rigidbody2D>());
         }
         else
         {
@@ -150,7 +152,7 @@ public class Player : Singleton<Player>
         var delta = rb.position - oldPosition;
         shouldKickUpwards = !IsWalkingIntoWall() && (delta.x == 0f && oldMove.x != 0f);
 
-        if (isGrounded)
+        if (IsGrounded)
         {
             if (hasJump)
             {
@@ -165,7 +167,7 @@ public class Player : Singleton<Player>
         }
         else
         {
-            if (hasJump && canJump)
+            if (hasJump && CanJump)
             {
                 Jump();
                 UnlinkPlatform();
@@ -230,39 +232,27 @@ public class Player : Singleton<Player>
         return false;
     }
 
-    private bool IsGrounded()
+    void RefreshGround()
     {
-        return RaycastDownwards().collider != null;
-    }
+        wasGrounded = IsGrounded;
+        currentGround = RaycastDownwards().collider;
 
-    private bool IsGrounded(out RaycastHit2D hit)
-    {
-        hit = RaycastDownwards();
-        return hit.collider != null;
+        RaycastHit2D RaycastDownwards()
+        {
+            Vector2 capsuleBottom = new Vector2(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y);
+            return Physics2D.Raycast(capsuleBottom, -transform.up, groundCheckDistance, groundMask);
+        }
     }
 
     private bool IsTouchingRoof()
     {
         return RaycastUpwards().collider != null;
-    }
 
-    RaycastHit2D RaycastDownwards()
-    {
-        return Physics2D.Raycast(CapsuleBottom, -transform.up, groundCheckDistance, groundMask);
-    }
-
-    void CircleOverlapDownwards()
-    {
-        //Vector2 point = rb.position + new Vector2(player_capsule.);
-        //float radius = player_capsule.size.x * .5f;
-        //Physics2D.OverlapCircleAll()
-    }
-
-    Vector2 CapsuleBottom => new Vector2(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y);
-
-    RaycastHit2D RaycastUpwards()
-    {
-        return Physics2D.Raycast(new Vector2(capsuleCollider.bounds.center.x, capsuleCollider.bounds.max.y), transform.up, groundCheckDistance, groundMask);
+        RaycastHit2D RaycastUpwards()
+        {
+            Vector2 capsuleTop = new Vector2(capsuleCollider.bounds.center.x, capsuleCollider.bounds.max.y);
+            return Physics2D.Raycast(capsuleTop, transform.up, groundCheckDistance, groundMask);
+        }
     }
 
     #endregion
@@ -273,7 +263,7 @@ public class Player : Singleton<Player>
     {
         ChangeControlInput(context);
 
-        if (isGrounded && Mathf.Approximately(moveDirection.x, 0f))
+        if (IsGrounded && Mathf.Approximately(moveDirection.x, 0f))
             StartCoroutine(_SoundStepsLoop());
 
         moveDirection.x = context.ReadValue<Vector2>().x;
@@ -309,7 +299,7 @@ public class Player : Singleton<Player>
 
     IEnumerator _SoundStepsLoop()
     {
-        while (isGrounded && !Mathf.Approximately(moveDirection.x, 0f))
+        while (IsGrounded && !Mathf.Approximately(moveDirection.x, 0f))
         {
             stepsSFX.Play();
             yield return new WaitForSeconds(stepSoundDuration);
@@ -320,7 +310,7 @@ public class Player : Singleton<Player>
     {
         IsFacingRight = !IsFacingRight;
 
-        if (isGrounded)
+        if (IsGrounded)
         {
             anim.SetBool(animRotation, true);
             anim.SetBool(animRotationDirection, IsFacingRight);
@@ -334,7 +324,7 @@ public class Player : Singleton<Player>
     {
         ChangeControlInput(context);
 
-        if (context.performed && canJump)
+        if (context.performed && CanJump)
         {
             hasJump = true;
             anim.SetBool(animJumpStart, true);
@@ -351,16 +341,15 @@ public class Player : Singleton<Player>
         jumpSFX.Play();
     }
 
-    public void StickOnFloor(InputAction.CallbackContext context)
+    public void StickToFloor(InputAction.CallbackContext context)
     {
         ChangeControlInput(context);
 
-        RaycastHit2D hit;
-        if (context.started && IsGrounded(out hit))
+        if (context.started && IsGrounded)
         {
             try
             {
-                under_platform = hit.collider.gameObject.GetComponentInParent<RotatingPlatform>().transform;
+                under_platform = currentGround.gameObject.GetComponentInParent<RotatingPlatform>().transform;
                 transform.SetParent(under_platform);
 
                 rb.simulated = false;
@@ -404,7 +393,7 @@ public class Player : Singleton<Player>
 
     #region Abilities
 
-    public void PlayGoodMusic(InputAction.CallbackContext context)
+    public void PlayGrowSong(InputAction.CallbackContext context)
     {
         ChangeControlInput(context);
         if (context.performed && songTimer.IsExpired)
@@ -415,7 +404,7 @@ public class Player : Singleton<Player>
         }
     }
 
-    public void PlayBadMusic(InputAction.CallbackContext context)
+    public void PlayShrinkSong(InputAction.CallbackContext context)
     {
         ChangeControlInput(context);
         if (context.performed && songTimer.IsExpired)

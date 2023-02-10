@@ -198,7 +198,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8891598311050059419}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: StickOnFloor
+        m_MethodName: StickToFloor
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -214,7 +214,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8891598311050059419}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: PlayGoodMusic
+        m_MethodName: PlayGrowSong
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -230,7 +230,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8891598311050059419}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: StickOnFloor
+        m_MethodName: StickToFloor
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -246,7 +246,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8891598311050059419}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: PlayBadMusic
+        m_MethodName: PlayShrinkSong
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -275,15 +275,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba5f42925029a84c8713fc417827dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepsSFX: {fileID: 8965182988423854884}
-  stepSoundDuration: 0.2
-  jumpSFX: {fileID: 8785642247999754510}
-  landingSFX: {fileID: 8405513085613291405}
-  stickingSFX: {fileID: 8684502681173433405}
-  growSongSFX: {fileID: 8005167993952973328}
-  shrinkSongSFX: {fileID: 2915617262698567610}
-  deathOnSpikesSFX: {fileID: 4574741275112152773}
-  deathInWaterSFX: {fileID: 2341817360375747072}
   moveSpeed: 10
   turnDuration: 0.05
   rayOrigins:
@@ -303,6 +294,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1536
   graphics: {fileID: 6051270404718489390}
+  stepsSFX: {fileID: 8965182988423854884}
+  stepSoundDuration: 0.2
+  jumpSFX: {fileID: 8785642247999754510}
+  landingSFX: {fileID: 8405513085613291405}
+  stickingSFX: {fileID: 8684502681173433405}
+  growSongSFX: {fileID: 8005167993952973328}
+  shrinkSongSFX: {fileID: 2915617262698567610}
+  deathOnSpikesSFX: {fileID: 4574741275112152773}
+  deathInWaterSFX: {fileID: 2341817360375747072}
 --- !u!114 &1812649952879285773
 MonoBehaviour:
   m_ObjectHideFlags: 0
