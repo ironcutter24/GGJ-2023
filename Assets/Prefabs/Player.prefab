@@ -55,7 +55,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 1}
-  m_Size: {x: 1, y: 1.8}
+  m_Size: {x: 0.8, y: 1.8}
   m_Direction: 0
 --- !u!50 &289119906
 Rigidbody2D:
@@ -276,6 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepsSFX: {fileID: 8965182988423854884}
+  stepSoundDuration: 0.2
   jumpSFX: {fileID: 8785642247999754510}
   landingSFX: {fileID: 8405513085613291405}
   stickingSFX: {fileID: 8684502681173433405}
@@ -283,26 +284,25 @@ MonoBehaviour:
   shrinkSongSFX: {fileID: 2915617262698567610}
   deathOnSpikesSFX: {fileID: 4574741275112152773}
   deathInWaterSFX: {fileID: 2341817360375747072}
-  movement_speed: 10
-  jump_power: 27
-  gravity_scale: 9
-  song_radius: 5
-  song_duration: 0.8
-  buffer_check_distance: 0.1
-  groundLayerMask:
-    serializedVersion: 2
-    m_Bits: 896
-  plantLayerMask:
-    serializedVersion: 2
-    m_Bits: 1536
+  moveSpeed: 10
+  turnDuration: 0.05
   rayOrigins:
   - {fileID: 2178760909716394279}
   - {fileID: 2528264564504178773}
   - {fileID: 38973938575251147}
-  graphics: {fileID: 6051270404718489390}
-  turnDuration: 0.05
+  jumpPower: 27
+  gravityScale: 9
   coyoteTimeDuration: 0.1
-  stepSoundDuration: 0.2
+  groundCheckDistance: 0.1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 896
+  songRadius: 5
+  songDuration: 0.8
+  plantMask:
+    serializedVersion: 2
+    m_Bits: 1536
+  graphics: {fileID: 6051270404718489390}
 --- !u!114 &1812649952879285773
 MonoBehaviour:
   m_ObjectHideFlags: 0

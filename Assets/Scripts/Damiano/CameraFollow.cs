@@ -45,6 +45,6 @@ public class CameraFollow : MonoBehaviour
 
     float GetOffsetSignX()
     {
-        return target.is_facing_right ? 1f : -1f;
+        return target.IsFacingRight ? 1f : -1f;
     }
 }
