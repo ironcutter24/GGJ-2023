@@ -30,9 +30,7 @@ public class Player : Singleton<Player>
     [SerializeField] GameObject graphics;
 
     [Header("Audio")]
-    [SerializeField] StudioEventEmitter stepsSFX;
     [SerializeField] float stepSoundDuration = .2f;
-    [SerializeField] StudioEventEmitter jumpSFX, landingSFX, stickingSFX, growSongSFX, shrinkSongSFX, deathOnSpikesSFX, deathInWaterSFX;
 
     public bool IsFacingRight { get; private set; } = true;
     Vector2 moveDirection;
@@ -65,14 +63,15 @@ public class Player : Singleton<Player>
 
     #region Components
 
-    private PlayerControls playerControls;
-    private InputAction inputAction;
-    private Animator anim;
-    private Rigidbody2D rb;
-    private CapsuleCollider2D capsuleCollider;
-    private SoundWavesVFX wavesVFX;
-    private FixedJoint2D fixedJoint;
-    private Transform under_platform;
+    PlayerControls playerControls;
+    InputAction inputAction;
+    Animator anim;
+    Rigidbody2D rb;
+    CapsuleCollider2D capsuleCollider;
+    SoundWavesVFX wavesVFX;
+    FixedJoint2D fixedJoint;
+    Transform under_platform;
+    PlayerAudioManager playerAudio;
 
     #endregion
 
@@ -82,6 +81,7 @@ public class Player : Singleton<Player>
         base.Awake();
 
         playerControls = new PlayerControls();
+        playerAudio = GetComponent<PlayerAudioManager>();
         rb = GetComponent<Rigidbody2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         wavesVFX = GetComponentInChildren<SoundWavesVFX>();
@@ -135,7 +135,7 @@ public class Player : Singleton<Player>
         RefreshGround();
 
         if (IsLanding)
-            landingSFX.Play();
+            playerAudio.PlayLanding();
 
         if (!IsGrounded && wasGrounded && verticalSpeed <= 0f)
             coyoteTimer.Set(coyoteTimeDuration);
@@ -301,7 +301,7 @@ public class Player : Singleton<Player>
     {
         while (IsGrounded && !Mathf.Approximately(moveDirection.x, 0f))
         {
-            stepsSFX.Play();
+            playerAudio.PlaySteps();
             yield return new WaitForSeconds(stepSoundDuration);
         }
     }
@@ -338,7 +338,7 @@ public class Player : Singleton<Player>
     {
         verticalSpeed = jumpPower;
         hasJump = false;
-        jumpSFX.Play();
+        playerAudio.PlayJump();
     }
 
     public void StickToFloor(InputAction.CallbackContext context)
@@ -355,7 +355,7 @@ public class Player : Singleton<Player>
                 rb.simulated = false;
                 isSticking = true;
 
-                stickingSFX.Play();
+                playerAudio.PlayStick();
                 anim.SetBool(animIsSticking, isSticking);
             }
             catch { }
@@ -400,7 +400,7 @@ public class Player : Singleton<Player>
         {
             CheckActivable(true);
             songTimer.Set(songDuration);
-            growSongSFX.Play();
+            playerAudio.PlayGrowSong();
         }
     }
 
@@ -411,7 +411,7 @@ public class Player : Singleton<Player>
         {
             CheckActivable(false);
             songTimer.Set(songDuration);
-            shrinkSongSFX.Play();
+            playerAudio.PlayShrinkSong();
         }
     }
 
@@ -446,7 +446,7 @@ public class Player : Singleton<Player>
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
-            deathOnSpikesSFX.Play();
+            playerAudio.PlayDeathOnSpikes();
             Death();
         }
     }
@@ -455,7 +455,7 @@ public class Player : Singleton<Player>
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
-            deathInWaterSFX.Play();
+            playerAudio.PlayDeathInWater();
             Death();
         }
     }
