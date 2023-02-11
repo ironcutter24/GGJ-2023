@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     [SerializeField] float gravityScale = 9f;
     [SerializeField] float coyoteTimeDuration = .1f;
     [SerializeField] float groundCheckDistance = 0.1f;
+    [SerializeField] float groundCheckRadius = .4f;
+    [SerializeField] Transform groundCheckOrigin;
     [SerializeField] LayerMask groundMask;
 
     [Header("Abilities")]
@@ -42,7 +44,7 @@ public class Player : MonoBehaviour
     bool hasJump = false;
     bool wasGrounded = false;
     Collider2D currentGround = null;
-    bool IsGrounded => currentGround != null;
+    bool IsGrounded => currentGround;
     bool CanJump => IsGrounded || !coyoteTimer.IsExpired;
 
     bool HasAttachedPlatform => fixedJoint.connectedBody != null;
@@ -133,6 +135,8 @@ public class Player : MonoBehaviour
         {
             if (currentGround.CompareTag("MovingPlatform"))
                 LinkPlatform(currentGround.gameObject.GetComponentInParent<Rigidbody2D>());
+            else
+                UnlinkPlatform();
 
             if (!wasGrounded)
                 playerAudio.PlayLanding();
@@ -220,12 +224,31 @@ public class Player : MonoBehaviour
     void RefreshGround()
     {
         wasGrounded = IsGrounded;
-        currentGround = RaycastDownwards().collider;
+
+        var groundSurfaces = GetGroundOverlap();
+        switch (groundSurfaces.Length)
+        {
+            case 0: currentGround = null;
+                break;
+
+            case 1: currentGround = groundSurfaces[0];
+                break;
+
+            default:
+                currentGround = RaycastDownwards().collider;
+                // if the raycast is null, keep the closest (?)
+                break;
+        }
 
         RaycastHit2D RaycastDownwards()
         {
             Vector2 capsuleBottom = new Vector2(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y);
             return Physics2D.Raycast(capsuleBottom, -transform.up, groundCheckDistance, groundMask);
+        }
+
+        Collider2D[] GetGroundOverlap()
+        {
+            return Physics2D.OverlapCircleAll(groundCheckOrigin.position, groundCheckRadius, groundMask);
         }
     }
 
@@ -445,5 +468,11 @@ public class Player : MonoBehaviour
     void Death()
     {
         transform.position = CheckPoint.LastActivated;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(groundCheckOrigin.position, groundCheckRadius);
     }
 }
