@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
     bool IsGrounded => currentGround != null;
     bool CanJump => IsGrounded || !coyoteTimer.IsExpired;
 
+    bool HasAttachedPlatform => fixedJoint.connectedBody != null;
+
     Timer songTimer = new Timer();
     Timer coyoteTimer = new Timer();
 
@@ -123,14 +125,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    Vector2 oldPosition, oldMove;
-    bool shouldKickUpwards = false;
     void FixedUpdate()
     {
         RefreshGround();
-
-        var delta = rb.position - oldPosition;
-        shouldKickUpwards = !IsWalkingIntoWall() && (delta.x == 0f && oldMove.x != 0f);
 
         if (IsGrounded)
         {
@@ -149,45 +146,58 @@ public class Player : MonoBehaviour
 
             verticalSpeed -= gravity * gravityScale * Time.deltaTime;
 
-            if (wasGrounded && verticalSpeed <= 0f)
-                coyoteTimer.Set(coyoteTimeDuration);
-
             if (IsTouchingRoof())
                 verticalSpeed = -1f;
 
-            if (shouldKickUpwards)
-                verticalSpeed = 0f;
-        }
-
-        if (hasJump && CanJump)
-        {
-            Jump();
-            UnlinkPlatform();
-            coyoteTimer.Set(0f);
+            if (wasGrounded && verticalSpeed <= 0f)
+                coyoteTimer.Set(coyoteTimeDuration);
         }
 
         if (!isSticking)
         {
-            var kickBugFixMove = (shouldKickUpwards ? Vector2.up * .1f : Vector2.zero);
-            Vector2 move = new Vector2(moveDirection.x * moveSpeed, verticalSpeed);
-            oldPosition = rb.position;
-            oldMove = moveDirection;
+            if (hasJump && CanJump)
+                DoJump();
 
-            if (fixedJoint.connectedBody == null)
+            Vector2 move = new Vector2(moveDirection.x * moveSpeed, verticalSpeed);
+            if (HasAttachedPlatform)
             {
-                rb.MovePosition(rb.position + move * Time.deltaTime + kickBugFixMove);
+                DoMoveAnchor(move);
             }
             else
             {
-                var relativeMove = move;
-                relativeMove.x *= -1f;
-                fixedJoint.anchor = fixedJoint.anchor + relativeMove * Time.deltaTime;
+                DoMoveBody(move);
             }
         }
-        else
+
+        #region Movement functions
+
+        void DoJump()
         {
-            oldMove = Vector2.zero;
+            verticalSpeed = jumpPower;
+            coyoteTimer.Set(0f);
+            UnlinkPlatform();
+            hasJump = false;
+            playerAudio.PlayJump();
+            anim.SetBool(animJumpStart, true);
         }
+
+        void DoMoveBody(Vector2 move)
+        {
+            if (IsStuckInCorner())
+                move.y = .1f;
+
+            rb.MovePosition(rb.position + move * Time.deltaTime);
+        }
+
+        void DoMoveAnchor(Vector2 move)
+        {
+            var relativeMove = move;
+            relativeMove.x *= -1f;
+            fixedJoint.anchor = fixedJoint.anchor + relativeMove * Time.deltaTime;
+        }
+
+        #endregion
+
     }
 
     #region Collision Checks
@@ -200,14 +210,7 @@ public class Player : MonoBehaviour
             var startPos = origin.position + offset;
 
             //Debug.DrawLine(startPos, startPos + offset * .1f, Color.green, 1f);
-
-            var hit = Physics2D.Raycast(
-                startPos,
-                offset,
-                .1f,
-                groundMask
-                );
-
+            var hit = Physics2D.Raycast(startPos, offset, .1f, groundMask);
             if (hit.collider != null)
                 return true;
         }
@@ -235,6 +238,15 @@ public class Player : MonoBehaviour
             Vector2 capsuleTop = new Vector2(capsuleCollider.bounds.center.x, capsuleCollider.bounds.max.y);
             return Physics2D.Raycast(capsuleTop, transform.up, groundCheckDistance, groundMask);
         }
+    }
+
+    Vector2 oldPosition, oldMove;
+    bool IsStuckInCorner()
+    {
+        var delta = rb.position - oldPosition;
+        oldPosition = rb.position;
+        oldMove = (isSticking ? Vector2.zero : moveDirection);
+        return !IsWalkingIntoWall() && (delta.x == 0f && oldMove.x != 0f);
     }
 
     #endregion
@@ -314,13 +326,6 @@ public class Player : MonoBehaviour
 
         if (context.canceled && verticalSpeed > 0f)
             verticalSpeed *= .5f;
-    }
-
-    void Jump()
-    {
-        verticalSpeed = jumpPower;
-        hasJump = false;
-        playerAudio.PlayJump();
     }
 
     #endregion
