@@ -1,13 +1,11 @@
 using DG.Tweening;
-using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Utility.Patterns;
 using Utility.Time;
 
-public class Player : Singleton<Player>
+public class Player : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] float moveSpeed = 10f;
@@ -46,7 +44,6 @@ public class Player : Singleton<Player>
     Collider2D currentGround = null;
     bool IsGrounded => currentGround != null;
     bool CanJump => IsGrounded || !coyoteTimer.IsExpired;
-    bool IsLanding => !wasGrounded && IsGrounded;
 
     Timer songTimer = new Timer();
     Timer coyoteTimer = new Timer();
@@ -63,48 +60,46 @@ public class Player : Singleton<Player>
 
     #region Components
 
-    PlayerControls playerControls;
     InputAction inputAction;
+    PlayerControls playerControls;
     Animator anim;
     Rigidbody2D rb;
     CapsuleCollider2D capsuleCollider;
-    SoundWavesVFX wavesVFX;
     FixedJoint2D fixedJoint;
-    Transform under_platform;
     PlayerAudioManager playerAudio;
+    SoundWavesVFX wavesVFX;
+    Transform under_platform;
 
     #endregion
 
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
-
         playerControls = new PlayerControls();
-        playerAudio = GetComponent<PlayerAudioManager>();
+        anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-        wavesVFX = GetComponentInChildren<SoundWavesVFX>();
-        anim = GetComponentInChildren<Animator>();
         fixedJoint = GetComponent<FixedJoint2D>();
+        playerAudio = GetComponent<PlayerAudioManager>();
+        wavesVFX = GetComponentInChildren<SoundWavesVFX>();
 
         CheckPoint.Set(rb.position);
     }
 
     #region Inputs
 
-    private void OnEnable()
+    void OnEnable()
     {
         inputAction = playerControls.Player.Move;
         inputAction.Enable();
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         inputAction.Disable();
     }
 
-    private void ChangeControlInput(InputAction.CallbackContext context)
+    void ChangeControlInput(InputAction.CallbackContext context)
     {
         if (context.control.device is Keyboard && isController)
         {
@@ -130,60 +125,46 @@ public class Player : Singleton<Player>
 
     Vector2 oldPosition, oldMove;
     bool shouldKickUpwards = false;
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         RefreshGround();
-
-        if (IsLanding)
-            playerAudio.PlayLanding();
-
-        if (!IsGrounded && wasGrounded && verticalSpeed <= 0f)
-            coyoteTimer.Set(coyoteTimeDuration);
-
-        if (currentGround != null && currentGround.CompareTag("MovingPlatform"))
-        {
-            LinkPlatform(currentGround.gameObject.GetComponentInParent<Rigidbody2D>());
-        }
-        else
-        {
-            UnlinkPlatform();
-        }
 
         var delta = rb.position - oldPosition;
         shouldKickUpwards = !IsWalkingIntoWall() && (delta.x == 0f && oldMove.x != 0f);
 
         if (IsGrounded)
         {
-            if (hasJump)
-            {
-                Jump();
-                UnlinkPlatform();
-            }
-            else
-            {
-                verticalSpeed = 0f;
-                anim.SetBool(animJumpStart, false);
-            }
+            if (currentGround.CompareTag("MovingPlatform"))
+                LinkPlatform(currentGround.gameObject.GetComponentInParent<Rigidbody2D>());
+
+            if (!wasGrounded)
+                playerAudio.PlayLanding();
+
+            verticalSpeed = 0f;
+            anim.SetBool(animJumpStart, false);
         }
         else
         {
-            if (hasJump && CanJump)
-            {
-                Jump();
-                UnlinkPlatform();
-                coyoteTimer.Set(0f);
-            }
-            else
-            {
-                verticalSpeed -= gravity * gravityScale * Time.deltaTime;
-            }
+            UnlinkPlatform();
+
+            verticalSpeed -= gravity * gravityScale * Time.deltaTime;
+
+            if (wasGrounded && verticalSpeed <= 0f)
+                coyoteTimer.Set(coyoteTimeDuration);
+
+            if (IsTouchingRoof())
+                verticalSpeed = -1f;
 
             if (shouldKickUpwards)
                 verticalSpeed = 0f;
         }
 
-        if (IsTouchingRoof())
-            verticalSpeed = -1f;
+        if (hasJump && CanJump)
+        {
+            Jump();
+            UnlinkPlatform();
+            coyoteTimer.Set(0f);
+        }
 
         if (!isSticking)
         {
@@ -198,8 +179,9 @@ public class Player : Singleton<Player>
             }
             else
             {
-                move.x = -move.x;
-                fixedJoint.anchor = fixedJoint.anchor + move * Time.deltaTime;
+                var relativeMove = move;
+                relativeMove.x *= -1f;
+                fixedJoint.anchor = fixedJoint.anchor + relativeMove * Time.deltaTime;
             }
         }
         else
@@ -341,6 +323,52 @@ public class Player : Singleton<Player>
         playerAudio.PlayJump();
     }
 
+    #endregion
+
+    #region Abilities
+
+    public void PlayGrowSong(InputAction.CallbackContext context)
+    {
+        ChangeControlInput(context);
+        if (context.performed && songTimer.IsExpired)
+        {
+            CheckActivable(true);
+            songTimer.Set(songDuration);
+            playerAudio.PlayGrowSong();
+        }
+    }
+
+    public void PlayShrinkSong(InputAction.CallbackContext context)
+    {
+        ChangeControlInput(context);
+        if (context.performed && songTimer.IsExpired)
+        {
+            CheckActivable(false);
+            songTimer.Set(songDuration);
+            playerAudio.PlayShrinkSong();
+        }
+    }
+
+    private void CheckActivable(bool good)
+    {
+        wavesVFX.Play(songRadius, songDuration);
+        RaycastHit2D[] ActivablePlants = Physics2D.CircleCastAll(transform.position, songRadius, transform.forward, 0, plantMask);
+
+        foreach (RaycastHit2D ray in ActivablePlants)
+        {
+            try
+            {
+                //print("Found plant: " + ray.collider.gameObject.name);
+                var comp = ray.collider.GetComponentInParent<Anim_Roots>();
+                if (good)
+                    comp.Ahead_Root();
+                else
+                    comp.Retreat_Root();
+            }
+            catch { }
+        }
+    }
+
     public void StickToFloor(InputAction.CallbackContext context)
     {
         ChangeControlInput(context);
@@ -391,58 +419,7 @@ public class Player : Singleton<Player>
 
     #endregion
 
-    #region Abilities
-
-    public void PlayGrowSong(InputAction.CallbackContext context)
-    {
-        ChangeControlInput(context);
-        if (context.performed && songTimer.IsExpired)
-        {
-            CheckActivable(true);
-            songTimer.Set(songDuration);
-            playerAudio.PlayGrowSong();
-        }
-    }
-
-    public void PlayShrinkSong(InputAction.CallbackContext context)
-    {
-        ChangeControlInput(context);
-        if (context.performed && songTimer.IsExpired)
-        {
-            CheckActivable(false);
-            songTimer.Set(songDuration);
-            playerAudio.PlayShrinkSong();
-        }
-    }
-
-    private void CheckActivable(bool good)
-    {
-        wavesVFX.Play(songRadius, songDuration);
-        RaycastHit2D[] ActivablePlants = Physics2D.CircleCastAll(transform.position, songRadius, transform.forward, 0, plantMask);
-
-        foreach (RaycastHit2D ray in ActivablePlants)
-        {
-            try
-            {
-                //print("Found plant: " + ray.collider.gameObject.name);
-                var comp = ray.collider.GetComponentInParent<Anim_Roots>();
-                if (good)
-                    comp.Ahead_Root();
-                else
-                    comp.Retreat_Root();
-            }
-            catch { }
-        }
-    }
-
-    #endregion
-
-    void Death()
-    {
-        transform.position = CheckPoint.LastActivated;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
@@ -451,12 +428,17 @@ public class Player : Singleton<Player>
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Killbox"))
         {
             playerAudio.PlayDeathInWater();
             Death();
         }
+    }
+
+    void Death()
+    {
+        transform.position = CheckPoint.LastActivated;
     }
 }
