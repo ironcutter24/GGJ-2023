@@ -9,7 +9,7 @@ public class ClippingPlane : MonoBehaviour
 
     void Start()
     {
-        renderers = GetComponentsInChildren<MeshRenderer>();
+        renderers = GetComponentsInChildren<MeshRenderer>(true);
 
         foreach (var r in renderers)
         {

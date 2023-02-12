@@ -16,8 +16,8 @@ public abstract class RhythmObject : MonoBehaviour
 
     protected int startIndex, currentIndex, direction;
 
-    List<Anim_Roots> attachedRoots = new List<Anim_Roots>();
-    Anim_Roots[] childRoots;
+    List<ExtendableRoot> attachedRoots = new List<ExtendableRoot>();
+    ExtendableRoot[] childRoots;
 
     protected Rigidbody2D rb;
 
@@ -28,7 +28,7 @@ public abstract class RhythmObject : MonoBehaviour
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        childRoots = GetComponentsInChildren<Anim_Roots>();
+        childRoots = GetComponentsInChildren<ExtendableRoot>();
 
         AudioManager.OnRhythmUpdate += Next;
 
@@ -41,12 +41,12 @@ public abstract class RhythmObject : MonoBehaviour
         AudioManager.OnRhythmUpdate -= Next;
     }
 
-    public void AttachRoot(Anim_Roots root)
+    public void AttachRoot(ExtendableRoot root)
     {
         attachedRoots.Add(root);
     }
 
-    public void DetachRoot(Anim_Roots root)
+    public void DetachRoot(ExtendableRoot root)
     {
         attachedRoots.RemoveAll(x => x == root);
     }

@@ -50,7 +50,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c12f79fb02b9fa2428b57b553cda3788, type: 2}
+      objectReference: {fileID: 2100000, guid: 306256abc092d7f4299f27d661d2bebd, type: 2}
     - target: {fileID: 5757490109196305631, guid: 02d15239962daf74092b4ecf208ab491,
         type: 3}
       propertyPath: m_RootOrder
@@ -126,6 +126,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VineRootsEndModel
       objectReference: {fileID: 0}
+    - target: {fileID: 4335156851571297113, guid: 28df20568d590b9408d5b7bb67f59bd8,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 306256abc092d7f4299f27d661d2bebd, type: 2}
     - target: {fileID: 5888465838421949128, guid: 28df20568d590b9408d5b7bb67f59bd8,
         type: 3}
       propertyPath: m_RootOrder
@@ -205,7 +210,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c12f79fb02b9fa2428b57b553cda3788, type: 2}
+      objectReference: {fileID: 2100000, guid: 306256abc092d7f4299f27d661d2bebd, type: 2}
     - target: {fileID: 5757490109196305631, guid: 02d15239962daf74092b4ecf208ab491,
         type: 3}
       propertyPath: m_RootOrder

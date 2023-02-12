@@ -387,7 +387,7 @@ public class Player : MonoBehaviour
             try
             {
                 //print("Found plant: " + ray.collider.gameObject.name);
-                var comp = ray.collider.GetComponentInParent<Anim_Roots>();
+                var comp = ray.collider.GetComponentInParent<ExtendableRoot>();
                 if (good)
                     comp.Ahead_Root();
                 else

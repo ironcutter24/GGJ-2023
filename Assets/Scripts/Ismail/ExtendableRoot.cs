@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Anim_Roots : MonoBehaviour
+public class ExtendableRoot : MonoBehaviour
 {
     [SerializeField]
     StudioEventEmitter growSFX, shrinkSFX;
@@ -18,10 +18,10 @@ public class Anim_Roots : MonoBehaviour
     LayerMask groundMask;
 
     [SerializeField, Range(1, 12)]
-    private float maxLenght;
+    private float maxLenght = 10;
 
     [SerializeField, Range(0, 2)]
-    private float minLenght = 1;
+    private float minLenght = .6f;
 
     [SerializeField]
     private bool moveAtStart;
@@ -39,6 +39,8 @@ public class Anim_Roots : MonoBehaviour
         Collider = GetComponent<BoxCollider2D>();
         Collider.enabled = false;
         CheckAtStart();
+
+        graphics.SetActive(true);
     }
 
     public void CheckAtStart()
@@ -146,10 +148,12 @@ public class Anim_Roots : MonoBehaviour
             isAhead = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (groundMask == (groundMask | (1 << collision.gameObject.layer)))
         {
+            Debug.Log("Root has hit ground");
+
             myTween.Kill();
             isRetreat = false;
 
@@ -165,4 +169,12 @@ public class Anim_Roots : MonoBehaviour
         }
     }
 
+    void OnDrawGizmos()
+    {
+        Vector3 origin = transform.position, up = transform.up, right = transform.right;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(origin, origin + right * 1.4f);
+        Gizmos.DrawLine(origin + up * .4f, origin + right * 1.4f);
+        Gizmos.DrawLine(origin + up * -.4f, origin + right * 1.4f);
+    }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3635987148697318871}
   - component: {fileID: 96415202249282265}
   m_Layer: 9
-  m_Name: Roots_togheter
+  m_Name: ExtendableRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,20 +319,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3635987148697318869}
     m_Modifications:
-    - target: {fileID: 35075920113821985, guid: 42a3ae161d8ac8544b9af78724b85359,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 306256abc092d7f4299f27d661d2bebd, type: 2}
-    - target: {fileID: 2692708683681319313, guid: 42a3ae161d8ac8544b9af78724b85359,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 306256abc092d7f4299f27d661d2bebd, type: 2}
     - target: {fileID: 5084815894061517548, guid: 42a3ae161d8ac8544b9af78724b85359,
         type: 3}
       propertyPath: m_Name
       value: RootModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084815894061517548, guid: 42a3ae161d8ac8544b9af78724b85359,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5084815894061517549, guid: 42a3ae161d8ac8544b9af78724b85359,
         type: 3}
@@ -389,11 +384,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
-    - target: {fileID: 6890233087306685469, guid: 42a3ae161d8ac8544b9af78724b85359,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 306256abc092d7f4299f27d661d2bebd, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42a3ae161d8ac8544b9af78724b85359, type: 3}
 --- !u!1 &6840270756288085030 stripped
@@ -428,7 +418,7 @@ PrefabInstance:
     - target: {fileID: 3362022097318059113, guid: fc1dfe7ae0f512d4689d31d8646f7717,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3362022097318059113, guid: fc1dfe7ae0f512d4689d31d8646f7717,
         type: 3}

@@ -17,12 +17,12 @@ public class Testing : MonoBehaviour
     {
         if(Input.GetKeyUp(KeyCode.Space))
         {
-           anim.GetComponent<Anim_Roots>().Ahead_Root();
+           anim.GetComponent<ExtendableRoot>().Ahead_Root();
            // anim_anim.AheadRoot();
         }
         if (Input.GetKeyUp(KeyCode.F))
         {
-            anim.GetComponent<Anim_Roots>().Retreat_Root();
+            anim.GetComponent<ExtendableRoot>().Retreat_Root();
             // anim_anim.AheadRoot();
         }
     }
