@@ -289,7 +289,7 @@ MonoBehaviour:
   groundCheckOrigin: {fileID: 6310327665963094913}
   groundMask:
     serializedVersion: 2
-    m_Bits: 896
+    m_Bits: 17280
   songRadius: 5
   songDuration: 0.8
   plantMask:
