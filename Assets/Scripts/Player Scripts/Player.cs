@@ -228,10 +228,12 @@ public class Player : MonoBehaviour
         var groundSurfaces = GetGroundOverlap();
         switch (groundSurfaces.Length)
         {
-            case 0: currentGround = null;
+            case 0:
+                currentGround = null;
                 break;
 
-            case 1: currentGround = groundSurfaces[0];
+            case 1:
+                currentGround = groundSurfaces[0];
                 break;
 
             default:
@@ -437,11 +439,8 @@ public class Player : MonoBehaviour
 
         Vector3 GetUnstickTraslation(Transform trs)
         {
-            float angle = Vector2.Angle(trs.up, Vector3.down);
-            if (angle < 90)
-                return trs.position + trs.up * Mathf.Lerp(2f, 0f, angle / 90);
-            else
-                return trs.position;
+            float interp = Mathf.Clamp(Vector2.Dot(trs.up, Vector3.down), 0f, 1f);
+            return trs.position + trs.up * interp * 2f;
         }
     }
 
