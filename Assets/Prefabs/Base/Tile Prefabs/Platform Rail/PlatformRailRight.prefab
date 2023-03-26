@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &860865807496117339
 Transform:
@@ -94,10 +94,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4766611569663088468, guid: cf4076d4fa2e6254599e0a989b708f20,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cf4076d4fa2e6254599e0a989b708f20,
         type: 3}
       propertyPath: m_Name
       value: Rotaia1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cf4076d4fa2e6254599e0a989b708f20,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2540778969207423614, guid: cf4076d4fa2e6254599e0a989b708f20,
         type: 3}
