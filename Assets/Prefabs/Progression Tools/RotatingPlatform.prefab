@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 7905059057423510337}
   - component: {fileID: 7905059057423510342}
   - component: {fileID: 7905059057423510336}
+  - component: {fileID: 4498540887849173112}
   m_Layer: 7
   m_Name: RotatingPlatform
   m_TagString: Untagged
@@ -182,6 +183,30 @@ MonoBehaviour:
   stepSize: 1
   turnDirection: 1
   CogGraphics: {fileID: 2750981684673718697}
+--- !u!66 &4498540887849173112
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7905059057423510339}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 8373814469720689452}
+    m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
 --- !u!1 &8967785239664392034
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,6 +249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2515412073848818590}
   - component: {fileID: 1855763210113907899}
+  - component: {fileID: 8373814469720689452}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -310,6 +336,22 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!19719996 &8373814469720689452
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9118174461710640424}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 1
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0.00001
 --- !u!1001 &6007346569037323580
 PrefabInstance:
   m_ObjectHideFlags: 0
